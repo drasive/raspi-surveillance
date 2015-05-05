@@ -1,0 +1,10 @@
+Create installation script
+Change to HTTP for video stream
+Try removing quotes in echo's
+Create stop-videostream.sh script
+
+Create web interface
+	Control, video stream, stream management (home)
+	Photo archive
+	Video archive
+	About
