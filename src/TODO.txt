@@ -1,5 +1,5 @@
-Create installation script
-Change to HTTP for video stream
+Create installation script: create docker image
+Change to HTTP for video stream: test rtsp and http
 Try removing quotes in echo's
 Create stop-videostream.sh script
 

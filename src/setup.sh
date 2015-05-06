@@ -7,16 +7,24 @@ if ! [ $(id -u) = 0 ]; then
   exit 1
 fi
 
-# TODO:
-echo "Doing nothing"
+# Prepare setup
+alias apt-install='sudo -E apt-get install --yes --force-yes'
 
-# Webserver
+export DEBIAN_FRONTEND=noninteractive # Turn off configuration dialogs
 
+#sudo apt-get update
+#sudo apt-get upgrade
+#sudo apt-get autoremove
 
-# Video streaming
+# Setup LAMP server
+#apt-install lamp-server^
 
+#service apache2 restart
+#service mysql restart
 
-# Motion detection
+# Setup video streaming
+#apt-install vlc
 
+# Setup motion detection
+apt-install motion
 
-echo "Setup completed"

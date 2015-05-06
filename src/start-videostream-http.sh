@@ -1,7 +1,15 @@
 #!/bin/sh
 set -e
 
-# TODO: Finish implementation
-export LD_LIBRARY_PATH="/usr/lib"
-mjpg_streamer -i "input_raspicam.so -d 0 -ex night -x 640 -y 480" -o "output_http.so -p 8080 -w /usr/www"
-exit 0
+# Configuration
+videoWidth=1280
+videoHeight=720
+videoFPS=24
+
+streamPort=8554
+
+# Start videostream
+echo "Starting videostream on port "$streamPort" ("$videoWidth"x"$videoHeight"p, "$videoFPS"FPS) \n"
+raspivid -o - -t 0 -n -w $videoWidth -h $videoHeight -fps $videoFPS \
+  | cvlc stream:///dev/stdin --sout '#standard{access=http,mux=ts,dst=:$streamPort}' :demux=h264
+
