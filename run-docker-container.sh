@@ -3,11 +3,13 @@ set -e
 
 # Configuration
 dockerImage="drasive/raspi-surveillance"
-dockerCommands="sh /host/setup-development.sh && sh /host/setup.sh \
-                && /bin/bash"
+dockerCommands="/bin/bash"
 
 hostDirectory="/src"    # Relative path
 clientDirectory="/host" # Absolute path
+
+hostPort="9999"
+clientPort="80"
 
 # Check execution privilege
 if ! [ $(id -u) = 0 ]; then
@@ -15,11 +17,11 @@ if ! [ $(id -u) = 0 ]; then
   exit 1
 fi
 
-# Start docker image
+# Run docker container
 currentDirectory=`pwd`
-command="docker run -v $currentDirectory$hostDirectory:$clientDirectory \
-         -ti $dockerImage \
-         sh -c '$dockerCommands'"
 
-eval $command
-
+eval "docker run \
+        -v $currentDirectory$hostDirectory:$clientDirectory \
+        -p $hostPort:$clientPort
+        -ti $dockerImage \
+        sh -c '$dockerCommands'"

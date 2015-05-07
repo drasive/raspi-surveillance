@@ -1,13 +1,12 @@
-# Dockerfile for image drasive/raspi-surveillance
-# Used to develop and test https://github.com/drasive/raspi-surveillance
-# Version 1.0.0
+# Dockerfile for https://github.com/drasive/raspi-surveillance
 
-FROM ubuntu
-MAINTAINER Dimitri Vranken, dimitri.vranken@hotmail.ch
+FROM debian:wheezy
+MAINTAINER Dimitri Vranken <dimitri.vranken@hotmail.ch>
 
 RUN apt-get update
-RUN apt-get upgrade
-RUN apt-get autoremove
+RUN sh ./setup-development.sh
+RUN sh ./setup.sh
+
+EXPOSE 80
 
 CMD /bin/bash
-
