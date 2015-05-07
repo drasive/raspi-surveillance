@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+# Configuration
+screenName="motion-detection"
+
 # Check execution privilege
 if ! [ $(id -u) = 0 ]; then
   echo "Please run as root"
@@ -8,4 +11,4 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 # Start motion detection
-screen -S motion-detection -X quit
+screen -S $screenName -X quit

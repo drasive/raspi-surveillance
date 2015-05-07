@@ -8,14 +8,15 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 # Prepare setup
-alias apt-install='sudo apt-get install --yes --force-yes'
+apt_install='apt-get install --yes'
 
 # Install apt-get packages
-apt-install nano
-apt-install w3m
-apt-install tree
+$apt_install nano
+$apt_install tree
 
-apt-install openssh-server
-apt-install openssh-client
+$apt_install wget
+$apt_install curl
+$apt_install w3m
 
-apt-install tightvncserver
+$apt_install openssh-server
+$apt_install openssh-client

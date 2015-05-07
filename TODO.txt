@@ -1,11 +1,10 @@
 Create installation script: test docker image
-Change to HTTP for video stream: test rtsp and http
-Try removing quotes in echo's
-Create stop-videostream.sh script
+Change to HTTP for video stream: test rtsp and http, improve quotes
+Create stop-videostream.sh script (run in screen)
 
 Create web interface
 	Operation mode management, video stream & stream management (home)
 	Video archive
 	About
 
-Disable camera led? /boot/config.txt, disable_camera_led=1
+Disable camera led? /boot/config.txt, disable_camera_led=1: Rather not

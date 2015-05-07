@@ -20,8 +20,9 @@ fi
 # Run docker container
 currentDirectory=`pwd`
 
-eval "docker run \
-        -v $currentDirectory$hostDirectory:$clientDirectory \
-        -p $hostPort:$clientPort
-        -ti $dockerImage \
-        sh -c '$dockerCommands'"
+command="docker run \
+           -v $currentDirectory$hostDirectory:$clientDirectory \
+           -p $hostPort:$clientPort
+           -ti $dockerImage \
+           sh -c '$dockerCommands'"           
+eval $command

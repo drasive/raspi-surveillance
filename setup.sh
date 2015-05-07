@@ -8,32 +8,34 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 # Prepare setup
-alias apt-install='sudo -E apt-get install --yes --force-yes'
+export DEBIAN_FRONTEND="noninteractive"
 
-export DEBIAN_FRONTEND=noninteractive # Turn off configuration dialogs
+#dpkg --configure -a
+
+apt_install='apt-get install --yes' # $sudo -E
+#dpkg --configure -a
+#$apt_install dialog
+#$apt_install apt-utils
+$apt_install screen
+$apt_install wget
 
 # Setup LAMP server
-apt-install lamp-server^
+$apt_install lamp-server^
 
 service apache2 restart
 service mysql restart
 
 # Setup video streaming
-apt-install vlc
+$apt_install vlc
 
 # Setup motion detection
-motionConfigurationFile="/etc/motion.conf"
+$apt_install motion
+apt-get remove motion # Only the dependencies are required
 
-# TODO: http://jankarres.de/2013/12/raspberry-pi-kamera-modul-mit-motion-tracking/
-apt-install motion
-sudo apt-get remove motion # Only the dependencies are required
-
-wget https://www.dropbox.com/s/xdfcxm5hu71s97d/motion-mmal.tar.gz
-tar zxvf motion-mmal.tar.gz
-
-# TODO: Check what folders and files have been extracted
-sudo mv motion-mmalcam.conf $motionConfigurationFile
-sudo mv motion /usr/bin
+wget https://www.dropbox.com/s/xdfcxm5hu71s97d/motion-mmal.tar.gz -P /tmp/
+tar zxvf /tmp/motion-mmal.tar.gz -C /tmp/ && rm /tmp/motion-mmal.tar.gz
+mv /tmp/motion-mmalcam.conf /etc/motion.conf
+mv /tmp/motion /usr/bin
 
 # TODO: http://sjj.azurewebsites.net/?p=701
-#sed -i "s/start_x=0/start_x=1/g" $motionConfigurationFile
+#sed -i "s/start_x=0/start_x=1/g" /etc/motion.conf
