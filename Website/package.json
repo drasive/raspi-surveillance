@@ -1,5 +1,24 @@
 {
+  "name": "raspi-surveillance",
+  "description": "",
+  "version": "0.1.0-a",
   "private": true,
+  "homepage": "https://github.com/drasive/raspi-surveillance",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/drasive/raspi-surveillance.git"
+  },
+  "bugs": {
+    "url": "https://github.com/drasive/raspi-surveillance/issues"
+  },
+  "author": {
+    "name": "Dimitri Vranken",
+    "email": "dimitri.vranken@hotmail.ch"
+  },
+  "license": {
+    "type": "GPL-3",
+    "url": "http://www.opensource.org/licenses/GPL-3.0"
+  },
   "devDependencies": {
     "gulp": "^3.8.8",
     "laravel-elixir": "*"
