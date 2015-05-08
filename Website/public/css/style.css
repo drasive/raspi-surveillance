@@ -1,0 +1,76 @@
+/* Tables
+***************************/
+.management td {
+    padding-bottom: 8px;
+}
+
+.management textarea {
+    height: 100px;
+}
+
+.management label {
+    font-weight: 500;
+}
+
+.form-label-inline {
+    margin-top: 3px;
+    margin-right: 12px;
+}
+
+
+/* Forms
+***************************/
+textarea.form-control {
+    resize: vertical;
+	max-height: 300px; 
+}
+
+
+/* Other
+***************************/
+h1 + .title-addition {
+    font-size: 20px;
+}
+
+h4 + .title-addition {
+    font-size: 15px;
+}
+
+
+@media(max-width:767px) {
+    .modal-wide .modal-dialog {
+        width: 97%;
+    }
+}
+
+@media(min-width:768px) {
+    .modal-wide .modal-dialog {
+        width: 75%;
+    }
+}
+
+@media(min-width:1200px) {
+    .modal-wide .modal-dialog {
+        width: 60%;
+    }
+}
+
+.modal-wide .modal-body {
+  overflow-y: auto;
+}
+
+
+/* Helpers
+***************************/
+.inline-block {
+    display: inline-block !important;
+}
+
+.right-align {
+    text-align: right;
+}
+
+
+.margin-right {
+    padding-right: 15px;
+}

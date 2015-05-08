@@ -1,10 +1,21 @@
-Create installation script: test docker image
+Create installation script: test using docker image
 Change to HTTP for video stream: test rtsp and http, improve quotes
 Create stop-videostream.sh script (run in screen)
 
 Create web interface
 	Operation mode management, video stream & stream management (home)
 	Video archive
+		List of recorded videos with video length, ordered by recording date (newest first)
+		Can be watched in browser
+		Can be downloaded
+	Settings
+		Video settings (quality, motion detection threshold)
+		Log files (start/ stop, mode changes, events like motion detection triggered)
 	About
+	
+	Clean up css/js _* files
+	Clean up site/master* file
 
-Disable camera led? /boot/config.txt, disable_camera_led=1: Rather not
+Login?
+API authentication?
+Disable camera led (/boot/config.txt, disable_camera_led=1)?: Rather not

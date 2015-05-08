@@ -21,13 +21,9 @@ class ApiCameraController extends Controller {
 		try {
 			$cameras = Camera::all();
 			
-			// Sort by IP-address, lowest to highest
+			// Sort by id, lowest to highest
 			$cameras = $cameras->sortBy(function ($camera) {
-				// Remove leading zeroes etc.
-				$ipAddress = ip2long($camera->ip_address);
-				$ipAddressString = long2ip($ipAddress);
-				
-				return $ipAddressString;
+				return $camera->id;
 			});
 			
 			return $cameras->toJson();
