@@ -15,7 +15,7 @@ class CreateCamerasTable extends Migration {
 		Schema::create('cameras', function($table)
         {
             $table->increments('id');
-            $table->string('ip_address', 45);
+            $table->string('ip_address', 45)->unique();
             $table->string('name', 32)->nullable();
             
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));

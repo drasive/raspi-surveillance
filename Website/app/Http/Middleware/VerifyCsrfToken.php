@@ -14,6 +14,16 @@ class VerifyCsrfToken extends BaseVerifier {
 	 */
 	public function handle($request, Closure $next)
 	{
+		// Disable CSRF check on the following routes
+		$excludedRoutes = ['api/*'];
+		
+		foreach ($excludedRoutes as $excludedRoute) {
+			if($request->is($excludedRoute)){
+				return parent::addCookieToResponse($request, $next($request));
+			}
+		}
+		
+		// Check CSRF token
 		return parent::handle($request, $next);
 	}
 

@@ -2,9 +2,12 @@
 
 use RaspiSurveillance\Http\Requests;
 use RaspiSurveillance\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
-//use RaspiSurveillance\Camera;
+use Illuminate\Http\Request;
+use Input;
+use Response;
+
+use RaspiSurveillance\Camera;
 
 class ApiCameraController extends Controller {
 
@@ -15,19 +18,23 @@ class ApiCameraController extends Controller {
 	 */
 	public function index()
 	{
-		// Get all cameras
-		$cameras = Camera::all();
-		
-		// Sort events by IP-address, lowest to highest
-        $cameras = $cameras->sortByDesc(function ($camera) {
-            return str_replace(".", "", $camera); // Use numeric value of IPv4 address
-        });
-		
-		// Return list of cameras (URL and id as values)
-		foreach ($cameras as $camera) {
-            // code
-        }
-		return response()->json(['name' => 'Abigail', 'state' => 'CA']);
+		try {
+			$cameras = Camera::all();
+			
+			// Sort by IP-address, lowest to highest
+			$cameras = $cameras->sortBy(function ($camera) {
+				// Remove leading zeroes etc.
+				$ipAddress = ip2long($camera->ip_address);
+				$ipAddressString = long2ip($ipAddress);
+				
+				return $ipAddressString;
+			});
+			
+			return $cameras->toJson();
+		}
+		catch (Exception $exception) {
+			return Response($exception, 500);
+		}
 	}
 
 	/**
@@ -37,7 +44,30 @@ class ApiCameraController extends Controller {
 	 */
 	public function store()
 	{
-		// Create
+		try {
+			$camera = new Camera();
+			$camera->ip_address = Input::get('ip_address');
+			$camera->name       = Input::get('name');
+			
+			// Validate input
+			$validator = $camera->getValidator();
+			if ($validator->fails()) {
+				return Response($validator->messages(), 400);
+			}
+			
+			// Check if model already exists
+			$existingCamera = Camera::where('ip_address', '=', $camera->ip_address)->get();
+			if (!is_null($existingCamera)) {
+				return Response("", 400);
+			}
+			
+			$camera->save();
+		}
+		catch (Exception $exception) {
+			return Response($exception, 500);
+		}
+		
+		return Response("", 200);
 	}
 
 	/**
@@ -48,7 +78,19 @@ class ApiCameraController extends Controller {
 	 */
 	public function show($id)
 	{
-		// Get by id
+		try {
+			$camera = Camera::find($id);
+			
+			if (!is_null($camera)) {
+				return $camera->toJson();
+			}
+			else {
+				return Response("", 404);
+			}
+		}
+		catch (Exception $exception) {
+			return Response($exception, 500);
+		}
 	}
 
 	/**
@@ -59,7 +101,38 @@ class ApiCameraController extends Controller {
 	 */
 	public function update($id)
 	{
-		// Update
+		try {
+			$camera = Camera::find($id);
+			
+			if (!is_null($camera)) {
+				$camera->ip_address = Input::get('ip_address');
+				$camera->name       = Input::get('name');
+				
+				// Validate input
+				$validator = $camera->getValidator();
+				if ($validator->fails()) {
+					return Response($validator->messages(), 400);
+				}
+				
+				// Check if model already exists
+				$existingCamera = Camera::
+				    where('id', '!=', $camera->id)
+				  ->where('ip_address', '=', $camera->ip_address)->first();
+				if (!is_null($existingCamera)) {
+					return Response("", 400);
+				}
+				
+				$camera->save();
+			}
+			else {
+				return Response("", 404);
+			}
+		}
+		catch (Exception $exception) {
+			return Response($exception, 500);
+		}
+		
+		return Response("", 200);
 	}
 
 	/**
@@ -71,16 +144,20 @@ class ApiCameraController extends Controller {
 	public function destroy($id)
 	{
 		try {
-			Camera::destroy($id);			
+			$camera = Camera::find($id);
 			
-			//$camera = Camera::find($id);
-			//$camera->delete();
+			if (!is_null($camera)) {
+				$camera->delete();
+			}
+			else {
+				return Response("", 404);
+			}
 		}
 		catch (Exception $exception) {
-			return new Response($exception->getMessage(), 500);
+			return Response($exception, 500);
 		}
 		
-		return new Response("", 200);
+		return Response("", 200);
 	}
 
 }
