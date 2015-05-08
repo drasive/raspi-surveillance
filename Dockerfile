@@ -1,9 +1,8 @@
 # Dockerfile for https://github.com/drasive/raspi-surveillance
-FROM debian:wheezy
+FROM debian:jessie
 MAINTAINER Dimitri Vranken <dimitri.vranken@hotmail.ch>
 
 ENV DEBIAN_FRONTEND noninteractive
-RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 
 # Install packages and execute setup scripts
 RUN apt-get update

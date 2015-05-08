@@ -8,14 +8,9 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 # Prepare setup
-export DEBIAN_FRONTEND="noninteractive"
-
-#dpkg --configure -a
-
-apt_install='apt-get install --yes' # $sudo -E
-#dpkg --configure -a
-#$apt_install dialog
-#$apt_install apt-utils
+apt_install='apt-get install --yes'
+$apt_install apt-utils
+$apt_install tasksel # TODO: Required for lamp-server^?
 $apt_install screen
 $apt_install wget
 

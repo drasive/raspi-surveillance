@@ -9,6 +9,7 @@ fi
 
 # Prepare setup
 apt_install='apt-get install --yes'
+$apt_install apt-utils
 
 # Install apt-get packages
 $apt_install nano
