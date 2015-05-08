@@ -28,17 +28,17 @@ $app = new Illuminate\Foundation\Application(
 
 $app->singleton(
 	'Illuminate\Contracts\Http\Kernel',
-	'App\Http\Kernel'
+	'RaspiSurveillance\Http\Kernel'
 );
 
 $app->singleton(
 	'Illuminate\Contracts\Console\Kernel',
-	'App\Console\Kernel'
+	'RaspiSurveillance\Console\Kernel'
 );
 
 $app->singleton(
 	'Illuminate\Contracts\Debug\ExceptionHandler',
-	'App\Exceptions\Handler'
+	'RaspiSurveillance\Exceptions\Handler'
 );
 
 /*

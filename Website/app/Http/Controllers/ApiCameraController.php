@@ -1,10 +1,10 @@
-<?php namespace App\Http\Controllers;
+<?php namespace RaspiSurveillance\Http\Controllers;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use RaspiSurveillance\Http\Requests;
+use RaspiSurveillance\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Camera;
+//use RaspiSurveillance\Camera;
 
 class ApiCameraController extends Controller {
 

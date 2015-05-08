@@ -1,4 +1,4 @@
-<?php namespace App\Commands;
+<?php namespace RaspiSurveillance\Commands;
 
 abstract class Command {
 

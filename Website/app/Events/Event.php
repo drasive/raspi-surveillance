@@ -1,4 +1,4 @@
-<?php namespace App\Events;
+<?php namespace RaspiSurveillance\Events;
 
 abstract class Event {
 

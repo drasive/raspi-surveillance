@@ -1,4 +1,4 @@
-<?php namespace App;
+<?php namespace RaspiSurveillance;
 
 use Illuminate\Database\Eloquent\Model;
 use Validator;
