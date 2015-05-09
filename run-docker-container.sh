@@ -5,11 +5,11 @@ set -e
 dockerImage="drasive/raspi-surveillance"
 dockerCommands="/bin/bash"
 
-hostDirectory="/src"    # Relative path
-clientDirectory="/host" # Absolute path
+hostDirectory="/src"       # Relative path
+containerDirectory="/host" # Absolute path
 
 hostPort="9999"
-clientPort="80"
+containerPort="80"
 
 # Check execution privilege
 if ! [ $(id -u) = 0 ]; then
@@ -18,11 +18,13 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 # Run docker container
-currentDirectory=`pwd`
+# TODO: Doesn't seem to work
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport $hostPort -j REDIRECT --to-port $containerPort
 
+currentDirectory=`pwd`
 command="docker run \
-           -v $currentDirectory$hostDirectory:$clientDirectory \
-           -p $hostPort:$clientPort
+           -v $currentDirectory$hostDirectory:$containerDirectory \
+           -p $hostPort:$containerPort
            -ti $dockerImage \
-           sh -c '$dockerCommands'"           
+           sh -c '$dockerCommands'"
 eval $command

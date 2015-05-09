@@ -15,6 +15,7 @@ $apt_install apt-utils
 $apt_install nano
 $apt_install tree
 
+$apt_install net-tools
 $apt_install wget
 $apt_install curl
 $apt_install w3m

@@ -9,13 +9,15 @@ fi
 
 # Prepare setup
 apt_install='apt-get install --yes'
+apt_remove='apt-get remove --yes'
 $apt_install apt-utils
-$apt_install tasksel # TODO: Required for lamp-server^?
 $apt_install screen
 $apt_install wget
 
 # Setup LAMP server
-$apt_install lamp-server^
+$apt_install apache2
+$apt_install mysql-server
+$apt_install php5 php-pear php5-mysql
 
 service apache2 restart
 service mysql restart
@@ -25,7 +27,7 @@ $apt_install vlc
 
 # Setup motion detection
 $apt_install motion
-apt-get remove motion # Only the dependencies are required
+$apt_remove motion # Only the dependencies are required
 
 wget https://www.dropbox.com/s/xdfcxm5hu71s97d/motion-mmal.tar.gz -P /tmp/
 tar zxvf /tmp/motion-mmal.tar.gz -C /tmp/ && rm /tmp/motion-mmal.tar.gz

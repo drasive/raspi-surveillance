@@ -1,6 +1,7 @@
 Create installation script: test using docker image
 Change to HTTP for video stream: test rtsp and http, improve quotes
 Create stop-videostream.sh script (run in screen)
+Do somewhere: mysql_secure_installation
 
 Create web interface
 	Operation mode management, video stream & stream management (home)

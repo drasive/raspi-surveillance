@@ -14,6 +14,6 @@ COPY ./setup.sh /host/
 RUN /bin/bash -c "source /host/setup.sh"
 
 # Configure container
-EXPOSE -p 80
+EXPOSE 80
 
 CMD /bin/bash
