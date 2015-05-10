@@ -47,7 +47,7 @@
 </head>
 <body>
     @yield('master-content')
-
+    
     <!-- Scripts
     ================================================== -->    
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular.min.js"></script>

@@ -4,9 +4,11 @@ var raspiSurveillanceControllers = angular.module('raspiSurveillanceApp', ['rasp
 
 raspiSurveillanceControllers.controller('CameraListCtrl', ['$scope', 'Camera', function ($scope, Camera) {
 	
+	// Fields
 	$scope.cameras = Camera.query();
-	$scope.order = 'ip_address';
-    
+	$scope.orderField = 'ip_address';
+	$scope.orderReverse = false;
+	
     // Validation
     //$scope.validateIpAddress = function(data, id) {
     //    if (id === 2 && data !== 'awesome') {
@@ -21,6 +23,18 @@ raspiSurveillanceControllers.controller('CameraListCtrl', ['$scope', 'Camera', f
     //};
     
     // Actions
+	$scope.orderBy = function(field) {
+		if ($scope.orderField === field) {
+			$scope.orderReverse = !$scope.orderReverse;
+		}
+		else {
+			$scope.orderReverse = false;
+		}
+		
+		$scope.orderField = field;
+	}
+	
+	
     $scope.addCamera = function() {
         $scope.inserted = {
             ip_address: '',
@@ -33,23 +47,24 @@ raspiSurveillanceControllers.controller('CameraListCtrl', ['$scope', 'Camera', f
     $scope.saveCamera = function(data, id) {
         //$scope.user not updated yet
         //angular.extend(data, {id: id});
-        
+        console.log('save');
         Camera.save(data);
     };
     
     $scope.deleteCamera = function(camera) {
         // TODO: Disable delete button during AJAX request, re-enable on error
+        alert("Deleting");
         
-        Camera.delete({ id: camera.id}).$promise.then(
-            function(value) {
+        console.log('deleting');
+        return Camera.delete({ id: camera.id}).$promise
+            .then(function(value) {
                 // Remove item from array
                 var index = $scope.cameras.indexOf(camera);
                 $scope.cameras.splice(index, 1);
-            },
-            function(error) {
+            })
+            .catch(function(error) {
                 alert("Delete failed");
-            }
-        )
+            })
     };
-    
+	
 }]);

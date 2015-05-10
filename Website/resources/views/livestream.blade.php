@@ -14,57 +14,78 @@
         <div class="col-md-6">
             <h3>Livestream</h3>
             
-            <video src="http://localhost:8554" autoplay>
+            <!--<video src="http://localhost:8554" autoplay>
                 <p>
                     Your browser can’t play MPEG-DASH streams.
                     Please update your browser or try using another one, such as <a href="https://www.google.de/chrome/browser/">Google Chrome</a>.
                 </p>
-            </video>
+            </video>-->
         </div>
         <div class="col-md-6" >
             <h3>Cameras</h3>
             
             <div ng-controller="CameraListCtrl">
                 <input class="form-control" type="text" maxlength="15" placeholder="Search by IP address or name" ng-model="query">
-                <select class="form-control" ng-model="order">
-                    <option value="ip_address" selected>IP Address</option>
-                    <option value="name">Name</option>
-                </select>
 
-                <table class="table table-bordered table-hover table-condensed">
+                <table class="table table-bordered table-hover table-condensed @{{ bodyClass }}" ng-cloack>
                     <tr style="font-weight: bold">
-                        <td style="width:25%">IP-Address</td>
-                        <td style="width:50%">Name</td>
-                        <td style="width:25%">Edit</td>
+                        <th style="width:25%">
+							<a href="#" ng-click="orderBy('ip_address')">
+							    IP-Address
+								<span ng-show="orderField == 'ip_address'">
+									<i class="fa fa-sort-numeric-asc" ng-show="!orderReverse"></i>									
+									<i class="fa fa-sort-numeric-desc" ng-show="orderReverse"></i>
+								</span>
+							</a>
+						</th>
+                        <th style="width:50%">
+							<a href="#" ng-click="orderBy('name')">
+							    Name
+								<span ng-show="orderField == 'name'">
+									<i class="fa fa-sort-alpha-asc" ng-show="!orderReverse"></i>									
+									<i class="fa fa-sort-alpha-desc" ng-show="orderReverse"></i>
+								</span>
+							</a>
+						</th>
+                        <th style="width:25%">
+							<!-- Action -->
+						</th>
                     </tr>
                     
-                    <tr ng-repeat="camera in cameras | filter:query | orderBy:order">
+					<!-- TODO: Use orderBy:naturalSort:orderField:orderReverse or something -->
+                    <tr ng-repeat="camera in cameras | filter:query | orderBy:orderField:orderReverse ">
                         <td>
                             <!-- IP address -->
-                            <span editable-text="camera.ip_address" e-name="ip_address" e-form="rowform" onbeforesave="validateIpAddress($data, camera.id)" e-required>
+                            <span editable-text="camera.ip_address" e-name="ip_address" e-form="cameraForm" onbeforesave="validateIpAddress($data, camera.id)" e-required>
                                 @{{ camera.ip_address }}
                             </span>
                         </td>
                         <td>
                             <!-- Name -->
-                            <span editable-select="camera.name" e-name="name" e-form="rowform" onbeforesave="validateName($data, camera.id)">
+                            <span editable-text="camera.name" e-name="name" e-form="cameraForm" onbeforesave="validateName($data, camera.id)">
                                 @{{ camera.name }}
                             </span>
                         </td>
                         <td style="white-space: nowrap">
-                            <!-- Edit -->
-                            <form editable-form name="rowform" onbeforesave="saveCamera($data, camera.id)" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == camera">
-                                <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                            <!-- Action -->
+							
+							<!-- TODO: Get these to work -->
+                            <div class="buttons" ng-show="!cameraForm.$visible">
+                                <button class="btn btn-primary" ng-click="cameraForm.$show()">Edit</button>
+                                <button class="btn btn-danger" click-disable="deleteCamera(camera)">Delete</button>
+								
+                                <button click-and-disable="functionThatReturnsPromise()">Click me</button>
+								<div test></div>
+                            </div>
+							
+							<form editable-form name="cameraForm" onbeforesave="saveCamera($data, camera.id)" ng-show="cameraForm.$visible" class="form-buttons form-inline" shown="true">
+                                <button type="submit" ng-disabled="cameraForm.$waiting" class="btn btn-primary">
                                     Save
                                 </button>
-                                <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+                                <button type="button" ng-disabled="cameraForm.$waiting" ng-click="cameraForm.$cancel()" class="btn btn-default">
                                     Cancel
                                 </button>
                             </form>
-                            <div class="buttons" ng-show="!rowform.$visible">
-                                <button class="btn btn-primary" ng-click="rowform.$show()">Edit</button>
-                                <button class="btn btn-danger" ng-click="button=true && deleteCamera(camera)" ng-disabled="button">Delete</button>
-                            </div>
                         </td>
                     </tr>
                 </table>
@@ -77,6 +98,8 @@
 
 @section('scripts')
     <script src="js/app.js"></script>
+	<script src="js/services.js"></script>
+	<script src="js/filters.js"></script>
     <script src="js/controllers.js"></script>
-    <script src="js/services.js"></script>
+    <script src="js/directives.js"></script>
 @stop
