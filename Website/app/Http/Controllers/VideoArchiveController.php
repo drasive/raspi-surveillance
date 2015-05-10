@@ -1,12 +1,11 @@
 <?php namespace RaspiSurveillance\Http\Controllers;
 
 use RaspiSurveillance\Http\Requests;
-use RaspiSurveillance\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use View;
 
-class VideoArchiveController extends Controller {
+class VideoArchiveController extends ControllerBase {
 
 	/**
 	 * Display a listing of the resource.

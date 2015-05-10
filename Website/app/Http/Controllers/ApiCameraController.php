@@ -1,7 +1,6 @@
 <?php namespace RaspiSurveillance\Http\Controllers;
 
 use RaspiSurveillance\Http\Requests;
-use RaspiSurveillance\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use Input;
@@ -9,7 +8,7 @@ use Response;
 
 use RaspiSurveillance\Camera;
 
-class ApiCameraController extends Controller {
+class ApiCameraController extends ControllerBase {
 
 	/**
 	 * Display a listing of the resource.
