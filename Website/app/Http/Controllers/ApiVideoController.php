@@ -51,8 +51,8 @@ class ApiVideoController extends ApiFileControllerBase {
 		try {
 			$video = new Video($filename);
 			
-			if ($video->getDoesExist()) {
-				self::JsonEncode($video);
+			if ($video->getExists()) {
+				return self::JsonEncode($video);
 			}
 			else {
 				return Response("", 404);
@@ -74,7 +74,7 @@ class ApiVideoController extends ApiFileControllerBase {
 		try {
 			$video = new Video($filename);
 			
-			if ($video->getDoesExist()) {
+			if ($video->getExists()) {
 				$video->delete();
 			}
 			else {
@@ -91,11 +91,11 @@ class ApiVideoController extends ApiFileControllerBase {
 	
 	protected static function JsonEncode($video) {
 		return array(
-		    'path'       => $video->getPath(),
+		    'filename'   => basename($video->getPath()),
 		    'duration'   => $video->getDuration(),
 		    'size'       => $video->getSize(),
-		    'created_at' => $video->getCreatedAt(),
-		    'updated_at' => $video->getUpdatedAt()
+		    'created_at' => date("c", $video->getCreatedAt()),
+		    'updated_at' => date("c", $video->getUpdatedAt())
 		);
 	}
 	

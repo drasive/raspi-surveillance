@@ -1,6 +1,6 @@
 'use strict';
 
-var raspiSurveillanceControllers = angular.module('raspiSurveillanceApp', ['raspiSurveillanceServices']);
+var raspiSurveillanceControllers = angular.module('raspiSurveillanceControllers', ['raspiSurveillanceServices', 'raspiSurveillanceFilters']);
 
 raspiSurveillanceControllers.controller('LivestreamCtrl', ['$scope', 'Camera', function ($scope, Camera) {
     
@@ -111,3 +111,59 @@ raspiSurveillanceControllers.controller('CameraManagementCtrl', ['$scope', '$roo
     };
     
 }]);
+
+raspiSurveillanceControllers.controller('VideoManagementCtrl', ['$scope', '$rootScope', 'Video', function ($scope, $rootScope, Video) {
+    
+    // Fields
+    $scope.videos = Video.query(
+        function (data) {
+            console.info('Loaded ' + data.length + ' videos');
+        },
+        function (error) {
+            console.error(error);
+            
+            // TODO:
+            alert('video query error');
+        }
+    );
+    
+    $scope.orderField = 'created_at';
+    $scope.orderReverse = false;
+    
+    // Actions
+    $scope.orderBy = function(field) {
+        if ($scope.orderField === field) {
+            $scope.orderReverse = !$scope.orderReverse;
+        }
+        else {
+            $scope.orderReverse = false;
+        }
+        
+        $scope.orderField = field;
+    }
+    
+    
+    $scope.loadVideo = function(video) {
+        $rootScope.$broadcast('loadVideo', video);
+    }
+    
+    $scope.deleteVideo = function(video) {
+        console.info('Deleting video \"' + video.filename + '\"');
+        
+        return Video.delete({ filename: video.filename},
+            function(data) {
+                // Remove item from scope
+                var index = $scope.videos.indexOf(video);
+                $scope.videos.splice(index, 1);
+            },
+            function(error) {
+                console.error(error);
+                
+                // TODO:
+                alert("Delete error");
+            }
+        );
+    };
+    
+}]);
+
