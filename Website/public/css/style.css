@@ -22,7 +22,7 @@
 ***************************/
 textarea.form-control {
     resize: vertical;
-	max-height: 300px; 
+    max-height: 300px;
 }
 
 
@@ -56,7 +56,7 @@ h4 + .title-addition {
 }
 
 .modal-wide .modal-body {
-  overflow-y: auto;
+    overflow-y: auto;
 }
 
 

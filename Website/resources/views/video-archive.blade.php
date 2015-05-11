@@ -56,17 +56,17 @@
                         <span>
                             @{{ video.duration | secondsToDateTime | date:'HH:mm:ss' }}
                         </span>
-                    </td>                        
+                    </td>
                     <td style="white-space: nowrap">
                         <!-- Actions -->
                         <div class="buttons pull-right">
                             <button class="btn btn-success" ng-click="loadVideo(video)">Watch</button>
                             
                             <!-- TODO: -->
-                            <button class="btn btn-primary" ng-click="loadVideo(video)">Download</button>
+                            <a class="btn btn-primary" href="@{{ video.filename }}" download="download_filename">Download</a>
                             
                             <!-- TODO: Use click-awayt -->
-                            <button class="btn btn-danger" ng-click="deleteVideo(video)">Delete</button>
+                            <button class="btn btn-danger" click-await="deleteVideo(video)">Delete</button>
                         </div>
                     </td>
                 </tr>
@@ -77,8 +77,8 @@
 
 @section('scripts')
     <script src="js/app.js"></script>
-	<script src="js/services.js"></script>
-	<script src="js/filters.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/filters.js"></script>
     <script src="js/controllers.js"></script>
     <script src="js/directives.js"></script>
 @stop

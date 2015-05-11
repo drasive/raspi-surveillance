@@ -10,7 +10,7 @@
         </div>
     </div>
 
-	<div class="row" ng-app="raspiSurveillanceApp">
+    <div class="row" ng-app="raspiSurveillanceApp">
         <div class="col-lg-6" ng-controller="LivestreamCtrl">
             <h3>Livestream</h3>
             
@@ -34,8 +34,8 @@
                         <a href="#" ng-click="orderBy('name')">
                             Name
                             <span ng-show="orderField == 'name'">
-                            	<i class="fa fa-sort-alpha-asc" ng-show="!orderReverse"></i>									
-                            	<i class="fa fa-sort-alpha-desc" ng-show="orderReverse"></i>
+                                <i class="fa fa-sort-alpha-asc" ng-show="!orderReverse"></i>									
+                                <i class="fa fa-sort-alpha-desc" ng-show="orderReverse"></i>
                             </span>
                         </a>
                     </th>
@@ -62,8 +62,7 @@
                     </th>
                 </tr>
                 
-                <!-- TODO: Use natural sort: orderBy:naturalSort:orderField:orderReverse or something -->
-                <tr ng-repeat="camera in cameras | filter:query | orderBy:orderField:orderReverse">
+                <tr ng-repeat="camera in cameras | filter:query | naturalSort:orderField:orderReverse ">
                     <td>
                         <!-- Name -->
                         <span editable-text="camera.name" e-name="name" e-form="cameraForm" onbeforesave="validateName($data, camera.id)">
@@ -89,14 +88,14 @@
                         <div class="buttons" ng-show="!cameraForm.$visible">
                             <button class="btn btn-success" ng-click="loadStream(camera)">Watch</button>
                             <button class="btn btn-primary" ng-click="cameraForm.$show()">Edit</button>
-                            <button class="btn btn-danger" click-disable="deleteCamera(camera)">Delete</button>
+                            <button class="btn btn-danger" click-await="deleteCamera(camera)">Delete</button>
                         </div>
                         
-                        <form editable-form name="cameraForm" onbeforesave="saveCamera($data, camera.id)" ng-show="cameraForm.$visible" class="form-buttons form-inline" shown="true">
+                        <form editable-form name="cameraForm" onbeforesave="saveCamera($data, camera.id)" ng-show="cameraForm.$visible" class="form-buttons form-inline" shown="inserted == camera" >
                             <button type="submit" ng-disabled="cameraForm.$waiting" class="btn btn-primary">
                                 Save
                             </button>
-                            <button type="button" ng-disabled="cameraForm.$waiting" ng-click="cameraForm.$cancel()" class="btn btn-default">
+                            <button type="button" ng-disabled="cameraForm.$waiting" ng-click="cancelEditing(cameraForm, $index)" class="btn btn-default">
                                 <!-- TODO: Delete row when adding a new one -->
                                 Cancel
                             </button>
@@ -112,8 +111,8 @@
 
 @section('scripts')
     <script src="js/app.js"></script>
-	<script src="js/services.js"></script>
-	<script src="js/filters.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/filters.js"></script>
     <script src="js/controllers.js"></script>
     <script src="js/directives.js"></script>
 @stop
