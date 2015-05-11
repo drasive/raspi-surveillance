@@ -62,7 +62,7 @@
                     </th>
                 </tr>
                 
-                <tr ng-repeat="camera in cameras | filter:query | naturalSort:orderField:orderReverse ">
+                <tr ng-repeat="camera in cameras | filter:query | orderBy:orderField:orderReverse ">
                     <td>
                         <!-- Name -->
                         <span editable-text="camera.name" e-name="name" e-form="cameraForm" onbeforesave="validateName($data, camera.id)">
