@@ -1,8 +1,11 @@
+### Raspberry Pi ###
 Create installation script: test using docker image
 Change to HTTP for video stream: test rtsp and http, improve quotes
 Create stop-videostream.sh script (run in screen)
 Do somewhere: mysql_secure_installation
+Disable camera led (/boot/config.txt, disable_camera_led=1)?: Rather not
 
+### Website ###
 Create web interface
 	Operation mode management, video stream & stream management (home)
 	Video archive
@@ -17,6 +20,19 @@ Create web interface
 	Clean up css/js _* files
 	Clean up site/master* file
 
-Login?
-API authentication?
-Disable camera led (/boot/config.txt, disable_camera_led=1)?: Rather not
+REST API error handling with angular and bootbox
+Login?: Auth:basic?
+API authentication?: Auth:basic?
+API stateless: driver=array
+Display time in local timezone
+Use bower
+Split controllers into multiple files
+
+Video
+	Add pagination
+
+Camera
+	Show hostname if available
+	Add pagination
+	
+	Allow hostname instead of IP?: No, to much work to validate and store, would require stable access to DNS server
