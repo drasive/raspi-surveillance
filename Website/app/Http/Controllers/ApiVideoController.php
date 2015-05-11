@@ -23,17 +23,12 @@ class ApiVideoController extends ApiFileControllerBase {
 			$videoExtension = env('VIDEO_EXTENSION', '*.mp4');
 			
 			$videoFiles = glob($videoDirectory . $videoExtension);
-			dd(dirname(__FILE__)); 
+			
 			// Instantiate objects
 			$videos = array();
 			foreach ($videoFiles as $videoFile) {
 				$video = new Video($videoFile);
-				$videos[] = array(
-				    'path'          => $video->getPath(),
-					'creation_date' => $video->getCreationDate(),
-					'duration'      => $video->getDuration(),
-					'size'          => $video->getSize()
-				);
+				$videos[] = self::JsonEncode($video);
 			}
 			
 			return json_encode($videos);
@@ -55,7 +50,7 @@ class ApiVideoController extends ApiFileControllerBase {
 			$video = new Video($filename);
 			
 			if ($video->getDoesExist()) {
-				return json_encode($video);
+				self::JsonEncode($video);
 			}
 			else {
 				return Response("", 404);
@@ -91,4 +86,15 @@ class ApiVideoController extends ApiFileControllerBase {
 		return Response("", 200);
 	}
 
+	
+	protected static function JsonEncode($video) {
+		return array(
+		    'path'       => $video->getPath(),
+		    'duration'   => $video->getDuration(),
+		    'size'       => $video->getSize(),
+		    'created_at' => $video->getCreatedAt(),
+		    'updated_at' => $video->getUpdatedAt()
+		);
+	}
+	
 }
