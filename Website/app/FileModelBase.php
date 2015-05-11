@@ -9,48 +9,50 @@ abstract class FileModelBase {
 	protected $path;
 	public function getPath()
 	{
-		return $this->path;
+		return realpath($this->path);
 	}
 	
-	protected $doesExist;
-	public function getDoesExist()
+	public function getExists()
 	{
-		return $this->doesExist;
+		return file_exists($this->getPath());
 	}
 	
-	protected $size;
 	public function getSize()
 	{
-		return $this->size;
+		if ($this->getExists()) {
+			return filesize($this->getPath());
+		}
+		
+		return NULL;
 	}
 	
 	// TODO: On Linux, only updated_at exists and can be set by create(). Decide to keep both/ ditch created_at.
-	protected $created_at;
 	public function getCreatedAt()
 	{
-		return $this->created_at;
+		if ($this->getExists()) {
+			return filectime($this->getPath());
+		}
+		
+		return NULL;
 	}
 	
-	protected $updated_at;
 	public function getUpdatedAt()
 	{
-		return $this->updated_at;
+		if ($this->getExists()) {
+			return filemtime($this->getPath());
+		}
+		
+		return NULL;
 	}
 	
 	// Constructors
 	public function __construct($path)
 	{
 		$this->path = $path;
-		$this->doesExist = file_exists($this->getPath());
-		
-		if ($this->getDoesExist()) {
-			$this->size = filesize($this->getPath());
-			$this->created_at = filectime($this->getPath());
-			$this->updated_at = filemtime($this->getPath());
-		}
 	}
 	
 	// Methods
+	// TODO: Move these somewhere
 	/**
 	* Creates a file with the specified filename, size and modification date.
 	* Existing files will be overwritten and the content is always random ASCII characters, independent of the extension.
@@ -59,20 +61,18 @@ abstract class FileModelBase {
 	* @param int $size The size of the file to create in bytes.
 	* @param timestamp $updated_at The modification date to set for the created file.
 	*/
-	public static function create($filename, $size = 0, $updated_at = NULL) {
-		//$filename = 'C:\temp\raspi' . DIRECTORY_SEPARATOR . $filename;
-		
-		if (is_null($updated_at)) {
-			$updated_at = time();
+	public static function create($path, $size = 0, $updatedAt = NULL) {
+		if (is_null($updatedAt)) {
+			$updatedAt = time();
 		}
 		
 		// Clear existing content if the file already exists, so we can set a custom size
-		if (file_exists($filename)) {
-			file_put_contents($filename, "");
+		if (file_exists($path)) {
+			file_put_contents($path, "");
 		}
 		
 		// Open file in write only mode
-		$file = fopen($filename, 'w');
+		$file = fopen($path, 'w');
 		
 		// Write a dummy character to achieve the specified size
 		if ($size > 0) {
@@ -84,16 +84,15 @@ abstract class FileModelBase {
 		fclose($file);
 		
 		// Update the modification date
-		touch($filename, $updated_at);
+		touch($path, $updatedAt);
 	}
 	
+	/**
+	* Deletes the file represented by this instance permanently from the file system.
+	*/
 	public function delete() {
-		if (file_exists($this->getPath())) {
+		if ($this->getExists()) {
 			unlink($this->getPath());
-			return true;
-		}
-		else {
-			return false;
 		}
 	}
 

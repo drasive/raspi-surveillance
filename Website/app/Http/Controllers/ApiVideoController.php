@@ -19,15 +19,17 @@ class ApiVideoController extends ApiFileControllerBase {
 	{
 		try {
 			// Get model files (sorted so new videos are first)
-			$videoDirectory = env('VIDEO_DIRECTORY', 'videos') . DIRECTORY_SEPARATOR;
-			$videoExtension = env('VIDEO_EXTENSION', '*.mp4');
+			$videoDirectory = Video::getBaseDirectory();
+			$videoExtension = Video::getFileExtension();
 			
 			$videoFiles = glob($videoDirectory . $videoExtension);
 			
 			// Instantiate objects
 			$videos = array();
 			foreach ($videoFiles as $videoFile) {
-				$video = new Video($videoFile);
+				$filename = basename($videoFile);				
+				$video = new Video($filename);
+				
 				$videos[] = self::JsonEncode($video);
 			}
 			
