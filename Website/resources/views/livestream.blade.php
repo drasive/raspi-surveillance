@@ -29,7 +29,7 @@
 
                 <table class="table table-bordered table-hover table-condensed @{{ bodyClass }}" ng-cloack>
                     <tr style="font-weight: bold">
-                        <th style="width:25%">
+                        <th style="width:0%">
 							<a href="#" ng-click="orderBy('ip_address')">
 							    IP-Address
 								<span ng-show="orderField == 'ip_address'">
@@ -38,7 +38,16 @@
 								</span>
 							</a>
 						</th>
-                        <th style="width:50%">
+						<th style="width:0%">
+							<a href="#" ng-click="orderBy('port')">
+							    Port
+								<span ng-show="orderField == 'port'">
+									<i class="fa fa-sort-numeric-asc" ng-show="!orderReverse"></i>									
+									<i class="fa fa-sort-numeric-desc" ng-show="orderReverse"></i>
+								</span>
+							</a>
+						</th>
+                        <th style="width:100%">
 							<a href="#" ng-click="orderBy('name')">
 							    Name
 								<span ng-show="orderField == 'name'">
@@ -47,7 +56,7 @@
 								</span>
 							</a>
 						</th>
-                        <th style="width:25%">
+                        <th style="width:0%">
 							<!-- Action -->
 						</th>
                     </tr>
@@ -56,8 +65,14 @@
                     <tr ng-repeat="camera in cameras | filter:query | orderBy:orderField:orderReverse ">
                         <td>
                             <!-- IP address -->
-                            <span editable-text="camera.ip_address" e-name="ip_address" e-form="cameraForm" onbeforesave="validateIpAddress($data, camera.id)" e-required>
+                            <span editable-text="camera.ip_address" e-name="ip_address" e-form="cameraForm" e-required onbeforesave="validateIpAddress($data, camera.id)">
                                 @{{ camera.ip_address }}
+                            </span>
+                        </td>
+                        <td>
+                            <!-- Port -->
+                            <span editable-text="camera.port" e-name="port" e-form="cameraForm" e-required onbeforesave="validatePort($data, camera.id)">
+                                @{{ camera.port }}
                             </span>
                         </td>
                         <td>

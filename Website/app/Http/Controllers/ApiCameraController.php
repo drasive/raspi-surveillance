@@ -42,6 +42,7 @@ class ApiCameraController extends ControllerBase {
 		try {
 			$camera = new Camera();
 			$camera->ip_address = Input::get('ip_address');
+			$camera->port       = Input::get('port');
 			$camera->name       = Input::get('name');
 			
 			// Validate input
@@ -51,7 +52,10 @@ class ApiCameraController extends ControllerBase {
 			}
 			
 			// Check if model already exists
-			$existingCamera = Camera::where('ip_address', '=', $camera->ip_address)->get();
+			$existingCamera = Camera::
+			    where('ip_address', '=', $camera->ip_address)
+			  ->where('port', '=', $camera->port)
+			  ->first();
 			if (!is_null($existingCamera)) {
 				return Response("", 400);
 			}
@@ -101,6 +105,7 @@ class ApiCameraController extends ControllerBase {
 			
 			if (!is_null($camera)) {
 				$camera->ip_address = Input::get('ip_address');
+				$camera->port       = Input::get('port');
 				$camera->name       = Input::get('name');
 				
 				// Validate input
@@ -112,7 +117,9 @@ class ApiCameraController extends ControllerBase {
 				// Check if model already exists
 				$existingCamera = Camera::
 				    where('id', '!=', $camera->id)
-				  ->where('ip_address', '=', $camera->ip_address)->first();
+				  ->where('ip_address', '=', $camera->ip_address)
+				  ->where('port', '=', $camera->port)
+				  ->first();
 				if (!is_null($existingCamera)) {
 					return Response("", 400);
 				}

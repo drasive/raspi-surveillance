@@ -38,6 +38,7 @@ raspiSurveillanceControllers.controller('CameraListCtrl', ['$scope', 'Camera', f
     $scope.addCamera = function() {
         $scope.inserted = {
             ip_address: '',
+            port: '8554',
             name: ''
         };
         
