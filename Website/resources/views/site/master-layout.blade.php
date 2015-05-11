@@ -12,15 +12,13 @@
     
     <!-- CSS
     ================================================== -->
-    <link href="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-csp.css" rel="stylesheet">
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bower_components/components-font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     
     <!-- Plugins -->
-    <link href="//cdnjs.cloudflare.com/ajax/libs/metisMenu/2.0.0/metisMenu.min.css" rel="stylesheet">
-    <link href="css/angular-xeditable.css" rel="stylesheet">
-    
+    <link href="bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet" />
+    <link href="bower_components/angular-xeditable/dist/css/xeditable.css" rel="stylesheet" />
+
     <!-- Custom -->
     <link href="css/theme.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
@@ -50,17 +48,17 @@
     @yield('master-content')
     
     <!-- Scripts
-    ================================================== -->    
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-resource.js"></script>
-    
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/loglevel/1.2.0/loglevel.min.js"></script>
+    ================================================== -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.min.js"></script>
+
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/loglevel/dist/loglevel.min.js"></script>
     
     <!-- Plugins -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/metisMenu/2.0.0/metisMenu.min.js"></script>
-    <script src="js/angular-xeditable.js"></script>
+    <script src="bower_components/metisMenu/dist/metisMenu.min.js"></script>
+    <script src="bower_components/angular-xeditable/dist/js/xeditable.min.js"></script>
     
     <!-- Custom -->
     <script src="js/theme.js"></script>

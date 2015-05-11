@@ -96,7 +96,6 @@
                                 Save
                             </button>
                             <button type="button" ng-disabled="cameraForm.$waiting" ng-click="cancelEditing(cameraForm, $index)" class="btn btn-default">
-                                <!-- TODO: Delete row when adding a new one -->
                                 Cancel
                             </button>
                         </form>
