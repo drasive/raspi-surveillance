@@ -66,6 +66,10 @@ abstract class FileModelBase {
 			$updatedAt = time();
 		}
 		
+		// TODO: Implement
+		// This method is usually called from /app, use /public as base directory
+		echo $path;
+		
 		// Clear existing content if the file already exists, so we can set a custom size
 		if (file_exists($path)) {
 			file_put_contents($path, "");

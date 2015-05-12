@@ -15,22 +15,12 @@ class Video extends FileModelBase {
 	// Constructors
 	public function __construct($filename)
 	{
-		parent::__construct(self::getBaseDirectory() . $filename);
+		parent::__construct('videos/' . $filename);
 	}
 	
-	// Methods
-	public static function getBaseDirectory() {
-		$baseDirectory = env('VIDEO_DIRECTORY', 'videos');
-		return realpath($baseDirectory) . DIRECTORY_SEPARATOR;
-	}
-	
-	public static function getFileExtension() {
-		return env('VIDEO_EXTENSION', '*.mp4');;
-	}
-	
-	
+	// Methods	
 	public static function create($filename, $size = 0, $updatedAt = NULL) {
-		$filepath = self::getBaseDirectory() . $filename;
+		$filepath = 'videos/' . $filename;
 		parent::create($filepath, $size, $updatedAt);
 	}
 
