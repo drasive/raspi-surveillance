@@ -8,7 +8,7 @@
         </button>
         <a class="navbar-brand" href="/">Raspi Surveillance</a>
     </div>
-    
+
     <ul class="nav navbar-top-links navbar-right">
         TODO: IP/ Time
     </ul>
@@ -19,7 +19,7 @@
                 <li>
                     <a href="/"><i class="fa fa-video-camera" style="margin-left: 3px;"></i> Livestream</a>
                 </li>
-				<li>
+                <li>
                     <a href="video-archive"><i class="fa fa-archive fa-fw"></i> Video Archive</a>
                 </li>
                 <!--<li>
@@ -28,7 +28,7 @@
                         <li>
                             <a href="events">Events</a>
                         </li>
-						<li>
+                        <li>
                             <a href="price-groups">Price Groups</a>
                         </li>
                         <li>

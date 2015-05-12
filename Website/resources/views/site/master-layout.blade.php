@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    
+
     <meta name="description" content="@yield('description')">
     <meta name="author" content="Dimitri Vranken">
-    
+
     <title>@yield('title') - Raspi Surveillance</title>
-    
+
     <!-- CSS
     ================================================== -->
     <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="bower_components/components-font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    
+
     <!-- Plugins -->
     <link href="bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet" />
     <link href="bower_components/angular-xeditable/dist/css/xeditable.css" rel="stylesheet" />
@@ -22,7 +22,7 @@
     <!-- Custom -->
     <link href="css/theme.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-    
+
     <link rel="apple-touch-icon" sizes="57x57" href="images/favicon/apple-touch-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="images/favicon/apple-touch-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="images/favicon/apple-touch-icon-72x72.png">
@@ -46,7 +46,7 @@
 </head>
 <body>
     @yield('master-content')
-    
+
     <!-- Scripts
     ================================================== -->
     <script src="bower_components/angular/angular.js"></script>
@@ -55,14 +55,14 @@
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="bower_components/loglevel/dist/loglevel.min.js"></script>
-    
+
     <!-- Plugins -->
     <script src="bower_components/metisMenu/dist/metisMenu.min.js"></script>
     <script src="bower_components/angular-xeditable/dist/js/xeditable.min.js"></script>
-    
+
     <!-- Custom -->
     <script src="js/theme.js"></script>
-    
+
     @yield('scripts')
 </body>
 </html>

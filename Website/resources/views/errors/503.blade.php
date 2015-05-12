@@ -1,9 +1,9 @@
-<html lang="en">
+﻿<html lang="en">
 <head>
     <meta charset="utf-8">
     <title>Server Error - Raspi Surveillance</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <link href='//fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
 
     <style>
@@ -39,7 +39,7 @@
     <div class="container">
         <div class="content">
             <div class="title">Down for Maintenance.</div>
-            
+
             <h2>Please come back in a few minutes.</h2>
         </div>
     </div>

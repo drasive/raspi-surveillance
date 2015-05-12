@@ -4,11 +4,11 @@
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     <h4>Error</h4>
     @if(is_array($message))
-        @foreach ($message as $m)
-            {{ $m }}
-        @endforeach
+    @foreach ($message as $m)
+    {{ $m }}
+    @endforeach
     @else
-        {{ $message }}
+    {{ $message }}
     @endif
 </div>
 @endif
@@ -21,7 +21,7 @@
     Please check the form below for the following errors:
     <ul>
         @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
+        <li>{{ $error }}</li>
         @endforeach
     </ul>
 </div>
@@ -33,11 +33,11 @@
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     <h4>{{ Session::get('title') }}</h4>
     @if(is_array($message))
-        @foreach ($message as $m)
-            {{ $m }}
-        @endforeach
+    @foreach ($message as $m)
+    {{ $m }}
+    @endforeach
     @else
-        {{ $message }}
+    {{ $message }}
     @endif
 </div>
 @endif
@@ -48,11 +48,11 @@
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     <h4>{{ Session::get('title') }}</h4>
     @if(is_array($message))
-        @foreach ($message as $m)
-            {{ $m }}
-        @endforeach
+    @foreach ($message as $m)
+    {{ $m }}
+    @endforeach
     @else
-        {{ $message }}
+    {{ $message }}
     @endif
 </div>
 @endif
@@ -63,11 +63,11 @@
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     <h4>{{ Session::get('title') }}</h4>
     @if(is_array($message))
-        @foreach ($message as $m)
-            {{ $m }}
-        @endforeach
+    @foreach ($message as $m)
+    {{ $m }}
+    @endforeach
     @else
-        {{ $message }}
+    {{ $message }}
     @endif
 </div>
 @endif
