@@ -11,10 +11,23 @@
 </div>
 
 <div class="row" ng-app="raspiSurveillanceApp">
+    <div class="col-lg-6" ng-controller="VideoCtrl">
+        <h3>Current Video</h3>
+
+        <videogular vg-theme="stream.theme">
+            <vg-media vg-src="stream.sources"
+                      vg-tracks="stream.tracks"                      
+                      vg-native-controls="true"
+                      vg-auto-play="stream.autoPlay">
+            </vg-media>
+        </videogular>
+    </div>
+
     <div class="col-lg-6" ng-controller="VideoManagementCtrl">
-        <h3>Video Files</h3>
+        <h3>Recorded Videos</h3>
 
         <p>
+            <!-- TODO: Fix filter -->
             <input class="form-control" type="text" maxlength="100" placeholder="Search by recording date or duration" ng-model="query">
         </p>
 
@@ -61,11 +74,8 @@
                     <!-- Actions -->
                     <div class="buttons pull-right">
                         <button class="btn btn-success" ng-click="loadVideo(video)">Watch</button>
-
                         <!-- TODO: -->
-                        <a class="btn btn-primary" href="@{{ video.filename }}" download="download_filename">Download</a>
-
-                        <!-- TODO: Use click-awayt -->
+                        <a class="btn btn-primary" href="/videos/@{{ video.filename }}" download="@{{ video.filename }}">Download</a>
                         <button class="btn btn-danger" click-await="deleteVideo(video)">Delete</button>
                     </div>
                 </td>
@@ -76,6 +86,9 @@
 @stop
 
 @section('scripts')
+<script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+<script src="bower_components/videogular/videogular.js"></script>
+
 <script src="js/app.js"></script>
 <script src="js/services.js"></script>
 <script src="js/filters.js"></script>

@@ -17,10 +17,12 @@
         <videogular vg-theme="stream.theme">
             <vg-media vg-src="stream.sources"
                       vg-tracks="stream.tracks"
-                      vg-native-controls="true">
+                      vg-native-controls="true"
+                      vg-auto-play="stream.autoPlay">
             </vg-media>
         </videogular>
     </div>
+
     <div class="col-lg-6" ng-controller="CameraManagementCtrl">
         <h3>Cameras</h3>
 
