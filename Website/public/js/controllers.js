@@ -1,18 +1,35 @@
 'use strict';
 
-var raspiSurveillanceControllers = angular.module('raspiSurveillanceControllers', ['raspiSurveillanceServices', 'raspiSurveillanceFilters']);
+var raspiSurveillanceControllers = angular.module('raspiSurveillanceControllers', [
+    'raspiSurveillanceServices',
+    'raspiSurveillanceFilters',
+
+    'ngSanitize',
+	'com.2fdevs.videogular'
+]);
 
 raspiSurveillanceControllers.controller('LivestreamCtrl', [
-  '$scope', function ($scope) {
+  '$scope', '$sce', function ($scope, $sce) {
 
-    $scope.streamSource = 'localhost:8554';
+      // TODO: Remove when not needed anymore
+      // { src: $sce.trustAsResourceUrl("http://static.videogular.com/assets/videos/videogular.mp4"), type: "video/mp4" },
+      $scope.stream = {
+          sources: [
+              { src: $sce.trustAsResourceUrl("http://localhost:8554"), type: "video/mp4" },
+          ],
+          theme: "bower_components/videogular-themes-default/videogular.css"
+      };
 
-    $scope.$on('loadingStream', function (event, camera) {
-      var stream = camera.ip_address + ':' + camera.port;
+      $scope.$on('loadStream', function (event, camera) {
+        var url = "http://" + camera.ip_address + ':' + camera.port;
+        var type = "video/mp4";
 
-      console.info('Changing to stream "' + stream + '"');
-      $scope.streamSource = stream;
-    });
+        // TODO: Remove when not needed anymore
+        //url = "http://static.videogular.com/assets/videos/videogular.mp4";
+
+        console.info('Changing to stream "' + url + '" (' + type + ")");
+        $scope.stream.sources = [{ src: $sce.trustAsResourceUrl(url), type: type }];
+      });
 
   }
 ]);
