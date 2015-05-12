@@ -8,6 +8,8 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 # Prepare setup
+export DEBIAN_FRONTEND=noninteractive
+
 apt_install='apt-get install --yes'
 $apt_install apt-utils
 

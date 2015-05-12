@@ -18,5 +18,5 @@ fi
 
 # Take image
 fileName=`date +"%Y-%m-%d_%H-%M-%S.%3N"`.jpg
-echo "Saving image to \"$imageDirectory/$fileName"\""
+echo "Saving image to \"$imageDirectory/$fileName\""
 raspistill -o $imageDirectory/$fileName
