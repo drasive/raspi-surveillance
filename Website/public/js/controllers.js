@@ -48,8 +48,18 @@ raspiSurveillanceControllers.controller('CameraManagementCtrl', [
       function (error) {
         console.error(error);
 
-        // TODO:
-        alert('query error');
+        BootstrapDialog.show({
+          title: 'Failed to load cameras',
+          message: 'An error occured while loading the cameras.',
+          type: BootstrapDialog.TYPE_DANGER,
+          buttons: [{
+            label: 'Close',
+            cssClass: 'btn-primary',
+            action: function (dialogItself) {
+              dialogItself.close();
+            }
+          }]
+        });
       }
     );
 
@@ -170,8 +180,18 @@ raspiSurveillanceControllers.controller('CameraManagementCtrl', [
         function (error) {
           console.error(error);
 
-          // TODO:
-          alert('saving error');
+          BootstrapDialog.show({
+            title: 'Failed to save camera',
+            message: 'An error occured while saving the camera.',
+            type: BootstrapDialog.TYPE_DANGER,
+            buttons: [{
+              label: 'Close',
+              cssClass: 'btn-primary',
+              action: function (dialogItself) {
+                dialogItself.close();
+              }
+            }]
+          });
         }
       );
     };
@@ -189,8 +209,18 @@ raspiSurveillanceControllers.controller('CameraManagementCtrl', [
         function (error) {
           console.error(error);
 
-          // TODO:
-          alert("Delete error");
+          BootstrapDialog.show({
+            title: 'Failed to delete camera',
+            message: 'An error occured while deleting the camera.',
+            type: BootstrapDialog.TYPE_DANGER,
+            buttons: [{
+              label: 'Close',
+              cssClass: 'btn-primary',
+              action: function (dialogItself) {
+                dialogItself.close();
+              }
+            }]
+          });
         }
       );
     };
@@ -238,8 +268,18 @@ raspiSurveillanceControllers.controller('VideoManagementCtrl', [
       function (error) {
         console.error(error);
 
-        // TODO:
-        alert('video query error');
+        BootstrapDialog.show({
+          title: 'Failed to load videos',
+          message: 'An error occured while loading the videos.',
+          type: BootstrapDialog.TYPE_DANGER,
+          buttons: [{
+            label: 'Close',
+            cssClass: 'btn-primary',
+            action: function (dialogItself) {
+              dialogItself.close();
+            }
+          }]
+        });
       }
     );
 
@@ -275,8 +315,18 @@ raspiSurveillanceControllers.controller('VideoManagementCtrl', [
         function (error) {
           console.error(error);
 
-          // TODO:
-          alert("Delete error");
+          BootstrapDialog.show({
+            title: 'Failed to delete video',
+            message: 'An error occured while deleting the video.',
+            type: BootstrapDialog.TYPE_DANGER,
+            buttons: [{
+              label: 'Close',
+              cssClass: 'btn-primary',
+              action: function (dialogItself) {
+                dialogItself.close();
+              }
+            }]
+          });
         }
       );
     };

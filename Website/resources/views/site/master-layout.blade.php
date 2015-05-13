@@ -18,6 +18,7 @@
     <!-- Plugins -->
     <link href="bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet" />
     <link href="bower_components/angular-xeditable/dist/css/xeditable.css" rel="stylesheet" />
+    <link href="bower_components/bootstrap-dialog/dist/css/bootstrap-dialog.min.css" rel="stylesheet" />
 
     <!-- Custom -->
     <link href="css/theme.css" rel="stylesheet">
@@ -59,6 +60,7 @@
     <!-- Plugins -->
     <script src="bower_components/metisMenu/dist/metisMenu.min.js"></script>
     <script src="bower_components/angular-xeditable/dist/js/xeditable.min.js"></script>
+    <script src="bower_components/bootstrap-dialog/dist/js/bootstrap-dialog.min.js"></script>
 
     <!-- Custom -->
     <script src="js/theme.js"></script>

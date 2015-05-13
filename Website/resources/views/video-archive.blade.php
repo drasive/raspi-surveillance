@@ -31,56 +31,58 @@
             <input class="form-control" type="text" maxlength="100" placeholder="Search by recording date or duration" ng-model="query">
         </p>
 
-        <table class="table table-striped" ng-cloack>
-            <tr>
-                <th style="width:0%">
-                    <a href="#" ng-click="orderBy('created_at')">
-                        Recording date
-                        <span ng-show="orderField == 'created_at'">
-                            <i class="fa fa-sort-numeric-asc" ng-show="!orderReverse"></i>
-                            <i class="fa fa-sort-numeric-desc" ng-show="orderReverse"></i>
-                        </span>
-                    </a>
-                </th>
-                <th style="width:0%">
-                    <a href="#" ng-click="orderBy('duration')">
-                        Duration
-                        <span ng-show="orderField == 'duration'">
-                            <i class="fa fa-sort-numeric-asc" ng-show="!orderReverse"></i>
-                            <i class="fa fa-sort-numeric-desc" ng-show="orderReverse"></i>
-                        </span>
-                    </a>
-                </th>
-                <th style="width:0%">
-                    <!-- Actions -->
-                </th>
-            </tr>
+        <div class="table-responsive">
+            <table class="table table-striped" ng-cloack>
+                <tr>
+                    <th style="width:0%">
+                        <a href="#" ng-click="orderBy('created_at')">
+                            Recording date
+                            <span ng-show="orderField == 'created_at'">
+                                <i class="fa fa-sort-numeric-asc" ng-show="!orderReverse"></i>
+                                <i class="fa fa-sort-numeric-desc" ng-show="orderReverse"></i>
+                            </span>
+                        </a>
+                    </th>
+                    <th style="width:0%">
+                        <a href="#" ng-click="orderBy('duration')">
+                            Duration
+                            <span ng-show="orderField == 'duration'">
+                                <i class="fa fa-sort-numeric-asc" ng-show="!orderReverse"></i>
+                                <i class="fa fa-sort-numeric-desc" ng-show="orderReverse"></i>
+                            </span>
+                        </a>
+                    </th>
+                    <th style="width:0%">
+                        <!-- Actions -->
+                    </th>
+                </tr>
 
-            <!-- TODO: Use natural sort, center row content vertically -->
-            <tr ng-repeat="video in videos | filter:query | orderBy:orderField:orderReverse">
-                <td>
-                    <!-- Recording date -->
-                    <span>
-                        @{{ video.created_at | date:'dd.MM.yyyy HH:mm:ss' }}
-                    </span>
-                </td>
-                <td>
-                    <!-- Duration -->
-                    <span>
-                        @{{ video.duration | secondsToDateTime | date:'HH:mm:ss' }}
-                    </span>
-                </td>
-                <td style="white-space: nowrap">
-                    <!-- Actions -->
-                    <div class="buttons pull-right">
-                        <button class="btn btn-success" ng-click="loadVideo(video)">Watch</button>
-                        <!-- TODO: -->
-                        <a class="btn btn-primary" href="/videos/@{{ video.filename }}" download="@{{ video.filename }}">Download</a>
-                        <button class="btn btn-danger" click-await="deleteVideo(video)">Delete</button>
-                    </div>
-                </td>
-            </tr>
-        </table>
+                <!-- TODO: Use natural sort, center row content vertically, handle empty, handler error -->
+                <tr ng-repeat="video in videos | filter:query | orderBy:orderField:orderReverse">
+                    <td>
+                        <!-- Recording date -->
+                        <span>
+                            @{{ video.created_at | date:'dd.MM.yyyy HH:mm:ss' }}
+                        </span>
+                    </td>
+                    <td>
+                        <!-- Duration -->
+                        <span>
+                            @{{ video.duration | secondsToDateTime | date:'HH:mm:ss' }}
+                        </span>
+                    </td>
+                    <td style="white-space: nowrap">
+                        <!-- Actions -->
+                        <div class="buttons pull-right">
+                            <button class="btn btn-success" ng-click="loadVideo(video)">Watch</button>
+                            <!-- TODO: -->
+                            <a class="btn btn-primary" href="/videos/@{{ video.filename }}" download="@{{ video.filename }}">Download</a>
+                            <button class="btn btn-danger" click-await="deleteVideo(video)">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 </div>
 @stop
