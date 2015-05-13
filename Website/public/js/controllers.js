@@ -23,7 +23,7 @@ raspiSurveillanceControllers.controller('LivestreamCtrl', [
     };
 
     $scope.$on('loadStream', function (event, camera) {
-      var url = "http://" + camera.ip_address + ':' + camera.port;
+      var url = camera.protocol.toLowerCase() + "://" + camera.ip_address + ':' + camera.port;
       var type = "video/mp4";
 
       // TODO: Remove when not needed anymore
@@ -57,6 +57,7 @@ raspiSurveillanceControllers.controller('CameraManagementCtrl', [
     $scope.orderReverse = false;
 
     // Validation
+    // TODO: Allow same name?
     $scope.validateName = function (data, id) {
       if (!data) {
         // Make sure data has value
@@ -105,6 +106,23 @@ raspiSurveillanceControllers.controller('CameraManagementCtrl', [
       return true;
     };
 
+    $scope.validateProcotol = function (data, id) {
+      if (!data) {
+        // Make sure data has value
+        data = '';
+      } else {
+        // Remove all whitespaces
+        data = data.toString().replace(/\s/g, '');
+      }
+
+      // Validate port
+      if (data.length === 0 || data.length > 5) {
+        return "Please enter a valid protocol";
+      }
+
+      return true;
+    };
+
     // Actions
     $scope.orderBy = function (field) {
       if ($scope.orderField === field) {
@@ -127,6 +145,7 @@ raspiSurveillanceControllers.controller('CameraManagementCtrl', [
       $scope.inserted = {
         ip_address: '',
         port: '8554',
+        protocol: 'HTTP',
         name: ''
       };
 

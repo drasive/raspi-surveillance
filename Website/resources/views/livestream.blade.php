@@ -27,7 +27,7 @@
         <h3>Cameras</h3>
 
         <p>
-            <input class="form-control" type="text" maxlength="100" placeholder="Search by name, IP address or port" ng-model="query">
+            <input class="form-control" type="text" maxlength="100" placeholder="Search by name, IP address, port or protocol" ng-model="query">
         </p>
 
         <table class="table table-striped" ng-cloack>
@@ -60,6 +60,15 @@
                     </a>
                 </th>
                 <th style="width:0%">
+                    <a href="#" ng-click="orderBy('protocol')">
+                        Protocol
+                        <span ng-show="orderField == 'protocol'">
+                            <i class="fa fa-sort-numeric-asc" ng-show="!orderReverse"></i>
+                            <i class="fa fa-sort-numeric-desc" ng-show="orderReverse"></i>
+                        </span>
+                    </a>
+                </th>
+                <th style="width:0%">
                     <!-- Action -->
                 </th>
             </tr>
@@ -81,6 +90,12 @@
                     <!-- Port -->
                     <span editable-text="camera.port" e-name="port" e-form="cameraForm" e-required onbeforesave="validatePort($data, camera.id)">
                         @{{ camera.port }}
+                    </span>
+                </td>
+                <td>
+                    <!-- Protocol -->
+                    <span editable-text="camera.protocol | uppercase" e-name="protocol" e-form="cameraForm" e-required onbeforesave="validateProtocol($data, camera.id)">
+                        @{{ camera.protocol | uppercase }}
                     </span>
                 </td>
                 <td style="white-space: nowrap">

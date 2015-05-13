@@ -13,12 +13,14 @@ class Camera extends Model {
 		return Validator::make(
 			array(
 				'ip_address' => $this->ip_address,
-				'port      ' => $this->port,
+				'port'       => $this->port,
+				'protocol'   => $this->protocol,
 				'name'       => $this->name
 			),
 			array(
 				'ip_address' => 'required|ip',
 				'port      ' => 'min:0|max:65535',
+				'protocol'   => 'between:0,5',
 				'name'       => 'between:0,32',
 			)
 		);
