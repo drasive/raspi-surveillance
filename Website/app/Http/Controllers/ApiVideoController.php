@@ -24,7 +24,7 @@ class ApiVideoController extends ApiFileControllerBase {
 			// Instantiate objects
 			$videos = array();
 			foreach ($videoFiles as $videoFile) {
-				$filename = basename($videoFile);				
+				$filename = basename($videoFile);
 				$video = new Video($filename);
 				
 				$videos[] = self::JsonEncode($video);

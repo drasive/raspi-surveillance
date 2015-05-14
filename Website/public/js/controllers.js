@@ -9,6 +9,28 @@ var raspiSurveillanceControllers = angular.module('raspiSurveillanceControllers'
 ]);
 
 
+raspiSurveillanceControllers.controller('CameraModeCtrl', [
+  '$scope', function ($scope) {
+
+    // TODO: Implement
+
+    $scope.mode = 0;
+    $scope.busy = false;
+
+    $scope.changeMode = function (mode) {
+      $scope.busy = true;
+
+      var modeNames = ["Off", "Streaming", "Motion Detection"];
+      console.info("Changing to mode \"" + modeNames[mode] + "\"");
+      $scope.mode = mode;
+
+      $scope.busy = false;
+    }
+
+  }
+]);
+
+
 raspiSurveillanceControllers.controller('LivestreamCtrl', [
   '$scope', '$sce', function ($scope, $sce) {
 
@@ -16,7 +38,7 @@ raspiSurveillanceControllers.controller('LivestreamCtrl', [
     // { src: $sce.trustAsResourceUrl("http://static.videogular.com/assets/videos/videogular.mp4"), type: "video/mp4" },
     $scope.stream = {
       sources: [
-          { src: $sce.trustAsResourceUrl("http://localhost:8554"), type: "video/mp4" },
+          { src: $sce.trustAsResourceUrl("http://localhost:8554"), type: "video/mp4" }
       ],
       theme: "bower_components/videogular-themes-default/videogular.css",
       autoPlay: true
@@ -251,6 +273,7 @@ raspiSurveillanceControllers.controller('VideoCtrl', [
 
       console.info('Changing to video "' + url + '" (' + type + ")");
       $scope.stream.sources = [{ src: $sce.trustAsResourceUrl(url), type: type }];
+      // TODO: Start video
     });
 
   }

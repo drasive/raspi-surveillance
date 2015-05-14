@@ -14,7 +14,10 @@
     <div class="col-lg-6" ng-controller="VideoCtrl">
         <h3>Current Video</h3>
 
-        <videogular vg-theme="stream.theme">
+        <p ng-show="stream.sources.length === 0">
+            Select "Watch" on one of the listed videos to see the recording.
+        </p>
+        <videogular vg-theme="stream.theme" ng-show="stream.sources.length > 0">
             <vg-media vg-src="stream.sources"
                       vg-tracks="stream.tracks"                      
                       vg-native-controls="true"
@@ -34,25 +37,23 @@
         <div class="table-responsive">
             <table class="table table-striped" ng-cloack>
                 <tr>
-                    <th style="width:0%">
-                        <a href="#" ng-click="orderBy('created_at')">
-                            Recording date
+                    <th style="width: 0%">
+                        <a href="#" ng-click="orderBy('created_at')">Recording date
                             <span ng-show="orderField == 'created_at'">
                                 <i class="fa fa-sort-numeric-asc" ng-show="!orderReverse"></i>
                                 <i class="fa fa-sort-numeric-desc" ng-show="orderReverse"></i>
                             </span>
                         </a>
                     </th>
-                    <th style="width:0%">
-                        <a href="#" ng-click="orderBy('duration')">
-                            Duration
+                    <th style="width: 0%">
+                        <a href="#" ng-click="orderBy('duration')">Duration
                             <span ng-show="orderField == 'duration'">
                                 <i class="fa fa-sort-numeric-asc" ng-show="!orderReverse"></i>
                                 <i class="fa fa-sort-numeric-desc" ng-show="orderReverse"></i>
                             </span>
                         </a>
                     </th>
-                    <th style="width:0%">
+                    <th style="width: 0%">
                         <!-- Actions -->
                     </th>
                 </tr>
@@ -61,14 +62,12 @@
                 <tr ng-repeat="video in videos | filter:query | orderBy:orderField:orderReverse">
                     <td>
                         <!-- Recording date -->
-                        <span>
-                            @{{ video.created_at | date:'dd.MM.yyyy HH:mm:ss' }}
+                        <span>@{{ video.created_at | date:'dd.MM.yyyy HH:mm:ss' }}
                         </span>
                     </td>
                     <td>
                         <!-- Duration -->
-                        <span>
-                            @{{ video.duration | secondsToDateTime | date:'HH:mm:ss' }}
+                        <span>@{{ video.duration | secondsToDateTime | date:'HH:mm:ss' }}
                         </span>
                     </td>
                     <td style="white-space: nowrap">

@@ -9,15 +9,15 @@
         <a class="navbar-brand" href="/">Raspi Surveillance</a>
     </div>
 
-    <ul class="nav navbar-top-links navbar-right">
-        TODO: IP/ Time
-    </ul>
+    <span class="nav navbar-top-links navbar-right" style="padding: 15px; float: right;">
+        {{{ $global_hostIpAddress }}}, {{{ $global_hostTime }}}
+    </span>
 
     <div class="navbar-default sidebar" role="navigation">
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav" id="side-menu">
                 <li>
-                    <a href="/"><i class="fa fa-video-camera" style="margin-left: 3px;"></i> Livestream</a>
+                    <a href="."><i class="fa fa-video-camera" style="margin-left: 3px;"></i> Livestream</a>
                 </li>
                 <li>
                     <a href="video-archive"><i class="fa fa-archive fa-fw"></i> Video Archive</a>
