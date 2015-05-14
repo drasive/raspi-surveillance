@@ -13,8 +13,8 @@ containerPort="80"
 
 # Check execution privilege
 if ! [ $(id -u) = 0 ]; then
-  echo "Please run as root"
-  exit 1
+    echo "Please run as root"
+    exit 1
 fi
 
 # Run docker container
