@@ -20,19 +20,46 @@ Create web interface
 	Clean up css/js _* files
 	Clean up site/master* file
 
-REST API error handling with angular and bootbox
-Login?: Auth:basic?
-API authentication?: Auth:basic?
-API stateless: driver=array
-Display time in local timezone
-Use bower
-Split controllers into multiple files
+General
+	Split controllers into multiple files
+	error handling in HTML
+	Display time in local timezone
+	Login?: Auth:basic?
+
+API
+	authentication?: Auth:basic?
+	stateless: driver=array
+
+Editing
+	Bootstrap
+	HTML validation
+	Placeholders
+	Maxlength
+	Width
+
+Test
+	General
+		Camera control
+	Livestream
+		local/ remote
+		port
+		HTTP/ RTSP
+		autoplay
+		watch/ edit/ delete
+			edit > play/ delete
+			edit/delete current stream
+	Video archive
+		
 
 Video
-	Add pagination
+	Add pagination 
 
 Camera
-	Show hostname if available
 	Add pagination
-	
-	Allow hostname instead of IP?: No, to much work to validate and store, would require stable access to DNS server
+	Show and refresh availability
+
+Bugs
+	Filtering table with values filtered
+	click-await finally not executed
+	xeditable add/edit/save not working
+	timezone wrong
