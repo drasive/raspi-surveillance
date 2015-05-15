@@ -23,18 +23,24 @@
         </p>
     </div>
     <div class="col-md-6">
-        <h3>Technique</h3>
-        <p>
-            Frontend: A HTML5 & CSS3 website using AngularJS and Bootstrap<br />
-            Backend: PHP 5.6 using Laravel 5.0 running on Apache 2.4, MySQL Server 5.6
-        </p>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-6">
         <h3>Why</h3>
         <p>
             The creation of this website was a school project for software engineering module #152 at the <a href="http://home.gibm.ch/">GIBM</a> (Switzerland).
+        </p>
+    </div>
+    
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <h3>Technique</h3>
+
+        <h4>Frontend</h4>
+        <p>
+            A HTML5 & CSS3 website using AngularJS and Bootstrap
+        </p>
+        <h4>Backend</h4>
+        <p>
+            PHP 5.6 using Laravel 5.0 running on Apache 2.4, MySQL Server 5.6
         </p>
     </div>
     <div class="col-md-6">
