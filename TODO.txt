@@ -1,9 +1,12 @@
 ### Raspberry Pi ###
+
 Create installation script: test using docker image
-Change to HTTP for video stream: test rtsp and http, improve quotes
-Create stop-videostream.sh script (run in screen)
-Do somewhere: mysql_secure_installation
-Disable camera led (/boot/config.txt, disable_camera_led=1)?: Rather not
+Create website installer script (database)
+
+Test
+	Videostream scripts
+	Hosting website
+	Motion detection
 
 ### Website ###
 Create web interface
@@ -16,15 +19,13 @@ Create web interface
 		Video settings (quality, motion detection threshold)
 		Log files (start/ stop, mode changes, events like motion detection triggered)
 	About
-	
-	Clean up css/js _* files
-	Clean up site/master* file
 
 General
 	Split controllers into multiple files
 	error handling in HTML
 	Display time in local timezone
 	Login?: Auth:basic?
+	Show loading indicators during AJAX requests
 
 API
 	authentication?: Auth:basic?
@@ -63,3 +64,6 @@ Bugs
 	click-await finally not executed
 	xeditable add/edit/save not working
 	timezone wrong
+
+### Documentation ###
+Advise to do  mysql_secure_installation somewhere, if not setup already. Conf of .env required

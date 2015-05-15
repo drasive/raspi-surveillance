@@ -10,18 +10,41 @@ var raspiSurveillanceControllers = angular.module('raspiSurveillanceControllers'
 
 
 raspiSurveillanceControllers.controller('CameraModeCtrl', [
-  '$scope', function ($scope) {
+  '$scope',function ($scope) {
 
     // TODO: Implement
 
-    $scope.mode = 0;
+    var modes = ['Off', 'Streaming', 'Motion Detection'];
+
+    //$scope.mode = ?.query(
+    //  function (data) {
+    //    console.log('Loaded operation mode: ' + modes[data.operation_mode]);
+    //  },
+    //  function (error) {
+    //    console.error(error);
+    //
+    //    BootstrapDialog.show({
+    //      title: 'Failed to load operation mode',
+    //      message: 'An error occured while loading the operation mode.',
+    //      type: BootstrapDialog.TYPE_DANGER,
+    //      buttons: [
+    //        {
+    //          label: 'Close',
+    //          cssClass: 'btn-primary',
+    //          action: function (dialogItself) {
+    //            dialogItself.close();
+    //          }
+    //        }
+    //      ]
+    //    });
+    //  }
+    //);
     $scope.busy = false;
 
     $scope.changeMode = function (mode) {
       $scope.busy = true;
 
-      var modeNames = ["Off", "Streaming", "Motion Detection"];
-      console.info("Changing to mode \"" + modeNames[mode] + "\"");
+      console.info('Changing to mode "' + modes[mode] + '"');
       $scope.mode = mode;
 
       $scope.busy = false;
@@ -35,23 +58,23 @@ raspiSurveillanceControllers.controller('LivestreamCtrl', [
   '$scope', '$sce', function ($scope, $sce) {
 
     // TODO: Remove when not needed anymore
-    // { src: $sce.trustAsResourceUrl("http://static.videogular.com/assets/videos/videogular.mp4"), type: "video/mp4" },
+    // { src: $sce.trustAsResourceUrl('http://static.videogular.com/assets/videos/videogular.mp4'), type: 'video/mp4' },
     $scope.stream = {
       sources: [
-          { src: $sce.trustAsResourceUrl("http://localhost:8554"), type: "video/mp4" }
+          { src: $sce.trustAsResourceUrl('http://localhost:8554'), type: 'video/mp4' }
       ],
-      theme: "bower_components/videogular-themes-default/videogular.css",
+      theme: 'bower_components/videogular-themes-default/videogular.css',
       autoPlay: true
     };
 
     $scope.$on('loadStream', function (event, camera) {
-      var url = camera.protocol.toLowerCase() + "://" + camera.ip_address + ':' + camera.port;
-      var type = "video/mp4";
+      var url = camera.protocol.toLowerCase() + '://' + camera.ip_address + ':' + camera.port;
+      var type = 'video/mp4';
 
       // TODO: Remove when not needed anymore
-      //url = "http://static.videogular.com/assets/videos/videogular.mp4";
+      //url = 'http://static.videogular.com/assets/videos/videogular.mp4';
 
-      console.info('Changing to stream "' + url + '" (' + type + ")");
+      console.info('Changing to stream "' + url + '" (' + type + ')');
       $scope.stream.sources = [{ src: $sce.trustAsResourceUrl(url), type: type }];
     });
 
@@ -263,15 +286,24 @@ raspiSurveillanceControllers.controller('VideoCtrl', [
     // TODO: Test auto play here and in livestream
     $scope.stream = {
       sources: [],
-      theme: "bower_components/videogular-themes-default/videogular.css",
+      theme: 'bower_components/videogular-themes-default/videogular.css',
       autoPlay: true
     };
 
     $scope.$on('loadVideo', function (event, video) {
-      var url = "/videos/" + video.filename;
-      var type = "video/mp4";
+      var url = '/videos/' + video.filename;
+      var type = 'video/mp4';
 
-      console.info('Changing to video "' + url + '" (' + type + ")");
+      console.info('Changing to video "' + url + '" (' + type + ')');
+      $scope.stream.sources = [{ src: $sce.trustAsResourceUrl(url), type: type }];
+      // TODO: Start video
+    });
+
+    $scope.$on('deletingVideo', function (event, video) {
+      var url = '/videos/' + video.filename;
+      var type = 'video/mp4';
+
+      console.info('Stopping video playback because it will be deleted');
       $scope.stream.sources = [{ src: $sce.trustAsResourceUrl(url), type: type }];
       // TODO: Start video
     });
@@ -328,6 +360,8 @@ raspiSurveillanceControllers.controller('VideoManagementCtrl', [
     $scope.deleteVideo = function (video) {
       console.info('Deleting video "' + video.filename + '"');
       console.debug(JSON.stringify(video));
+
+      $rootScope.$broadcast('deletingVideo', video);
 
       return Video.delete({ filename: video.filename },
         function (data) {

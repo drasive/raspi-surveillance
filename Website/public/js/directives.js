@@ -2,7 +2,8 @@
 
 var raspiSurveillanceDirectives = angular.module('raspiSurveillanceDirectives', []);
 
-// TODO: Fix finally
+
+// TODO: Fix finally, try to remove jQuery style
 raspiSurveillanceDirectives.directive('clickAwait', function () {
   return {
     restrict: 'A',

@@ -24,7 +24,7 @@
                     <tr>
                         <td>Mode:</td>
                         <td>
-                            <!-- Disable during activity -->
+                            <!-- TODO: Disable during activity -->
                             <div class="btn-group" role="group">
                                 <button type="button" class="btn btn-default" ng-class="{active: mode === 0, disabled: busy}"
                                         ng-click="changeMode(0)">
@@ -84,7 +84,8 @@
 
             <div ng-show="cameras.length > 0">
                 <p>
-                    <input class="form-control" type="text" maxlength="100" placeholder="Search by name, IP address, port or protocol" ng-model="query">
+                    <input class="form-control" type="text" maxlength="100"
+                           placeholder="Search by name, IP address, port or protocol" ng-model="query">
                 </p>
 
                 <div class="table-responsive">
@@ -135,25 +136,29 @@
                         <tr ng-repeat="camera in cameras | filter:query | orderBy:orderField:orderReverse">
                             <td>
                                 <!-- Name -->
-                                <span editable-text="camera.name" e-name="name" e-form="cameraForm" onbeforesave="validateName($data, camera.id)">
+                                <span editable-text="camera.name"
+                                      e-name="name" e-form="cameraForm" onbeforesave="validateName($data, camera.id)">
                                     @{{ camera.name }}
                                 </span>
                             </td>
                             <td>
                                 <!-- IP address -->
-                                <span editable-text="camera.ip_address" e-name="ip_address" e-form="cameraForm" e-required onbeforesave="validateIpAddress($data, camera.id)">
+                                <span editable-text="camera.ip_address"
+                                      e-name="ip_address" e-form="cameraForm" e-required onbeforesave="validateIpAddress($data, camera.id)">
                                     @{{ camera.ip_address }}
                                 </span>
                             </td>
                             <td>
                                 <!-- Port -->
-                                <span editable-text="camera.port" e-name="port" e-form="cameraForm" e-required onbeforesave="validatePort($data, camera.id)">
+                                <span editable-text="camera.port"
+                                      e-name="port" e-form="cameraForm" e-required onbeforesave="validatePort($data, camera.id)">
                                     @{{ camera.port }}
                                 </span>
                             </td>
                             <td>
                                 <!-- Protocol -->
-                                <span editable-text="camera.protocol | uppercase" e-name="protocol" e-form="cameraForm" e-required onbeforesave="validateProtocol($data, camera.id)">
+                                <span editable-text="camera.protocol | uppercase"
+                                      e-name="protocol" e-form="cameraForm" e-required onbeforesave="validateProtocol($data, camera.id)">
                                     @{{ camera.protocol | uppercase }}
                                 </span>
                             </td>
@@ -166,11 +171,14 @@
                                     <button class="btn btn-danger" click-await="deleteCamera(camera)">Delete</button>
                                 </div>
 
-                                <form editable-form name="cameraForm" onbeforesave="saveCamera($data, camera.id)" ng-show="cameraForm.$visible" class="form-buttons form-inline" shown="inserted == camera">
+                                <!-- TODO: Disable during activity -->
+                                <form editable-form name="cameraForm" onbeforesave="saveCamera($data, camera.id)"
+                                      ng-show="cameraForm.$visible" class="form-buttons form-inline" shown="inserted == camera">
                                     <button type="submit" ng-disabled="cameraForm.$waiting" class="btn btn-primary">
                                         Save
                                     </button>
-                                    <button type="button" ng-disabled="cameraForm.$waiting" ng-click="cancelEditing(cameraForm, $index)" class="btn btn-default">
+                                    <button type="button" class="btn btn-default"
+                                            ng-disabled="cameraForm.$waiting" ng-click="cancelEditing(cameraForm, $index)">
                                         Cancel
                                     </button>
                                 </form>

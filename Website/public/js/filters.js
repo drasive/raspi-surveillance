@@ -2,6 +2,41 @@
 
 var raspiSurveillanceFilters = angular.module('raspiSurveillanceFilters', []);
 
+
+raspiSurveillanceApp.filter('orFilter', function () {
+  return function (objects, properties, comparator) {
+    if (objects == null || objects.length === 0) {
+      return [];
+    }
+    if (properties == null || properties.length === 0) {
+      return [];
+    }
+    if (comparator == null || comparator.trim() === '') {
+      return objects;
+    }
+
+    var filteredObjects = [];
+
+    objects.forEach(function(object) {
+      var objectMatches = false;
+
+      // Check if any object expression matches the comparator
+      properties.forEach(function (expression) {
+        if (object[expression].toLowerCase().indexOf(comparator.toLowerCase()) > 0) {
+          objectMatches = true;
+        }
+      });
+
+      // Add the current object to the list of filtered objects
+      if (objectMatches) {
+        filteredObjects.push(object);
+      }
+    });
+
+    return filteredObjects;
+  };
+});
+
 raspiSurveillanceApp.filter('secondsToDateTime', function () {
   return function (seconds) {
     return new Date(1970, 0, 1).setSeconds(seconds);

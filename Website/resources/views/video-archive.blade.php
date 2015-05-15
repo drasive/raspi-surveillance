@@ -29,6 +29,8 @@
 
     <div class="col-lg-7" ng-controller="VideoManagementCtrl" ng-cloak>
         <h3>Recorded Videos</h3>
+        <!-- TODO: _ -->
+        <span class="title-addition">(@{{ videos.length }})</span>
 
         <p ng-show="videos.length === 0">
             There currently are no recorded surveillance videos.<br />
@@ -37,8 +39,8 @@
 
         <div ng-show="videos.length > 0">
             <p>
-                <!-- TODO: Fix filter -->
-                <input class="form-control" type="text" maxlength="100" placeholder="Search by recording date, duration or size" ng-model="query">
+                <input class="form-control" type="text" maxlength="100"
+                       placeholder="Search by recording date, duration or size" ng-model="query">
             </p>
             <div class="table-responsive">
                 <table class="table table-striped">
@@ -76,30 +78,31 @@
                     </tr>
 
                     <!-- TODO: Handler error -->
-                    <tr ng-repeat="video in videos | filter:query | orderBy:orderField:orderReverse">
+                    <tr ng-repeat="video in videos
+                        | orFilter:['created_at_formatted', 'duration_formatted', 'size_formatted']:query
+                        | orderBy:orderField:orderReverse">
                         <td>
                             <!-- Recording date -->
                             <span>
-                                @{{ video.created_at | date:'dd.MM.yyyy HH:mm:ss' }}
+                                @{{ video.created_at_formatted = (video.created_at | date:'dd.MM.yyyy HH:mm:ss') }}
                             </span>
                         </td>
                         <td>
                             <!-- Duration -->
                             <span>
-                                @{{ video.duration | secondsToDateTime | date:'HH:mm:ss' }}
+                                @{{ video.duration_formatted = (video.duration | secondsToDateTime | date:'HH:mm:ss') }}
                             </span>
                         </td>
                         <td>
                             <!-- Size -->
                             <span>
-                                @{{ video.size | filesize:2 }}
+                                @{{ video.size_formatted = (video.size | filesize:2) }}
                             </span>
                         </td>
                         <td style="white-space: nowrap">
                             <!-- Actions -->
                             <div class="buttons pull-right">
                                 <button class="btn btn-success" ng-click="loadVideo(video)">Watch</button>
-                                <!-- TODO: -->
                                 <a class="btn btn-primary" href="/videos/@{{ video.filename }}" download="@{{ video.filename }}">Download</a>
                                 <button class="btn btn-danger" click-await="deleteVideo(video)">Delete</button>
                             </div>
