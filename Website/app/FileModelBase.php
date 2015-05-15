@@ -26,7 +26,6 @@ abstract class FileModelBase {
 		return NULL;
 	}
 	
-	// TODO: On Linux, only updated_at exists and can be set by create(). Decide to keep both/ ditch created_at.
 	public function getCreatedAt()
 	{
 		if ($this->getExists()) {
