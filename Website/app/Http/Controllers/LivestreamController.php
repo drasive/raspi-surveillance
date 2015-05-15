@@ -5,6 +5,9 @@ use RaspiSurveillance\Http\Requests;
 use Illuminate\Http\Request;
 use View;
 
+/**
+* Controller for the livestream page.
+*/
 class LivestreamController extends ControllerBase {
 
 	/**

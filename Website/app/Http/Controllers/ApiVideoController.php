@@ -8,7 +8,10 @@ use Response;
 
 use RaspiSurveillance\Video;
 
-class ApiVideoController extends ApiFileControllerBase {
+/**
+* REST API controller for the Video model.
+*/
+class ApiVideoController extends ApiControllerBase {
 
 	/**
 	 * Display a listing of the resource.

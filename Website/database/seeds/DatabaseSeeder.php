@@ -14,7 +14,11 @@ class DatabaseSeeder extends Seeder {
 	{
 		Model::unguard();
 
+		// Database
 		$this->call('CameraTableSeeder');
+		
+		// File system
+		$this->call('VideoFileSeeder');
 	}
 
 }

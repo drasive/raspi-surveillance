@@ -1,7 +1,7 @@
 <?php namespace RaspiSurveillance;
 
 /**
-* Base class for models representing files.
+* Base class for models that represent files.
 */
 abstract class FileModelBase {
 

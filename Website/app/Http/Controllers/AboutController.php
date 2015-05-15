@@ -5,6 +5,9 @@ use RaspiSurveillance\Http\Requests;
 use Illuminate\Http\Request;
 use View;
 
+/**
+* Controller for the about page.
+*/
 class AboutController extends ControllerBase {
 
 	public function index()

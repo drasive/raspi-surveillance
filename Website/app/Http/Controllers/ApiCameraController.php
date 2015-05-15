@@ -8,7 +8,10 @@ use Response;
 
 use RaspiSurveillance\Camera;
 
-class ApiCameraController extends ControllerBase {
+/**
+* REST API controller for the Camera model.
+*/
+class ApiCameraController extends ApiControllerBase {
 
 	/**
 	 * Display a listing of the resource.
