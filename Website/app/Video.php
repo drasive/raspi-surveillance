@@ -18,7 +18,11 @@ class Video extends FileModelBase {
 
 	public function getDuration()
 	{
-		return $this->getFileInfo()['playtime_seconds'];
+		if ($this->getExists()) {
+			return $this->getFileInfo()['playtime_seconds'];
+		}
+		
+		return NULL;
 	}
 	
 	// Constructors

@@ -19,9 +19,9 @@ abstract class ControllerBase extends BaseController {
 		$hostIpAddress = gethostbyname(gethostname());
 		$hostTime = date("c", time());
 
-		View::share('global_hostName', $hostName);
-		View::share('global_hostIpAddress', $hostIpAddress);
-		View::share('global_hostTime', $hostTime);
+		View::share('g_hostName', $hostName);
+		View::share('g_hostIpAddress', $hostIpAddress);
+		View::share('g_hostTime', $hostTime);
 	}
 
 }

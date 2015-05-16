@@ -39,26 +39,28 @@ raspiSurveillanceControllers.controller('CameraModeCtrl', [
     //    });
     //  }
     //);
-    $scope.busy = false;
+    $scope.isBusy = false;
 
     $scope.changeMode = function (mode) {
-      $scope.busy = true;
+      $scope.isBusy = true;
 
       console.info('Changing to mode "' + modes[mode] + '"');
       $scope.mode = mode;
 
-      $scope.busy = false;
+      $scope.isBusy = false;
     }
 
   }
 ]);
 
-
 raspiSurveillanceControllers.controller('LivestreamCtrl', [
   '$scope', '$sce', function ($scope, $sce) {
 
-    // TODO: Remove when not needed anymore
-    // { src: $sce.trustAsResourceUrl('http://static.videogular.com/assets/videos/videogular.mp4'), type: 'video/mp4' },
+    // Attributes
+    $scope.onPlayerReady = function onPlayerReady(videoPlayer) {
+      $scope.videoPlayer = videoPlayer;
+    };
+
     $scope.stream = {
       sources: [
           { src: $sce.trustAsResourceUrl('http://localhost:8554'), type: 'video/mp4' }
@@ -66,16 +68,27 @@ raspiSurveillanceControllers.controller('LivestreamCtrl', [
       theme: 'bower_components/videogular-themes-default/videogular.css',
       autoPlay: true
     };
+    $scope.camera = null;
 
+    // Actions
     $scope.$on('loadStream', function (event, camera) {
-      var url = camera.protocol.toLowerCase() + '://' + camera.ip_address + ':' + camera.port;
+      var url = camera.protocol.toLowerCase() + '://' + camera.ipAddress + ':' + camera.port;
       var type = 'video/mp4';
+      console.info('Playing stream "' + url + '" (' + type + ')');
 
-      // TODO: Remove when not needed anymore
-      //url = 'http://static.videogular.com/assets/videos/videogular.mp4';
-
-      console.info('Changing to stream "' + url + '" (' + type + ')');
+      $scope.camera = camera;
       $scope.stream.sources = [{ src: $sce.trustAsResourceUrl(url), type: type }];
+      $scope.videoPlayer.play();
+    });
+
+    $scope.$on('deletingCamera', function (event, camera) {
+      if ($scope.camera == camera) {
+        console.info('Stopping livestream playback (network camera is getting deleted)');
+
+        $scope.videoPlayer.stop();
+        $scope.stream.sources = [];
+        $scope.camera = null;
+      }
     });
 
   }
@@ -84,7 +97,9 @@ raspiSurveillanceControllers.controller('LivestreamCtrl', [
 raspiSurveillanceControllers.controller('CameraManagementCtrl', [
   '$scope', '$rootScope', 'Camera', function ($scope, $rootScope, Camera) {
 
-    // Fields
+    // TODO: Implement isBusy
+
+    // Attributes
     $scope.cameras = Camera.query(
       function (data) {
         console.log('Loaded ' + data.length + ' cameras');
@@ -94,8 +109,9 @@ raspiSurveillanceControllers.controller('CameraManagementCtrl', [
         console.error(error);
 
         BootstrapDialog.show({
-          title: 'Failed to load cameras',
-          message: 'An error occured while loading the cameras.',
+          title: 'Failed to load network cameras',
+          message: 'Sorry, an error occured while loading the network cameras.<br />' +
+                   'Please try again in a few moments.',
           type: BootstrapDialog.TYPE_DANGER,
           buttons: [{
             label: 'Close',
@@ -198,7 +214,7 @@ raspiSurveillanceControllers.controller('CameraManagementCtrl', [
       console.log('Adding camera');
 
       $scope.inserted = {
-        ip_address: '',
+        ipAddress: '',
         port: '8554',
         protocol: 'HTTP',
         name: ''
@@ -226,8 +242,9 @@ raspiSurveillanceControllers.controller('CameraManagementCtrl', [
           console.error(error);
 
           BootstrapDialog.show({
-            title: 'Failed to save camera',
-            message: 'An error occured while saving the camera.',
+            title: 'Failed to save network camera',
+            message: 'Sorry, an error occured while saving the network camera.<br />' +
+                     'Please try again in a few moments.',
             type: BootstrapDialog.TYPE_DANGER,
             buttons: [{
               label: 'Close',
@@ -245,6 +262,9 @@ raspiSurveillanceControllers.controller('CameraManagementCtrl', [
       console.info('Deleting camera #' + camera.id);
       console.debug(JSON.stringify(camera));
 
+      camera.isBusy = true;
+      $rootScope.$broadcast('deletingCamera', camera);
+
       return Camera.delete({ id: camera.id },
         function (data) {
           // Remove item from scope
@@ -255,8 +275,9 @@ raspiSurveillanceControllers.controller('CameraManagementCtrl', [
           console.error(error);
 
           BootstrapDialog.show({
-            title: 'Failed to delete camera',
-            message: 'An error occured while deleting the camera.',
+            title: 'Failed to delete network camera',
+            message: 'Sorry, an error occured while deleting the camera.<br />' +
+                     'Please try again in a few moments.',
             type: BootstrapDialog.TYPE_DANGER,
             buttons: [{
               label: 'Close',
@@ -266,46 +287,57 @@ raspiSurveillanceControllers.controller('CameraManagementCtrl', [
               }
             }]
           });
+          camera.isBusy = false;
         }
       );
     };
-
+    
     $scope.cancelEditing = function (rowform, index) {
-      // TODO:https://stackoverflow.com/questions/21336943/customize-the-cancel-code-button-of-the-x-editable-angularjs
+      // TODO: https://stackoverflow.com/questions/21336943/customize-the-cancel-code-button-of-the-x-editable-angularjs
       console.log(rowform, index);
       $scope.cameras.splice(index, 1);
       rowform.$cancel();
     }
+
   }
 ]);
 
 
-raspiSurveillanceControllers.controller('VideoCtrl', [
+raspiSurveillanceControllers.controller('VideoPlayerCtrl', [
   '$scope', '$sce', function ($scope, $sce) {
 
-    // TODO: Test auto play here and in livestream
+    // Attributes
+    $scope.onPlayerReady = function onPlayerReady(videoPlayer) {
+      $scope.videoPlayer = videoPlayer;
+    };
+
     $scope.stream = {
       sources: [],
       theme: 'bower_components/videogular-themes-default/videogular.css',
       autoPlay: true
     };
+    $scope.video = null;
 
+    // Actions
     $scope.$on('loadVideo', function (event, video) {
       var url = '/videos/' + video.filename;
       var type = 'video/mp4';
 
-      console.info('Changing to video "' + url + '" (' + type + ')');
+      console.info('Playing video "' + url + '" (' + type + ')');
+
+      $scope.video = video;
       $scope.stream.sources = [{ src: $sce.trustAsResourceUrl(url), type: type }];
-      // TODO: Start video
+      $scope.videoPlayer.play();
     });
 
     $scope.$on('deletingVideo', function (event, video) {
-      var url = '/videos/' + video.filename;
-      var type = 'video/mp4';
+      if ($scope.video == video) {
+        console.info('Stopping video playback (video is getting deleted)');
 
-      console.info('Stopping video playback because it will be deleted');
-      $scope.stream.sources = [{ src: $sce.trustAsResourceUrl(url), type: type }];
-      // TODO: Start video
+        $scope.videoPlayer.stop();
+        $scope.stream.sources = [];
+        $scope.video = null;
+      }
     });
 
   }
@@ -314,7 +346,7 @@ raspiSurveillanceControllers.controller('VideoCtrl', [
 raspiSurveillanceControllers.controller('VideoManagementCtrl', [
   '$scope', '$rootScope', 'Video', function ($scope, $rootScope, Video) {
 
-    // Fields
+    // Attributes
     $scope.videos = Video.query(
       function (data) {
         console.log('Loaded ' + data.length + ' videos');
@@ -324,8 +356,9 @@ raspiSurveillanceControllers.controller('VideoManagementCtrl', [
         console.error(error);
 
         BootstrapDialog.show({
-          title: 'Failed to load videos',
-          message: 'An error occured while loading the videos.',
+          title: 'Failed to load surveillance videos',
+          message: 'Sorry, an error occured while loading the surveillance videos.<br />' +
+                   'Please try again in a few moments.',
           type: BootstrapDialog.TYPE_DANGER,
           buttons: [{
             label: 'Close',
@@ -338,7 +371,7 @@ raspiSurveillanceControllers.controller('VideoManagementCtrl', [
       }
     );
 
-    $scope.orderField = 'created_at';
+    $scope.orderField = 'createdAt';
     $scope.orderReverse = false;
 
     // Actions
@@ -361,6 +394,7 @@ raspiSurveillanceControllers.controller('VideoManagementCtrl', [
       console.info('Deleting video "' + video.filename + '"');
       console.debug(JSON.stringify(video));
 
+      video.isBusy = true;
       $rootScope.$broadcast('deletingVideo', video);
 
       return Video.delete({ filename: video.filename },
@@ -373,19 +407,22 @@ raspiSurveillanceControllers.controller('VideoManagementCtrl', [
           console.error(error);
 
           BootstrapDialog.show({
-            title: 'Failed to delete video',
-            message: 'An error occured while deleting the video.',
+            title: 'Failed to delete surveillance video',
+            message: 'Sorry, an error occured while deleting the surveillance video.<br />' +
+                     'Please try again in a few moments.',
             type: BootstrapDialog.TYPE_DANGER,
-            buttons: [{
-              label: 'Close',
-              cssClass: 'btn-primary',
-              action: function (dialogItself) {
-                dialogItself.close();
+            buttons: [
+              {
+                label: 'Close',
+                cssClass: 'btn-primary',
+                action: function(dialogItself) {
+                  dialogItself.close();
+                }
               }
-            }]
+            ]
           });
-        }
-      );
+          video.isBusy = false;
+        });
     };
 
   }

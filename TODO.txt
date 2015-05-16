@@ -1,7 +1,7 @@
 ### Raspberry Pi ###
 
 Create installation script: test using docker image
-Create website installer script (database)
+Create website installer script (database setup)
 
 Test
 	Videostream scripts
@@ -32,7 +32,6 @@ API
 	stateless: driver=array
 
 Editing
-	Bootstrap
 	HTML validation
 	Placeholders
 	Maxlength
@@ -48,7 +47,10 @@ Test
 		autoplay
 		watch/ edit/ delete
 			edit > play/ delete
-			edit/delete current stream
+			edit/delete current stream    
+		watch/ download/ delete
+			watch > download/ delete
+
 	Video archive
 		
 
@@ -60,8 +62,6 @@ Camera
 	Show and refresh availability
 
 Bugs
-	Filtering table with values filtered
-	click-await finally not executed
 	xeditable add/edit/save not working
 	timezone wrong
 

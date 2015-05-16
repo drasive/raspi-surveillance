@@ -22,7 +22,7 @@ raspiSurveillanceApp.filter('orFilter', function () {
 
       // Check if any object expression matches the comparator
       properties.forEach(function (expression) {
-        if (object[expression].toLowerCase().indexOf(comparator.toLowerCase()) > 0) {
+        if (object[expression].toLowerCase().indexOf(comparator.toLowerCase()) > -1) {
           objectMatches = true;
         }
       });

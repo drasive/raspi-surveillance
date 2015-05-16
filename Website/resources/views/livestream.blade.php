@@ -19,23 +19,23 @@
                 <table class="table table-condensed borderless">
                     <tr>
                         <td style="width: 100px;">IP Address:</td>
-                        <td>{{{ $global_hostIpAddress }}} ({{{ $global_hostName }}})</td>
+                        <td>{{{ $g_hostIpAddress }}} ({{{ $g_hostName }}})</td>
                     </tr>
                     <tr>
                         <td>Mode:</td>
                         <td>
                             <!-- TODO: Disable during activity -->
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-default" ng-class="{active: mode === 0, disabled: busy}"
-                                        ng-click="changeMode(0)">
+                                <button type="button" class="btn btn-default" ng-class="{active: mode === 0}" 
+                                        ng-click="changeMode(0)" ng-disabled="isBusy">
                                     Off
                                 </button>
-                                <button type="button" class="btn btn-success" ng-class="{active: mode === 1, disabled: busy}"
-                                        ng-click="changeMode(1)">
+                                <button type="button" class="btn btn-success" ng-class="{active: mode === 1}" 
+                                        ng-click="changeMode(1)" ng-disabled="isBusy">
                                     Streaming
                                 </button>
-                                <button type="button" class="btn btn-primary" ng-class="{active: mode === 2, disabled: busy}"
-                                        ng-click="changeMode(2)">
+                                <button type="button" class="btn btn-primary" ng-class="{active: mode === 2}" 
+                                        ng-click="changeMode(2)" ng-disabled="isBusy">
                                     Motion Detection
                                 </button>
                             </div>
@@ -59,7 +59,8 @@
                 </p>
 
                 <p ng-show="stream.sources.length > 0">
-                    <videogular vg-theme="stream.theme">
+                    <!-- TODO: Optional: Handle if video doesn't play -->
+                    <videogular vg-player-ready="onPlayerReady($API)" vg-theme="stream.theme">
                         <vg-media vg-src="stream.sources"
                                   vg-tracks="stream.tracks"
                                   vg-native-controls="true"
@@ -75,7 +76,9 @@
         </div>
 
         <div class="col-lg-7" ng-controller="CameraManagementCtrl" ng-cloak>
-            <h3>Network Cameras</h3>
+            <h3 class="inline-block">Network Cameras</h3>
+            <span class="title-addition" ng-show="!query">(@{{ cameras.length }})</span>
+            <span class="title-addition" ng-show="query">(@{{ camerasFiltered.length }}/ @{{ cameras.length }})</span>
 
             <p ng-show="cameras.length === 0">
                 You currently do not have any network cameras.<br />
@@ -101,9 +104,9 @@
                                 </a>
                             </th>
                             <th style="min-width: 130px">
-                                <a href="#" ng-click="orderBy('ip_address')">
+                                <a href="#" ng-click="orderBy('ipAddress')">
                                     IP-Address
-                                    <span ng-show="orderField == 'ip_address'">
+                                    <span ng-show="orderField == 'ipAddress'">
                                         <i class="fa fa-sort-numeric-asc" ng-show="!orderReverse"></i>
                                         <i class="fa fa-sort-numeric-desc" ng-show="orderReverse"></i>
                                     </span>
@@ -132,8 +135,8 @@
                             </th>
                         </tr>
 
-                        <!-- TODO: Handler error -->
-                        <tr ng-repeat="camera in cameras | filter:query | orderBy:orderField:orderReverse">
+                        <!-- TODO: Highlight playing video, Optional: Don't flicker at load, handler loading/error, add paging -->
+                        <tr ng-repeat="camera in camerasFiltered = (cameras | filter:query | orderBy:orderField:orderReverse)">
                             <td>
                                 <!-- Name -->
                                 <span editable-text="camera.name"
@@ -143,9 +146,9 @@
                             </td>
                             <td>
                                 <!-- IP address -->
-                                <span editable-text="camera.ip_address"
-                                      e-name="ip_address" e-form="cameraForm" e-required onbeforesave="validateIpAddress($data, camera.id)">
-                                    @{{ camera.ip_address }}
+                                <span editable-text="camera.ipAddress"
+                                      e-name="ipAddress" e-form="cameraForm" e-required onbeforesave="validateIpAddress($data, camera.id)">
+                                    @{{ camera.ipAddress }}
                                 </span>
                             </td>
                             <td>
@@ -164,14 +167,16 @@
                             </td>
                             <td style="white-space: nowrap">
                                 <!-- Action -->
-                                <!-- TODO: Get these to work -->
                                 <div class="buttons" ng-show="!cameraForm.$visible">
-                                    <button class="btn btn-success" ng-click="loadStream(camera)">Watch</button>
-                                    <button class="btn btn-primary" ng-click="cameraForm.$show()">Edit</button>
-                                    <button class="btn btn-danger" click-await="deleteCamera(camera)">Delete</button>
+                                    <button class="btn btn-success" ng-click="loadStream(camera)"
+                                        ng-disabled="camera.isBusy">Watch</button>
+                                    <button class="btn btn-primary" ng-click="cameraForm.$show()"
+                                        ng-disabled="camera.isBusy">Edit</button>
+                                    <button class="btn btn-danger" ng-click="deleteCamera(camera)"
+                                        ng-disabled="camera.isBusy">Delete</button>
                                 </div>
 
-                                <!-- TODO: Disable during activity -->
+                                <!-- TODO: Get these to work, disable during activity -->
                                 <form editable-form name="cameraForm" onbeforesave="saveCamera($data, camera.id)"
                                       ng-show="cameraForm.$visible" class="form-buttons form-inline" shown="inserted == camera">
                                     <button type="submit" ng-disabled="cameraForm.$waiting" class="btn btn-primary">

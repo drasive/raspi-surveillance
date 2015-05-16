@@ -10,7 +10,7 @@
     </div>
 
     <span class="nav navbar-top-links navbar-right" style="padding: 15px; float: right;">
-        {{{ $global_hostIpAddress }}}, {{{ $global_hostTime }}}
+        {{{ $g_hostIpAddress }}}, {{{ $g_hostTime }}}
     </span>
 
     <div class="navbar-default sidebar" role="navigation">

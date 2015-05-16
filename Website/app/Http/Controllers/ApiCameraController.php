@@ -28,7 +28,13 @@ class ApiCameraController extends ApiControllerBase {
 				return $camera->id;
 			});
 			
-			return $cameras->toJson();
+			// Encode models
+			$cameras_encoded = array();
+			foreach ($cameras as $camera) {
+				$cameras_encoded[] = self::JsonEncode($camera);
+			}
+			
+			return json_encode($cameras_encoded);
 		}
 		catch (Exception $exception) {
 			return Response($exception, 500);
@@ -46,6 +52,7 @@ class ApiCameraController extends ApiControllerBase {
 			$camera = new Camera();
 			$camera->ip_address = Input::get('ip_address');
 			$camera->port       = Input::get('port');
+			$camera->protocol   = Input::get('protocol');
 			$camera->name       = Input::get('name');
 			
 			// Validate input
@@ -56,7 +63,7 @@ class ApiCameraController extends ApiControllerBase {
 			
 			// Check if model already exists
 			$existingCamera = Camera::
-			    where('ip_address', '=', $camera->ip_address)
+				where('ip_address', '=', $camera->ip_address)
 			  ->where('port', '=', $camera->port)
 			  ->first();
 			if (!is_null($existingCamera)) {
@@ -84,7 +91,7 @@ class ApiCameraController extends ApiControllerBase {
 			$camera = Camera::find($id);
 			
 			if (!is_null($camera)) {
-				return $camera->toJson();
+				return self::JsonEncode($camera);
 			}
 			else {
 				return Response("", 404);
@@ -109,6 +116,7 @@ class ApiCameraController extends ApiControllerBase {
 			if (!is_null($camera)) {
 				$camera->ip_address = Input::get('ip_address');
 				$camera->port       = Input::get('port');
+				$camera->protocol   = Input::get('protocol');
 				$camera->name       = Input::get('name');
 				
 				// Validate input
@@ -119,7 +127,7 @@ class ApiCameraController extends ApiControllerBase {
 				
 				// Check if model already exists
 				$existingCamera = Camera::
-				    where('id', '!=', $camera->id)
+					where('id', '!=', $camera->id)
 				  ->where('ip_address', '=', $camera->ip_address)
 				  ->where('port', '=', $camera->port)
 				  ->first();
@@ -163,6 +171,19 @@ class ApiCameraController extends ApiControllerBase {
 		}
 		
 		return Response("", 200);
+	}
+	
+	
+	protected static function JsonEncode($video) {
+		return array(
+			'id'        => $video->id,
+			'ipAddress' => $video->ip_address,
+			'port'      => $video->port,
+			'protocol'  => $video->protocol,
+			'name'      => $video->name,
+			'createdAt' => $video->created_at->toIso8601String(),
+			'updatedAt' => $video->updated_at->toIso8601String()
+		);
 	}
 
 }

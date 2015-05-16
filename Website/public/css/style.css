@@ -6,6 +6,11 @@
 }
 
 
+.title-addition {
+    font-size: 22px;
+}
+
+
 /* Tables
 ***************************/
 
@@ -15,4 +20,11 @@
 
 .borderless td, .borderless th {
     border: none !important;
+}
+
+
+/* Helpers
+***************************/
+.inline-block {
+    display: inline-block !important;
 }
