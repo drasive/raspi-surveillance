@@ -14,5 +14,5 @@ fi
 if screen -list | grep -q $screenName; then
     echo "Motion detection is running in screen \"$screenName\""
 else
-	echo "Motion detection is not running in screen \"$screenName\""
+    echo "Motion detection is not running in screen \"$screenName\""
 fi

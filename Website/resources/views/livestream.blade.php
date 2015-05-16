@@ -10,10 +10,11 @@
     </div>
 </div>
 
-<div ng-app="raspiSurveillanceApp">
+<div ng-app="raspiSurveillance.app">
     <div class="row">
         <div class="col-lg-5">
-            <div ng-controller="CameraModeCtrl" ng-cloak>
+             <!-- TODO: Rename controller -->
+            <div ng-controller="CameraModeController" ng-cloak>
                 <h3>Local Camera</h3>
 
                 <table class="table table-condensed borderless">
@@ -51,7 +52,7 @@
                 </table>
             </div>
 
-            <div ng-controller="LivestreamCtrl" ng-cloak>
+            <div ng-controller="LivestreamController" ng-cloak>
                 <h3>Livestream</h3>
 
                 <p ng-show="stream.sources.length === 0">
@@ -75,7 +76,7 @@
             </div>
         </div>
 
-        <div class="col-lg-7" ng-controller="CameraManagementCtrl" ng-cloak>
+        <div class="col-lg-7" ng-controller="CameraManagementController" ng-cloak>
             <h3 class="inline-block">Network Cameras</h3>
             <span class="title-addition" ng-show="!query">(@{{ cameras.length }})</span>
             <span class="title-addition" ng-show="query">(@{{ camerasFiltered.length }}/ @{{ cameras.length }})</span>
@@ -205,9 +206,12 @@
 <script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
 <script src="bower_components/videogular/videogular.js"></script>
 
-<script src="js/app.js"></script>
-<script src="js/services.js"></script>
-<script src="js/filters.js"></script>
-<script src="js/controllers.js"></script>
-<script src="js/directives.js"></script>
+<script src="js/app/app.js"></script>
+<script src="js/app/directives.js"></script>
+<script src="js/app/filters.js"></script>
+<script src="js/app/services.js"></script>
+<script src="js/app/controllers/controllers.js"></script>
+<script src="js/app/controllers/cameraModeController.js"></script>
+<script src="js/app/controllers/livestreamController.js"></script>
+<script src="js/app/controllers/cameraManagementController.js"></script>
 @stop

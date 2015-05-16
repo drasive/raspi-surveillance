@@ -10,8 +10,8 @@
     </div>
 </div>
 
-<div class="row" ng-app="raspiSurveillanceApp">
-    <div class="col-lg-5" ng-controller="VideoPlayerCtrl" ng-cloak>
+<div class="row" ng-app="raspiSurveillance.app">
+    <div class="col-lg-5" ng-controller="VideoPlayerController" ng-cloak>
         <h3>Current Video</h3>
 
         <p ng-show="stream.sources.length === 0">
@@ -28,7 +28,7 @@
         </videogular>
     </div>
 
-    <div class="col-lg-7" ng-controller="VideoManagementCtrl" ng-cloak>
+    <div class="col-lg-7" ng-controller="VideoManagementController" ng-cloak>
         <h3 class="inline-block">Recorded Videos</h3>
         <span class="title-addition" ng-show="!query">(@{{ videos.length }})</span>
         <span class="title-addition" ng-show="query">(@{{ videosFiltered.length }}/ @{{ videos.length }})</span>
@@ -114,9 +114,11 @@
 <script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
 <script src="bower_components/videogular/videogular.js"></script>
 
-<script src="js/app.js"></script>
-<script src="js/services.js"></script>
-<script src="js/filters.js"></script>
-<script src="js/controllers.js"></script>
-<script src="js/directives.js"></script>
+<script src="js/app/app.js"></script>
+<script src="js/app/directives.js"></script>
+<script src="js/app/filters.js"></script>
+<script src="js/app/services.js"></script>
+<script src="js/app/controllers/controllers.js"></script>
+<script src="js/app/controllers/videoPlayerController.js"></script>
+<script src="js/app/controllers/videoManagementController.js"></script>
 @stop

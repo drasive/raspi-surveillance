@@ -1,9 +1,9 @@
 'use strict';
 
-var raspiSurveillanceFilters = angular.module('raspiSurveillanceFilters', []);
+angular.module('raspiSurveillance.filters', []);
 
 
-raspiSurveillanceApp.filter('orFilter', function () {
+angular.module('raspiSurveillance.filters').filter('orFilter', function () {
   return function (objects, properties, comparator) {
     if (objects == null || objects.length === 0) {
       return [];
@@ -37,14 +37,14 @@ raspiSurveillanceApp.filter('orFilter', function () {
   };
 });
 
-raspiSurveillanceApp.filter('secondsToDateTime', function () {
+angular.module('raspiSurveillance.filters').filter('secondsToDateTime', function () {
   return function (seconds) {
     return new Date(1970, 0, 1).setSeconds(seconds);
   };
 });
 
 /* Source: https://gist.github.com/yrezgui/5653591 */
-raspiSurveillanceApp.filter('filesize', function () {
+angular.module('raspiSurveillance.filters').filter('filesize', function () {
   var units = [
     'bytes',
     'KB',

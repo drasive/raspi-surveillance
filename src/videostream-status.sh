@@ -14,5 +14,5 @@ fi
 if screen -list | grep -q $screenName; then
     echo "Videostream is running in screen \"$screenName\""
 else
-	echo "Videostream is not running in screen \"$screenName\""
+    echo "Videostream is not running in screen \"$screenName\""
 fi
