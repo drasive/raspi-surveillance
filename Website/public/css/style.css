@@ -18,6 +18,7 @@
     border: none !important;
 }
 
+
 .table > tbody > tr > td {
     vertical-align: middle;
     /*
@@ -38,6 +39,9 @@
     transition: background-color 0.4s ease;
 }
 
+.table .editable-wrap {
+    width: 100%;
+}
 
 /* Helpers
 ***************************/
