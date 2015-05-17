@@ -78,7 +78,7 @@
                     <!-- TODO: Highlight playing video, Optional: Don't flicker at load, handler loading/error, add paging -->
                     <tr ng-repeat="video in videosFiltered = (videos
                         | orFilter:['createdAtFormatted', 'durationFormatted', 'sizeFormatted']:query
-                        | orderBy:orderField:orderReverse)">
+                        | orderBy:orderField:orderReverse)" ng-class="{highlight: video == activeVideo}">
                         <td>
                             <!-- Recording date -->
                             <span>@{{ video.createdAtFormatted = (video.createdAt | date:'dd.MM.yyyy HH:mm:ss') }}

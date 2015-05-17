@@ -30,6 +30,7 @@ angular.module('raspiSurveillance.controllers').controller('VideoManagementContr
 
     $scope.orderField = 'createdAt';
     $scope.orderReverse = false;
+    $scope.activeVideo = null;
 
     // Actions
     $scope.orderBy = function (field) {
@@ -44,6 +45,7 @@ angular.module('raspiSurveillance.controllers').controller('VideoManagementContr
 
 
     $scope.loadVideo = function (video) {
+      $scope.activeVideo = video;
       $rootScope.$broadcast('loadVideo', video);
     };
 

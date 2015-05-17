@@ -14,12 +14,28 @@
 /* Tables
 ***************************/
 
-.table > tbody > tr > td {
-    vertical-align: middle;
-}
-
 .borderless td, .borderless th {
     border: none !important;
+}
+
+.table > tbody > tr > td {
+    vertical-align: middle;
+    /*
+    Used to fade out the background color when .highlight gets removed */
+    -webkit-transition: background-color 0.3s ease;
+    -moz-transition: background-color 0.3s ease;
+    -ms-transition: background-color 0.3s ease;
+    -o-transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease;
+}
+
+.table > tbody > tr.highlight > td {
+    background-color: #c7f6c7;
+    -webkit-transition: background-color 0.4s ease;
+    -moz-transition: background-color 0.4s ease;
+    -ms-transition: background-color 0.4s ease;
+    -o-transition: background-color 0.4s ease;
+    transition: background-color 0.4s ease;
 }
 
 

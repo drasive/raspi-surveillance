@@ -32,6 +32,7 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
 
     $scope.orderField = 'name';
     $scope.orderReverse = false;
+    $scope.activeCamera = null;
 
     // Validation
     // TODO: Allow same name?
@@ -113,6 +114,7 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
 
 
     $scope.loadStream = function (camera) {
+      $scope.activeCamera = camera;
       $rootScope.$broadcast('loadStream', camera);
     };
 

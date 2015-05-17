@@ -137,7 +137,7 @@
                         </tr>
 
                         <!-- TODO: Highlight playing video, Optional: Don't flicker at load, handler loading/error, add paging -->
-                        <tr ng-repeat="camera in camerasFiltered = (cameras | filter:query | orderBy:orderField:orderReverse)">
+                        <tr ng-repeat="camera in camerasFiltered = (cameras | filter:query | orderBy:orderField:orderReverse)" ng-class="{highlight: camera == activeCamera}">
                             <td>
                                 <!-- Name -->
                                 <span editable-text="camera.name"
