@@ -5,13 +5,13 @@ angular.module('raspiSurveillance.filters', []);
 
 angular.module('raspiSurveillance.filters').filter('orFilter', function () {
   return function (objects, properties, comparator) {
-    if (objects == null || objects.length === 0) {
+    if (!objects|| objects.length === 0) {
       return [];
     }
-    if (properties == null || properties.length === 0) {
+    if (!properties || properties.length === 0) {
       return [];
     }
-    if (comparator == null || comparator.trim() === '') {
+    if (!comparator || comparator.trim() === '') {
       return objects;
     }
 

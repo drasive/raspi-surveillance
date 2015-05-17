@@ -30,8 +30,8 @@
 
     <div class="col-lg-7" ng-controller="VideoManagementController" ng-cloak>
         <h3 class="inline-block">Recorded Videos</h3>
-        <span class="title-addition" ng-show="!query">(@{{ videos.length }})</span>
-        <span class="title-addition" ng-show="query">(@{{ videosFiltered.length }}/ @{{ videos.length }})</span>
+        <span class="title-addition" ng-show="!searchQuery">(@{{ videos.length }})</span>
+        <span class="title-addition" ng-show="searchQuery">(@{{ videosFiltered.length }}/ @{{ videos.length }})</span>
 
         <p ng-show="videos.length === 0">
             There currently are no recorded surveillance videos.<br />
@@ -41,14 +41,14 @@
         <div ng-show="videos.length > 0">
             <p>
                 <input class="form-control" type="text" maxlength="100"
-                    placeholder="Search by recording date, duration or size" ng-model="query">
+                    placeholder="Search by recording date, duration or size" ng-model="searchQuery">
             </p>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <tr>
                         <th style="width: 0%">
                             <a href="#" ng-click="orderBy('createdAt')">Recording date
-                                <span ng-show="orderField == 'createdAt'">
+                                <span ng-show="orderField === 'createdAt'">
                                     <i class="fa fa-sort-numeric-asc" ng-show="!orderReverse"></i>
                                     <i class="fa fa-sort-numeric-desc" ng-show="orderReverse"></i>
                                 </span>
@@ -56,7 +56,7 @@
                         </th>
                         <th style="width: 0%">
                             <a href="#" ng-click="orderBy('duration')">Duration
-                                <span ng-show="orderField == 'duration'">
+                                <span ng-show="orderField === 'duration'">
                                     <i class="fa fa-sort-numeric-asc" ng-show="!orderReverse"></i>
                                     <i class="fa fa-sort-numeric-desc" ng-show="orderReverse"></i>
                                 </span>
@@ -64,7 +64,7 @@
                         </th>
                         <th style="min-width: 85px">
                             <a href="#" ng-click="orderBy('size')">Size
-                                <span ng-show="orderField == 'size'">
+                                <span ng-show="orderField === 'size'">
                                     <i class="fa fa-sort-numeric-asc" ng-show="!orderReverse"></i>
                                     <i class="fa fa-sort-numeric-desc" ng-show="orderReverse"></i>
                                 </span>
@@ -75,9 +75,9 @@
                         </th>
                     </tr>
 
-                    <!-- TODO: Highlight playing video, Optional: Don't flicker at load, handler loading/error, add paging -->
+                    <!-- TODO: Optional: Don't flicker at load, handler loading/error, add paging -->
                     <tr ng-repeat="video in videosFiltered = (videos
-                        | orFilter:['createdAtFormatted', 'durationFormatted', 'sizeFormatted']:query
+                        | orFilter:['createdAtFormatted', 'durationFormatted', 'sizeFormatted']:searchQuery
                         | orderBy:orderField:orderReverse)" ng-class="{highlight: video == activeVideo}">
                         <td>
                             <!-- Recording date -->
@@ -97,7 +97,7 @@
                         <td style="white-space: nowrap">
                             <!-- Actions -->
                             <div class="buttons pull-right">
-                                <button class="btn btn-success" ng-click="loadVideo(video)" ng-disabled="video.isBusy">Watch</button>
+                                <button class="btn btn-success" ng-click="playVideo(video)" ng-disabled="video.isBusy">Watch</button>
                                 <a class="btn btn-primary" href="/videos/@{{ video.filename }}" download="@{{ video.filename }}" ng-disabled="video.isBusy">Download</a>
                                 <button class="btn btn-danger" ng-click="deleteVideo(video)" ng-disabled="video.isBusy">Delete</button>
                             </div>

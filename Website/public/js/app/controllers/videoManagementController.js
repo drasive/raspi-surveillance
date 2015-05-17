@@ -44,9 +44,13 @@ angular.module('raspiSurveillance.controllers').controller('VideoManagementContr
     };
 
 
-    $scope.loadVideo = function (video) {
+    $scope.getVideoUrl = function(video) {
+      return '/videos/' + video.filename;
+    }
+
+    $scope.playVideo = function (video) {
       $scope.activeVideo = video;
-      $rootScope.$broadcast('loadVideo', video);
+      $rootScope.$broadcast('playVideo', $scope.getVideoUrl(video), 'video/mp4');
     };
 
     $scope.deleteVideo = function (video) {
@@ -54,7 +58,7 @@ angular.module('raspiSurveillance.controllers').controller('VideoManagementContr
       console.debug(JSON.stringify(video));
 
       video.isBusy = true;
-      $rootScope.$broadcast('removingVideo', video);
+      $rootScope.$broadcast('removingVideo', $scope.getVideoUrl(video));
 
       return Video.delete({ filename: video.filename },
         function (data) {

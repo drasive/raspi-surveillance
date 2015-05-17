@@ -113,14 +113,27 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
     };
 
 
-    $scope.loadStream = function (camera) {
+    $scope.getCameraStreamUrl = function (camera) {
+      return camera.protocol.toLowerCase() + '://' + camera.ipAddress + ':' + camera.port;
+    }
+
+    $scope.playStream = function (camera) {
       $scope.activeCamera = camera;
-      $rootScope.$broadcast('loadStream', camera);
+      $rootScope.$broadcast('playStream', $scope.getCameraStreamUrl(camera), 'video/mp4');
     };
 
-    $scope.addCamera = function () {
-      console.log('Adding camera');
+    $scope.$on('playingStream', function (event, url, type) {
+      if (!$scope.activeCamera) {
+        return;
+      }
 
+      if (url.toLowerCase() !== $scope.getCameraStreamUrl($scope.activeCamera).toLowerCase()) {
+        console.info("Removing active camera (stream from another source was opened)");
+        $scope.activeCamera = null;
+      }
+    });
+
+    $scope.addCamera = function () {
       $scope.inserted = {
         ipAddress: '',
         port: '8554',
@@ -128,7 +141,8 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
         name: ''
       };
 
-      console.debug(JSON.stringify($scope.inserted));
+      console.log('Adding camera');
+      console.log(JSON.stringify($scope.inserted));
 
       // Add item to scope
       $scope.cameras.push($scope.inserted);
@@ -171,7 +185,7 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
       console.debug(JSON.stringify(camera));
 
       camera.isBusy = true;
-      $rootScope.$broadcast('removingStreamSource', camera);
+      $rootScope.$broadcast('removingStreamSource', $scope.getCameraStreamUrl(camera));
 
       return Camera.delete({ id: camera.id },
         function (data) {
@@ -199,7 +213,7 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
         }
       );
     };
-    
+
     $scope.cancelEditing = function (rowform, index) {
       // TODO: https://stackoverflow.com/questions/21336943/customize-the-cancel-code-button-of-the-x-editable-angularjs
       console.log(rowform, index);

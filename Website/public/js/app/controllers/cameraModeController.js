@@ -7,6 +7,7 @@ angular.module('raspiSurveillance.controllers').controller('CameraModeController
 
     var modes = ['Off', 'Streaming', 'Motion Detection'];
 
+    // TODO: Start local livestream if in streaming mode
     //$scope.mode = ?.query(
     //  function (data) {
     //    console.log('Loaded operation mode: ' + modes[data.operation_mode]);

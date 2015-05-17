@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('raspiSurveillance.controllers').controller('LivestreamController', [
-  '$scope', '$sce', function ($scope, $sce) {
+  '$scope', '$rootScope', '$sce', function ($scope, $rootScope, $sce) {
 
     // Attributes
     $scope.onPlayerReady = function onPlayerReady(videoPlayer) {
@@ -9,32 +9,39 @@ angular.module('raspiSurveillance.controllers').controller('LivestreamController
     };
 
     $scope.stream = {
-      sources: [
-          { src: $sce.trustAsResourceUrl('http://localhost:8554'), type: 'video/mp4' }
-      ],
+      sources: [],
       theme: 'bower_components/videogular-themes-default/videogular.css',
       autoPlay: true
     };
-    $scope.camera = null;
 
     // Actions
-    $scope.$on('loadStream', function (event, camera) {
-      var url = camera.protocol.toLowerCase() + '://' + camera.ipAddress + ':' + camera.port;
-      var type = 'video/mp4';
+    $scope.playStream = function (url, type) {
       console.info('Playing livestream "' + url + '" (' + type + ')');
 
-      $scope.camera = camera;
+      $rootScope.$broadcast('playingStream', url, type);
+
       $scope.stream.sources = [{ src: $sce.trustAsResourceUrl(url), type: type }];
       $scope.videoPlayer.play();
+    }
+
+    $scope.$on('playStream', function (event, url, type) {
+      $scope.playStream(url, type);
     });
 
-    $scope.$on('removingStreamSource', function (event, camera) {
-      if ($scope.camera == camera) {
+    $scope.playStreamFromUrl = function () {
+      $scope.playStream($scope.customUrl, 'video/mp4');
+    }
+
+    $scope.$on('removingStreamSource', function (event, url) {
+      if ($scope.stream.sources.length === 0) {
+        return;
+      }
+
+      if (url.toLowerCase() === $sce.getTrustedResourceUrl($scope.stream.sources[0].src).toLowerCase()) {
         console.info('Stopping livestream (stream source is being removed)');
 
         $scope.videoPlayer.stop();
         $scope.stream.sources = [];
-        $scope.camera = null;
       }
     });
 

@@ -45,8 +45,8 @@
                     <tr>
                         <td>Stream:</td>
                         <td>
-                            <span ng-show="mode !== 1">Not in streaming mode.</span>
-                            <button class="btn btn-success" ng-show="mode === 1" ng-click="loadStream(camera)">Watch</button>
+                            <span ng-show="mode !== 1">Not available (not in streaming mode).</span>
+                            <button class="btn btn-success" ng-show="mode === 1" ng-click="loadStream()">Watch</button>
                         </td>
                     </tr>
                 </table>
@@ -56,7 +56,7 @@
                 <h3>Livestream</h3>
 
                 <p ng-show="stream.sources.length === 0">
-                    Select "Watch" on one of the listed cameras to see a livestream.
+                    Select "Watch" on one of the listed cameras or enter a custom URL to see a livestream.
                 </p>
 
                 <p ng-show="stream.sources.length > 0">
@@ -69,17 +69,27 @@
                         </vg-media>
                     </videogular>
                 </p>
-                <p>
-                    <!-- TODO: Delete/keep functionality, use modal or textbox -->
-                    <button type="button" class="btn btn-default">Open stream from URL</button>
-                </p>
+
+                <form name="custumUrlForm" novalidate>
+                    <div ng-class="{ 'has-error': customUrlForm.customUrl.$invalid }">
+                        <div class="input-group">
+                            <!-- TODO: Add validation -->
+                            <input class="form-control" name="customUrl" type="url" maxlength="2000" required placeholder="Custom URL to open the livestream from"
+                                ng-model="customUrl" ng-required="true" ng-maxlength="2000" ng-class="{}" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-click="playStreamFromUrl()">Open</button>
+                            </span>
+                        </div>
+                        <span class="help-block" ng-show="customUrlForm.customUrl.$invalid ">Please enter a valid URL</span>
+                    </div>
+                </form>
             </div>
         </div>
 
         <div class="col-lg-7" ng-controller="CameraManagementController" ng-cloak>
             <h3 class="inline-block">Network Cameras</h3>
-            <span class="title-addition" ng-show="!query">(@{{ cameras.length }})</span>
-            <span class="title-addition" ng-show="query">(@{{ camerasFiltered.length }}/ @{{ cameras.length }})</span>
+            <span class="title-addition" ng-show="!searchQuery">(@{{ cameras.length }})</span>
+            <span class="title-addition" ng-show="searchQuery">(@{{ camerasFiltered.length }}/ @{{ cameras.length }})</span>
 
             <p ng-show="cameras.length === 0">
                 You currently do not have any network cameras.<br />
@@ -89,7 +99,7 @@
             <div ng-show="cameras.length > 0">
                 <p>
                     <input class="form-control" type="text" maxlength="100"
-                           placeholder="Search by name, IP address, port or protocol" ng-model="query">
+                           placeholder="Search by name, IP address, port or protocol" ng-model="searchQuery">
                 </p>
 
                 <div class="table-responsive">
@@ -98,7 +108,7 @@
                             <th style="width: 100%">
                                 <a href="#" ng-click="orderBy('name')">
                                     Name
-                                    <span ng-show="orderField == 'name'">
+                                    <span ng-show="orderField === 'name'">
                                         <i class="fa fa-sort-alpha-asc" ng-show="!orderReverse"></i>
                                         <i class="fa fa-sort-alpha-desc" ng-show="orderReverse"></i>
                                     </span>
@@ -107,7 +117,7 @@
                             <th style="min-width: 130px">
                                 <a href="#" ng-click="orderBy('ipAddress')">
                                     IP-Address
-                                    <span ng-show="orderField == 'ipAddress'">
+                                    <span ng-show="orderField === 'ipAddress'">
                                         <i class="fa fa-sort-numeric-asc" ng-show="!orderReverse"></i>
                                         <i class="fa fa-sort-numeric-desc" ng-show="orderReverse"></i>
                                     </span>
@@ -116,7 +126,7 @@
                             <th style="min-width: 75px">
                                 <a href="#" ng-click="orderBy('port')">
                                     Port
-                                    <span ng-show="orderField == 'port'">
+                                    <span ng-show="orderField === 'port'">
                                         <i class="fa fa-sort-numeric-asc" ng-show="!orderReverse"></i>
                                         <i class="fa fa-sort-numeric-desc" ng-show="orderReverse"></i>
                                     </span>
@@ -125,7 +135,7 @@
                             <th style="min-width: 90px">
                                 <a href="#" ng-click="orderBy('protocol')">
                                     Protocol
-                                    <span ng-show="orderField == 'protocol'">
+                                    <span ng-show="orderField === 'protocol'">
                                         <i class="fa fa-sort-numeric-asc" ng-show="!orderReverse"></i>
                                         <i class="fa fa-sort-numeric-desc" ng-show="orderReverse"></i>
                                     </span>
@@ -136,8 +146,8 @@
                             </th>
                         </tr>
 
-                        <!-- TODO: Highlight playing video, Optional: Don't flicker at load, handler loading/error, add paging -->
-                        <tr ng-repeat="camera in camerasFiltered = (cameras | filter:query | orderBy:orderField:orderReverse)" ng-class="{highlight: camera == activeCamera}">
+                        <!-- TODO: Optional: Don't flicker at load, handler loading/error, add paging -->
+                        <tr ng-repeat="camera in camerasFiltered = (cameras | filter:searchQuery | orderBy:orderField:orderReverse)" ng-class="{highlight: camera == activeCamera}">
                             <td>
                                 <!-- Name -->
                                 <span editable-text="camera.name"
@@ -169,7 +179,7 @@
                             <td style="white-space: nowrap">
                                 <!-- Action -->
                                 <div class="buttons" ng-show="!cameraForm.$visible">
-                                    <button class="btn btn-success" ng-click="loadStream(camera)"
+                                    <button class="btn btn-success" ng-click="playStream(camera)"
                                         ng-disabled="camera.isBusy">Watch</button>
                                     <button class="btn btn-primary" ng-click="cameraForm.$show()"
                                         ng-disabled="camera.isBusy">Edit</button>
@@ -177,7 +187,7 @@
                                         ng-disabled="camera.isBusy">Delete</button>
                                 </div>
 
-                                <!-- TODO: Get these to work, disable during activity -->
+                                <!-- TODO: Get these to work, add validation and maxlength, disable during activity -->
                                 <form editable-form name="cameraForm" onbeforesave="saveCamera($data, camera.id)"
                                       ng-show="cameraForm.$visible" class="form-buttons form-inline" shown="inserted == camera">
                                     <button type="submit" ng-disabled="cameraForm.$waiting" class="btn btn-primary">

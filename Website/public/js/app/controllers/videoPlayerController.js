@@ -13,27 +13,25 @@ angular.module('raspiSurveillance.controllers').controller('VideoPlayerControlle
       theme: 'bower_components/videogular-themes-default/videogular.css',
       autoPlay: true
     };
-    $scope.video = null;
 
     // Actions
-    $scope.$on('loadVideo', function (event, video) {
-      var url = '/videos/' + video.filename;
-      var type = 'video/mp4';
-
+    $scope.$on('playVideo', function (event, url, type) {
       console.info('Playing video "' + url + '" (' + type + ')');
 
-      $scope.video = video;
       $scope.stream.sources = [{ src: $sce.trustAsResourceUrl(url), type: type }];
       $scope.videoPlayer.play();
     });
 
-    $scope.$on('removingVideo', function (event, video) {
-      if ($scope.video == video) {
+    $scope.$on('removingVideo', function (event, url) {
+      if ($scope.stream.sources.length === 0) {
+        return;
+      }
+
+      if (url.toLowerCase() === $sce.getTrustedResourceUrl($scope.stream.sources[0].src).toLowerCase()) {
         console.info('Stopping video (video is being removed)');
 
         $scope.videoPlayer.stop();
         $scope.stream.sources = [];
-        $scope.video = null;
       }
     });
 
