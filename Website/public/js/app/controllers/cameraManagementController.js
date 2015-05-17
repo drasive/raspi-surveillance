@@ -36,7 +36,7 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
 
     // Validation
     // TODO: Allow same name?
-    $scope.validateName = function (data, id) {
+    $scope.validateName = function (data) {
       if (!data) {
         // Make sure data has value
         data = '';
@@ -50,7 +50,7 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
       return true;
     };
 
-    $scope.validateIpAddress = function (data, id) {
+    $scope.validateIpAddress = function (data) {
       if (!data) {
         // Make sure data has value
         data = '';
@@ -67,7 +67,7 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
       return true;
     };
 
-    $scope.validatePort = function (data, id) {
+    $scope.validatePort = function (data) {
       if (!data) {
         // Make sure data has value
         data = '';
@@ -84,7 +84,7 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
       return true;
     };
 
-    $scope.validateProcotol = function (data, id) {
+    $scope.validateProcotol = function (data) {
       if (!data) {
         // Make sure data has value
         data = '';
@@ -148,13 +148,13 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
       $scope.cameras.push($scope.inserted);
     };
 
-    $scope.saveCamera = function (data, id) {
+    $scope.saveCamera = function (camera) {
       // TODO:
       //$scope.user not updated yet
       //angular.extend(data, {id: id});
-
-      console.info('Saving camera #' + id);
-      console.debug(JSON.stringify(data));
+      
+      console.info('Saving camera #' + camera.id);
+      console.debug(JSON.stringify(camera));
 
       Camera.save(data,
         function (data) {

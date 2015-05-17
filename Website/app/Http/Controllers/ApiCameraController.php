@@ -50,7 +50,7 @@ class ApiCameraController extends ApiControllerBase {
 	{
 		try {
 			$camera = new Camera();
-			$camera->ip_address = Input::get('ip_address');
+			$camera->ip_address = Input::get('ipAddress');
 			$camera->port       = Input::get('port');
 			$camera->protocol   = Input::get('protocol');
 			$camera->name       = Input::get('name');
@@ -67,7 +67,7 @@ class ApiCameraController extends ApiControllerBase {
 			  ->where('port', '=', $camera->port)
 			  ->first();
 			if (!is_null($existingCamera)) {
-				return Response("", 400);
+				return Response("Camera already exists", 400);
 			}
 			
 			$camera->save();
@@ -94,7 +94,7 @@ class ApiCameraController extends ApiControllerBase {
 				return self::JsonEncode($camera);
 			}
 			else {
-				return Response("", 404);
+				return Response("Camera doesn't exist", 404);
 			}
 		}
 		catch (Exception $exception) {
@@ -114,7 +114,7 @@ class ApiCameraController extends ApiControllerBase {
 			$camera = Camera::find($id);
 			
 			if (!is_null($camera)) {
-				$camera->ip_address = Input::get('ip_address');
+				$camera->ip_address = Input::get('ipAddress');
 				$camera->port       = Input::get('port');
 				$camera->protocol   = Input::get('protocol');
 				$camera->name       = Input::get('name');
@@ -132,13 +132,13 @@ class ApiCameraController extends ApiControllerBase {
 				  ->where('port', '=', $camera->port)
 				  ->first();
 				if (!is_null($existingCamera)) {
-					return Response("", 400);
+					return Response("Camera already exists", 400);
 				}
 				
 				$camera->save();
 			}
 			else {
-				return Response("", 404);
+				return Response("Camera doesn't exist", 404);
 			}
 		}
 		catch (Exception $exception) {
@@ -163,7 +163,7 @@ class ApiCameraController extends ApiControllerBase {
 				$camera->delete();
 			}
 			else {
-				return Response("", 404);
+				return Response("Camera doesn't exist", 404);
 			}
 		}
 		catch (Exception $exception) {

@@ -55,7 +55,7 @@ class ApiVideoController extends ApiControllerBase {
 				return self::JsonEncode($video);
 			}
 			else {
-				return Response("", 404);
+				return Response("Video doesn't exist", 404);
 			}
 		}
 		catch (Exception $exception) {
@@ -78,7 +78,7 @@ class ApiVideoController extends ApiControllerBase {
 				$video->delete();
 			}
 			else {
-				return Response("", 404);
+				return Response("Video doesn't exist", 404);
 			}
 		}
 		catch (Exception $exception) {

@@ -103,7 +103,7 @@
                 </p>
 
                 <div class="table-responsive">
-                    <table class="table table-striped vert-aligh">
+                    <table class="table table-striped">
                         <tr>
                             <th style="width: 100%">
                                 <a href="#" ng-click="orderBy('name')">
@@ -142,42 +142,43 @@
                                 </a>
                             </th>
                             <th style="width: 0%">
-                                <!-- Action -->
+                                <!-- Actions -->
                             </th>
                         </tr>
 
                         <!-- TODO: Optional: Don't flicker at load, handler loading/error, add paging -->
-                        <tr ng-repeat="camera in camerasFiltered = (cameras | filter:searchQuery | orderBy:orderField:orderReverse)" ng-class="{highlight: camera == activeCamera}">
+                        <tr ng-repeat="camera in camerasFiltered = (cameras | filter:searchQuery | orderBy:orderField:orderReverse)"
+                            ng-class="{highlight: camera == activeCamera}" TODO_onaftersave="saveCamera(camera)">
                             <td>
                                 <!-- Name -->
-                                <span editable-text="camera.name"
-                                      e-name="name" e-form="cameraForm" onbeforesave="validateName($data, camera.id)">
+                                <span editable-text="camera.name" e-form="cameraForm" e-name="name" e-placeholder="Front Door"
+                                    onbeforesave="validateName($data)">
                                     @{{ camera.name }}
                                 </span>
                             </td>
                             <td>
                                 <!-- IP address -->
-                                <span editable-text="camera.ipAddress"
-                                      e-name="ipAddress" e-form="cameraForm" e-required onbeforesave="validateIpAddress($data, camera.id)">
+                                <span editable-text="camera.ipAddress" e-name="ipAddress" e-form="cameraForm" e-placeholder="192.168.0.12"
+                                     e-required onbeforesave="validateIpAddress($data)">
                                     @{{ camera.ipAddress }}
                                 </span>
                             </td>
                             <td>
                                 <!-- Port -->
-                                <span editable-text="camera.port"
-                                      e-name="port" e-form="cameraForm" e-required onbeforesave="validatePort($data, camera.id)">
+                                <span editable-text="camera.port" e-form="cameraForm" e-name="port" e-placeholder="8554"
+                                     e-required onbeforesave="validatePort($data)">
                                     @{{ camera.port }}
                                 </span>
                             </td>
                             <td>
                                 <!-- Protocol -->
-                                <span editable-text="camera.protocol | uppercase"
-                                      e-name="protocol" e-form="cameraForm" e-required onbeforesave="validateProtocol($data, camera.id)">
+                                <span editable-text="camera.protocol | uppercase" e-form="cameraForm" e-name="protocol" e-placeholder="HTTP"
+                                    e-required onbeforesave="validateProtocol($data)">
                                     @{{ camera.protocol | uppercase }}
                                 </span>
                             </td>
                             <td style="white-space: nowrap">
-                                <!-- Action -->
+                                <!-- Actions -->
                                 <div class="buttons" ng-show="!cameraForm.$visible">
                                     <button class="btn btn-success" ng-click="playStream(camera)"
                                         ng-disabled="camera.isBusy">Watch</button>
@@ -188,8 +189,8 @@
                                 </div>
 
                                 <!-- TODO: Get these to work, add validation and maxlength, disable during activity -->
-                                <form editable-form name="cameraForm" onbeforesave="saveCamera($data, camera.id)"
-                                      ng-show="cameraForm.$visible" class="form-buttons form-inline" shown="inserted == camera">
+                                <form eclass="form-buttons form-inline" ditable-form name="cameraForm" TODO_onaftersave="saveCamera($data, camera.id)"
+                                      ng-show="cameraForm.$visible" shown="inserted == camera">
                                     <button type="submit" ng-disabled="cameraForm.$waiting" class="btn btn-primary">
                                         Save
                                     </button>
