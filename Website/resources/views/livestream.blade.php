@@ -88,126 +88,138 @@
 
         <div class="col-lg-7" ng-controller="CameraManagementController" ng-cloak>
             <h3 class="inline-block">Network Cameras</h3>
-            <span class="title-addition" ng-show="!searchQuery">(@{{ cameras.length }})</span>
-            <span class="title-addition" ng-show="searchQuery">(@{{ camerasFiltered.length }}/ @{{ cameras.length }})</span>
+            <span ng-show="!isLoading">
+                <span class="title-addition" ng-show="!searchQuery">(@{{ cameras.length }})</span>
+                <span class="title-addition" ng-show="searchQuery">(@{{ camerasFiltered.length }}/ @{{ cameras.length }})</span>
+            </span>
 
-            <p ng-show="cameras.length === 0">
-                You currently do not have any network cameras.<br />
-                Click on "Add network camera" to add your first one.
-            </p>
+            <loader class="loader center-block" ng-show="isLoading"></loader>
 
-            <div ng-show="cameras.length > 0">
-                <p>
-                    <input class="form-control" type="text" maxlength="100"
-                           placeholder="Search by name, IP address, port or protocol" ng-model="searchQuery">
+            <div ng-show="!isLoading">
+                <p ng-show="cameras.length === 0">
+                    You currently do not have any network cameras.<br />
+                    Click on "Add network camera" to add your first one.
                 </p>
 
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <tr>
-                            <th style="width: 100%">
-                                <a href="#" ng-click="orderBy('name')">
-                                    Name
-                                    <span ng-show="orderField === 'name'">
-                                        <i class="fa fa-sort-alpha-asc" ng-show="!orderReverse"></i>
-                                        <i class="fa fa-sort-alpha-desc" ng-show="orderReverse"></i>
-                                    </span>
-                                </a>
-                            </th>
-                            <th style="min-width: 130px">
-                                <a href="#" ng-click="orderBy('ipAddress')">
-                                    IP-Address
-                                    <span ng-show="orderField === 'ipAddress'">
-                                        <i class="fa fa-sort-numeric-asc" ng-show="!orderReverse"></i>
-                                        <i class="fa fa-sort-numeric-desc" ng-show="orderReverse"></i>
-                                    </span>
-                                </a>
-                            </th>
-                            <th style="min-width: 75px">
-                                <a href="#" ng-click="orderBy('port')">
-                                    Port
-                                    <span ng-show="orderField === 'port'">
-                                        <i class="fa fa-sort-numeric-asc" ng-show="!orderReverse"></i>
-                                        <i class="fa fa-sort-numeric-desc" ng-show="orderReverse"></i>
-                                    </span>
-                                </a>
-                            </th>
-                            <th style="min-width: 90px">
-                                <a href="#" ng-click="orderBy('protocol')">
-                                    Protocol
-                                    <span ng-show="orderField === 'protocol'">
-                                        <i class="fa fa-sort-numeric-asc" ng-show="!orderReverse"></i>
-                                        <i class="fa fa-sort-numeric-desc" ng-show="orderReverse"></i>
-                                    </span>
-                                </a>
-                            </th>
-                            <th style="width: 0%">
-                                <!-- Actions -->
-                            </th>
-                        </tr>
+                <div ng-show="cameras.length > 0">
+                    <p>
+                        <input class="form-control" type="text" maxlength="100"
+                               placeholder="Search by name, IP address, port or protocol" ng-model="searchQuery">
+                    </p>
 
-                        <!-- TODO: Optional: Don't flicker at load, handler loading/error, add paging -->
-                        <tr ng-repeat="camera in camerasFiltered = (cameras | filter:searchQuery | orderBy:orderField:orderReverse)"
-                            ng-class="{highlight: camera == activeCamera}" TODO_onaftersave="saveCamera(camera)">
-                            <td>
-                                <!-- Name -->
-                                <span editable-text="camera.name" e-form="cameraForm" e-name="name" e-placeholder="Front Door"
-                                    onbeforesave="validateName($data)">
-                                    @{{ camera.name }}
-                                </span>
-                            </td>
-                            <td>
-                                <!-- IP address -->
-                                <span editable-text="camera.ipAddress" e-name="ipAddress" e-form="cameraForm" e-placeholder="192.168.0.12"
-                                     e-required onbeforesave="validateIpAddress($data)">
-                                    @{{ camera.ipAddress }}
-                                </span>
-                            </td>
-                            <td>
-                                <!-- Port -->
-                                <span editable-text="camera.port" e-form="cameraForm" e-name="port" e-placeholder="8554"
-                                     e-required onbeforesave="validatePort($data)">
-                                    @{{ camera.port }}
-                                </span>
-                            </td>
-                            <td>
-                                <!-- Protocol -->
-                                <span editable-text="camera.protocol | uppercase" e-form="cameraForm" e-name="protocol" e-placeholder="HTTP"
-                                    e-required onbeforesave="validateProtocol($data)">
-                                    @{{ camera.protocol | uppercase }}
-                                </span>
-                            </td>
-                            <td style="white-space: nowrap">
-                                <!-- Actions -->
-                                <div class="buttons" ng-show="!cameraForm.$visible">
-                                    <button class="btn btn-success" ng-click="playStream(camera)"
-                                        ng-disabled="camera.isBusy">Watch</button>
-                                    <button class="btn btn-primary" ng-click="cameraForm.$show()"
-                                        ng-disabled="camera.isBusy">Edit</button>
-                                    <button class="btn btn-danger" ng-click="deleteCamera(camera)"
-                                        ng-disabled="camera.isBusy">Delete</button>
-                                </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tr>
+                                <th style="width: 100%">
+                                    <a href="#" ng-click="orderBy('name')">
+                                        Name
+                                        <span ng-show="orderField === 'name'">
+                                            <i class="fa fa-sort-alpha-asc" ng-show="!orderReverse"></i>
+                                            <i class="fa fa-sort-alpha-desc" ng-show="orderReverse"></i>
+                                        </span>
+                                    </a>
+                                </th>
+                                <th style="min-width: 130px">
+                                    <a href="#" ng-click="orderBy('ipAddress')">
+                                        IP-Address
+                                        <span ng-show="orderField === 'ipAddress'">
+                                            <i class="fa fa-sort-numeric-asc" ng-show="!orderReverse"></i>
+                                            <i class="fa fa-sort-numeric-desc" ng-show="orderReverse"></i>
+                                        </span>
+                                    </a>
+                                </th>
+                                <th style="min-width: 75px">
+                                    <a href="#" ng-click="orderBy('port')">
+                                        Port
+                                        <span ng-show="orderField === 'port'">
+                                            <i class="fa fa-sort-numeric-asc" ng-show="!orderReverse"></i>
+                                            <i class="fa fa-sort-numeric-desc" ng-show="orderReverse"></i>
+                                        </span>
+                                    </a>
+                                </th>
+                                <th style="min-width: 90px">
+                                    <a href="#" ng-click="orderBy('protocol')">
+                                        Protocol
+                                        <span ng-show="orderField === 'protocol'">
+                                            <i class="fa fa-sort-numeric-asc" ng-show="!orderReverse"></i>
+                                            <i class="fa fa-sort-numeric-desc" ng-show="orderReverse"></i>
+                                        </span>
+                                    </a>
+                                </th>
+                                <th style="width: 0%">
+                                    <!-- Actions -->
+                                </th>
+                            </tr>
 
-                                <!-- TODO: Get these to work, add validation and maxlength, disable during activity -->
-                                <form eclass="form-buttons form-inline" ditable-form name="cameraForm" TODO_onaftersave="saveCamera($data, camera.id)"
-                                      ng-show="cameraForm.$visible" shown="inserted == camera">
-                                    <button type="submit" ng-disabled="cameraForm.$waiting" class="btn btn-primary">
-                                        Save
-                                    </button>
-                                    <button type="button" class="btn btn-default"
-                                            ng-disabled="cameraForm.$waiting" ng-click="cancelEditing(cameraForm, $index)">
-                                        Cancel
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    </table>
+                            <!-- TODO: Optional: Don't flicker at load, handler loading/error, add paging -->
+                            <tr ng-repeat="camera in camerasFiltered = (cameras | filter:searchQuery | orderBy:orderField:orderReverse)"
+                                ng-class="{highlight: camera == activeCamera}" todo_onaftersave="saveCamera(camera)">
+                                <td>
+                                    <!-- Name -->
+                                    <span editable-text="camera.name" e-form="cameraForm" e-name="name" e-placeholder="Front Door"
+                                          onbeforesave="validateName($data)">
+                                        @{{ camera.name }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <!-- IP address -->
+                                    <span editable-text="camera.ipAddress" e-name="ipAddress" e-form="cameraForm" e-placeholder="192.168.0.12"
+                                          e-required onbeforesave="validateIpAddress($data)">
+                                        @{{ camera.ipAddress }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <!-- Port -->
+                                    <span editable-text="camera.port" e-form="cameraForm" e-name="port" e-placeholder="8554"
+                                          e-required onbeforesave="validatePort($data)">
+                                        @{{ camera.port }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <!-- Protocol -->
+                                    <span editable-text="camera.protocol | uppercase" e-form="cameraForm" e-name="protocol" e-placeholder="HTTP"
+                                          e-required onbeforesave="validateProtocol($data)">
+                                        @{{ camera.protocol | uppercase }}
+                                    </span>
+                                </td>
+                                <td style="white-space: nowrap">
+                                    <!-- Actions -->
+                                    <div class="buttons" ng-show="!cameraForm.$visible">
+                                        <button class="btn btn-success" ng-click="playStream(camera)"
+                                                ng-disabled="camera.isBusy">
+                                            Watch
+                                        </button>
+                                        <button class="btn btn-primary" ng-click="cameraForm.$show()"
+                                                ng-disabled="camera.isBusy">
+                                            Edit
+                                        </button>
+                                        <button class="btn btn-danger" ng-click="deleteCamera(camera)"
+                                                ng-disabled="camera.isBusy">
+                                            Delete
+                                        </button>
+                                    </div>
+
+                                    <!-- TODO: Get these to work, add validation and maxlength, disable during activity -->
+                                    <form eclass="form-buttons form-inline" ditable-form name="cameraForm" todo_onaftersave="saveCamera($data, camera.id)"
+                                          ng-show="cameraForm.$visible" shown="inserted == camera">
+                                        <button type="submit" ng-disabled="cameraForm.$waiting" class="btn btn-primary">
+                                            Save
+                                        </button>
+                                        <button type="button" class="btn btn-default"
+                                                ng-disabled="cameraForm.$waiting" ng-click="cancelEditing(cameraForm, $index)">
+                                            Cancel
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
-            </div>
 
-            <p>
-                <button class="btn btn-default" ng-click="addCamera()">Add network camera</button>
-            </p>
+                <p>
+                    <button class="btn btn-default" ng-click="addCamera()">Add network camera</button>
+                </p>
+            </div>
         </div>
     </div>
 </div>

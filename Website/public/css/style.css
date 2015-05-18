@@ -11,6 +11,25 @@
 }
 
 
+.loader {
+    margin-top: 20px;
+    width: 100px;
+}
+
+.ball-clip-rotate-pulse > div:first-child {
+    background: #337AB7 !important;
+    /*
+    Fixes ring position */
+    top: 5px !important;
+    left: -9px !important;
+}
+
+.ball-clip-rotate-pulse > div:last-child {
+    border-top-color: #337AB7 !important;
+    border-bottom-color: #337AB7 !important;
+}
+
+
 /* Tables
 ***************************/
 

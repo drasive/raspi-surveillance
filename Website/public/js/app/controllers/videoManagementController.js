@@ -1,56 +1,38 @@
 'use strict';
 
 angular.module('raspiSurveillance.controllers').controller('VideoManagementController', [
-  '$scope', '$rootScope', 'Video', function ($scope, $rootScope, Video) {
+  '$scope', '$rootScope', 'Video', function($scope, $rootScope, Video) {
 
-    // Attributes
-    $scope.videos = Video.query(
-      function (data) {
-        console.log('Loaded ' + data.length + ' videos');
-        console.debug(data);
-      },
-      function (error) {
-        console.error(error);
+    // API
+    $scope.getVideos = function () {
+      $scope.isLoading = true;
 
-        BootstrapDialog.show({
-          title: 'Failed to load surveillance videos',
-          message: 'Sorry, an error occured while loading the surveillance videos.<br />' +
-                   'Please try again in a few moments.',
-          type: BootstrapDialog.TYPE_DANGER,
-          buttons: [{
-            label: 'Close',
-            cssClass: 'btn-primary',
-            action: function (dialogItself) {
-              dialogItself.close();
-            }
-          }]
-        });
-      }
-    );
+      return Video.query(
+       function (data) {
+         console.log('Loaded ' + data.length + ' videos');
+         console.debug(data);
 
-    $scope.orderField = 'createdAt';
-    $scope.orderReverse = false;
-    $scope.activeVideo = null;
+         $scope.isLoading = false;
+       },
+       function (error) {
+         console.error(error);
 
-    // Actions
-    $scope.orderBy = function (field) {
-      if ($scope.orderField === field) {
-        $scope.orderReverse = !$scope.orderReverse;
-      } else {
-        $scope.orderReverse = false;
-      }
-
-      $scope.orderField = field;
-    };
-
-
-    $scope.getVideoUrl = function(video) {
-      return '/videos/' + video.filename;
-    }
-
-    $scope.playVideo = function (video) {
-      $scope.activeVideo = video;
-      $rootScope.$broadcast('playVideo', $scope.getVideoUrl(video), 'video/mp4');
+         BootstrapDialog.show({
+           title: 'Failed to load surveillance videos',
+           message: 'Sorry, an error occured while loading the surveillance videos.<br />' +
+                    'Please try again in a few moments.',
+           type: BootstrapDialog.TYPE_DANGER,
+           buttons: [{
+             label: 'Close',
+             cssClass: 'btn-primary',
+             action: function (dialogItself) {
+               dialogItself.close();
+             }
+           }]
+         });
+         $scope.isLoading = false;
+       }
+     );
     };
 
     $scope.deleteVideo = function (video) {
@@ -78,7 +60,7 @@ angular.module('raspiSurveillance.controllers').controller('VideoManagementContr
               {
                 label: 'Close',
                 cssClass: 'btn-primary',
-                action: function(dialogItself) {
+                action: function (dialogItself) {
                   dialogItself.close();
                 }
               }
@@ -88,5 +70,34 @@ angular.module('raspiSurveillance.controllers').controller('VideoManagementContr
         });
     };
 
+    // Attributes
+    $scope.isLoading = true;
+    $scope.videos = $scope.getVideos();
+
+    $scope.orderField = 'createdAt';
+    $scope.orderReverse = false;
+    $scope.activeVideo = null;
+
+    // Methods
+    $scope.orderBy = function (field) {
+      if ($scope.orderField === field) {
+        $scope.orderReverse = !$scope.orderReverse;
+      } else {
+        $scope.orderReverse = false;
+      }
+
+      $scope.orderField = field;
+    };
+
+
+    $scope.getVideoUrl = function(video) {
+      return '/videos/' + video.filename;
+    }
+
+    $scope.playVideo = function (video) {
+      $scope.activeVideo = video;
+      $rootScope.$broadcast('playVideo', $scope.getVideoUrl(video), 'video/mp4');
+    };
+   
   }
 ]);

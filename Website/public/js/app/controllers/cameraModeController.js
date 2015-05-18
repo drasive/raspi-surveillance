@@ -31,6 +31,7 @@ angular.module('raspiSurveillance.controllers').controller('CameraModeController
     //    });
     //  }
     //);
+    $scope.isLoading = false;
     $scope.isBusy = false;
 
     $scope.changeMode = function (mode) {

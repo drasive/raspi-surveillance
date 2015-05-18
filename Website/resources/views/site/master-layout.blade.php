@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -17,6 +17,7 @@
 
     <!-- Plugins -->
     <link href="bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet" />
+    <link href="bower_components/loaders.css/loaders.min.css" rel="stylesheet" />
     <link href="bower_components/angular-xeditable/dist/css/xeditable.css" rel="stylesheet" />
     <link href="bower_components/bootstrap-dialog/dist/css/bootstrap-dialog.min.css" rel="stylesheet" />
 
