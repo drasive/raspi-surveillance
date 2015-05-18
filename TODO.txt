@@ -7,6 +7,7 @@ Test
 	Videostream scripts
 	Hosting website
 	Motion detection
+	Script execution
 
 ### Website ###
 Create web interface
@@ -21,8 +22,7 @@ Create web interface
 	About
 
 General
-	Split controllers into multiple files
-	error handling in HTML
+	Error handling in HTML
 	Display time in local timezone
 	Login?: Auth:basic?
 	Show loading indicators during AJAX requests
@@ -32,10 +32,9 @@ API
 	stateless: driver=array
 
 Editing
+	Get working
 	HTML validation
-	Placeholders
 	Maxlength
-	Width
 
 Test
 	General
@@ -54,6 +53,9 @@ Test
 	Video archive
 		
 
+Local Camera
+	Implement server side
+		
 Video
 	Add pagination 
 
@@ -67,3 +69,4 @@ Bugs
 
 ### Documentation ###
 Advise to do  mysql_secure_installation somewhere, if not setup already. Conf of .env required
+Advise to not run apt-autoremove because of "motion" dependencies

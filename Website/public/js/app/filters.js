@@ -21,8 +21,8 @@ angular.module('raspiSurveillance.filters').filter('orFilter', function () {
       var objectMatches = false;
 
       // Check if any object expression matches the comparator
-      properties.forEach(function (expression) {
-        if (object[expression].toLowerCase().indexOf(comparator.toLowerCase()) > -1) {
+      properties.forEach(function (property) {
+        if (!objectMatches && object[property].toLowerCase().indexOf(comparator.toLowerCase()) > -1) {
           objectMatches = true;
         }
       });

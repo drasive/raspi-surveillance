@@ -153,12 +153,25 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
     };
 
     $scope.$on('playingStream', function (event, url, type) {
-      if (!$scope.activeCamera) {
+      if ($scope.activeCamera && url.toLowerCase() === $scope.getCameraStreamUrl($scope.activeCamera).toLowerCase()) {
+        // New stream is the currently active camera
         return;
       }
 
-      if (url.toLowerCase() !== $scope.getCameraStreamUrl($scope.activeCamera).toLowerCase()) {
-        console.info("Removing active camera (stream from another source was opened)");
+      // Try to find a camera with the same stream URL as the new stream
+      var streamIsCamera = false;
+      angular.forEach($scope.cameras, function(camera) {
+        if (!streamIsCamera && url.toLowerCase() === $scope.getCameraStreamUrl(camera).toLowerCase()) {
+          console.info("Updating active camera (stream from camera was opened)");
+
+          $scope.activeCamera = camera;
+          streamIsCamera = true;
+        }
+      });
+
+      // Remove active camera, stream URL doesn't match a camera
+      if ($scope.activeCamera && !streamIsCamera) {
+        console.info("Removing active camera (stream from unknown source was opened)");
         $scope.activeCamera = null;
       }
     });

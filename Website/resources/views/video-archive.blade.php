@@ -18,7 +18,7 @@
             Select "Watch" on one of the listed surveillance videos to see the recording.
         </p>
 
-        <!-- TODO: Optional: Handle if video doesn't play -->
+        <!-- TODO: Optional: Handle when video doesn't play -->
         <videogular vg-player-ready="onPlayerReady($API)" vg-theme="stream.theme" ng-show="stream.sources.length > 0">
             <vg-media vg-src="stream.sources"
                       vg-tracks="stream.tracks"
@@ -83,7 +83,7 @@
                             </th>
                         </tr>
 
-                        <!-- TODO: Optional: Don't flicker at load, handler loading/error, add paging -->
+                        <!-- TODO: Optional: Handler error, add paging -->
                         <tr ng-repeat="video in videosFiltered = (videos
                         | orFilter:['createdAtFormatted', 'durationFormatted', 'sizeFormatted']:searchQuery
                         | orderBy:orderField:orderReverse)" ng-class="{highlight: video == activeVideo}">

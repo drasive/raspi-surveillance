@@ -13,11 +13,12 @@
 <div ng-app="raspiSurveillance.app">
     <div class="row">
         <div class="col-lg-5">
-             <!-- TODO: Rename controller -->
-            <div ng-controller="CameraModeController" ng-cloak>
+            <div ng-controller="SettingsController" ng-cloak>
                 <h3>Local Camera</h3>
 
-                <table class="table table-condensed borderless">
+                <loader class="loader center-block" ng-show="isLoading"></loader>
+
+                <table class="table table-condensed borderless" ng-show="!isLoading">
                     <tr>
                         <td style="width: 100px;">IP Address:</td>
                         <td>{{{ $g_hostIpAddress }}} ({{{ $g_hostName }}})</td>
@@ -25,17 +26,16 @@
                     <tr>
                         <td>Mode:</td>
                         <td>
-                            <!-- TODO: Disable during activity -->
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-default" ng-class="{active: mode === 0}" 
+                                <button type="button" class="btn btn-default" ng-class="{active: settings.camera.mode === 0}" 
                                         ng-click="changeMode(0)" ng-disabled="isBusy">
                                     Off
                                 </button>
-                                <button type="button" class="btn btn-success" ng-class="{active: mode === 1}" 
+                                <button type="button" class="btn btn-success" ng-class="{active: settings.camera.mode === 1}" 
                                         ng-click="changeMode(1)" ng-disabled="isBusy">
                                     Streaming
                                 </button>
-                                <button type="button" class="btn btn-primary" ng-class="{active: mode === 2}" 
+                                <button type="button" class="btn btn-primary" ng-class="{active: settings.camera.mode === 2}"
                                         ng-click="changeMode(2)" ng-disabled="isBusy">
                                     Motion Detection
                                 </button>
@@ -45,14 +45,15 @@
                     <tr>
                         <td>Stream:</td>
                         <td>
-                            <span ng-show="mode !== 1">Not available (not in streaming mode).</span>
-                            <button class="btn btn-success" ng-show="mode === 1" ng-click="loadStream()">Watch</button>
+                            <span ng-show="settings.camera.mode !== 1">Not available (not in streaming mode).</span>
+                            <button class="btn btn-success" ng-show="settings.camera.mode === 1" ng-click="playStream()">Watch</button>
                         </td>
                     </tr>
                 </table>
             </div>
 
             <div ng-controller="LivestreamController" ng-cloak>
+                <!-- TODO: Show current stream URL somewhere -->
                 <h3>Livestream</h3>
 
                 <p ng-show="stream.sources.length === 0">
@@ -60,7 +61,7 @@
                 </p>
 
                 <p ng-show="stream.sources.length > 0">
-                    <!-- TODO: Optional: Handle if video doesn't play -->
+                    <!-- TODO: Optional: Handle when video doesn't play -->
                     <videogular vg-player-ready="onPlayerReady($API)" vg-theme="stream.theme">
                         <vg-media vg-src="stream.sources"
                                   vg-tracks="stream.tracks"
@@ -74,7 +75,7 @@
                     <div ng-class="{ 'has-error': customUrlForm.customUrl.$invalid }">
                         <div class="input-group">
                             <!-- TODO: Add validation -->
-                            <input class="form-control" name="customUrl" type="url" maxlength="2000" required placeholder="Custom URL to open the livestream from"
+                            <input class="form-control" name="customUrl" type="text" maxlength="2000" required placeholder="Custom URL to open the livestream from"
                                 ng-model="customUrl" ng-required="true" ng-maxlength="2000" ng-class="{}" />
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="button" ng-click="playStreamFromUrl()">Open</button>
@@ -151,7 +152,7 @@
                                 </th>
                             </tr>
 
-                            <!-- TODO: Optional: Don't flicker at load, handler loading/error, add paging -->
+                            <!-- TODO: Optional: Handler error, add paging -->
                             <tr ng-repeat="camera in camerasFiltered = (cameras | filter:searchQuery | orderBy:orderField:orderReverse)"
                                 ng-class="{highlight: camera == activeCamera}" todo_onaftersave="saveCamera(camera)">
                                 <td>
@@ -234,7 +235,7 @@
 <script src="js/app/filters.js"></script>
 <script src="js/app/services.js"></script>
 <script src="js/app/controllers/controllers.js"></script>
-<script src="js/app/controllers/cameraModeController.js"></script>
+<script src="js/app/controllers/settingsController.js"></script>
 <script src="js/app/controllers/livestreamController.js"></script>
 <script src="js/app/controllers/cameraManagementController.js"></script>
 @stop

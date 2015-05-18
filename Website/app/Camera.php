@@ -19,9 +19,9 @@ class Camera extends Model {
 			),
 			array(
 				'ip_address' => 'required|ip',
-				'port      ' => 'min:0|max:65535',
-				'protocol'   => 'between:0,5',
-				'name'       => 'between:0,32',
+				'port      ' => 'required|numeric|min:0|max:65535',
+				'protocol'   => 'required|between:1,5',
+				'name'       => 'between:0,32'
 			)
 		);
 	}

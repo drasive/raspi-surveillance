@@ -6,6 +6,9 @@ Route::get('/video-archive', 'VideoArchiveController@index');
 Route::get('/about', 'AboutController@index');
 
 // API
+Route::resource('api/settings', 'ApiSettingsController',
+                ['only' => ['index', 'store']]);
+
 Route::resource('api/cameras', 'ApiCameraController',
                 ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
 
