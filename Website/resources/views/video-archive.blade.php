@@ -32,7 +32,7 @@
         <h3 class="inline-block">Recorded Videos</h3>
         <span ng-show="!isLoading">
             <span class="title-addition" ng-show="!searchQuery">(@{{ videos.length }})</span>
-            <span class="title-addition" ng-show="searchQuery">(@{{ videosFiltered.length }}/ @{{ videos.length }})</span>
+            <span class="title-addition" ng-show="searchQuery">(@{{ videosFiltered.length }}/@{{ videos.length }})</span>
         </span>
 
         <loader class="loader center-block" ng-show="isLoading"></loader>

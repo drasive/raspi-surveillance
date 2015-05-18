@@ -92,7 +92,7 @@
             <h3 class="inline-block">Network Cameras</h3>
             <span ng-show="!isLoading">
                 <span class="title-addition" ng-show="!searchQuery">(@{{ cameras.length }})</span>
-                <span class="title-addition" ng-show="searchQuery">(@{{ camerasFiltered.length }}/ @{{ cameras.length }})</span>
+                <span class="title-addition" ng-show="searchQuery">(@{{ camerasFiltered.length }}/@{{ cameras.length }})</span>
             </span>
 
             <loader class="loader center-block" ng-show="isLoading"></loader>
@@ -155,32 +155,32 @@
 
                             <!-- TODO: Optional: Handler error, add paging -->
                             <tr ng-repeat="camera in camerasFiltered = (cameras | filter:searchQuery | orderBy:orderField:orderReverse)"
-                                ng-class="{highlight: camera == activeCamera}" todo_onaftersave="saveCamera(camera)">
+                                ng-class="{highlight: camera == activeCamera}">
                                 <td>
                                     <!-- Name -->
                                     <span editable-text="camera.name" e-form="cameraForm" e-name="name" e-placeholder="Front Door"
-                                          onbeforesave="validateName($data)">
+                                        onbeforesave="validateName($data)">
                                         @{{ camera.name }}
                                     </span>
                                 </td>
                                 <td>
                                     <!-- IP address -->
                                     <span editable-text="camera.ipAddress" e-name="ipAddress" e-form="cameraForm" e-placeholder="192.168.0.12"
-                                          e-required onbeforesave="validateIpAddress($data)">
+                                        e-required onbeforesave="validateIpAddress($data)" onaftersave="saveCamera(camera)">
                                         @{{ camera.ipAddress }}
                                     </span>
                                 </td>
                                 <td>
                                     <!-- Port -->
                                     <span editable-text="camera.port" e-form="cameraForm" e-name="port" e-placeholder="8554"
-                                          e-required onbeforesave="validatePort($data)">
+                                        e-required onbeforesave="validatePort($data)">
                                         @{{ camera.port }}
                                     </span>
                                 </td>
                                 <td>
                                     <!-- Protocol -->
-                                    <span editable-text="camera.protocol | uppercase" e-form="cameraForm" e-name="protocol" e-placeholder="HTTP"
-                                          e-required onbeforesave="validateProtocol($data)">
+                                    <span editable-text="camera.protocol" e-form="cameraForm" e-name="protocol" e-placeholder="HTTP"
+                                        e-required onbeforesave="validateProtocol($data)">
                                         @{{ camera.protocol | uppercase }}
                                     </span>
                                 </td>
@@ -188,27 +188,27 @@
                                     <!-- Actions -->
                                     <div class="buttons" ng-show="!cameraForm.$visible">
                                         <button class="btn btn-success" ng-click="playStream(camera)"
-                                                ng-class="{ active: camera == activeCamera }" ng-disabled="camera.isBusy">
+                                            ng-class="{ active: camera == activeCamera }" ng-disabled="camera.isBusy">
                                             Watch
                                         </button>
                                         <button class="btn btn-primary" ng-click="cameraForm.$show()"
-                                                ng-disabled="camera.isBusy">
+                                            ng-disabled="camera.isBusy">
                                             Edit
                                         </button>
                                         <button class="btn btn-danger" ng-click="deleteCamera(camera)"
-                                                ng-disabled="camera.isBusy">
+                                            ng-disabled="camera.isBusy">
                                             Delete
                                         </button>
                                     </div>
 
                                     <!-- TODO: Get these to work, add validation and maxlength, disable during activity -->
-                                    <form eclass="form-buttons form-inline" ditable-form name="cameraForm" todo_onaftersave="saveCamera($data, camera.id)"
-                                          ng-show="cameraForm.$visible" shown="inserted == camera">
-                                        <button type="submit" ng-disabled="cameraForm.$waiting" class="btn btn-primary">
+                                    <form class="form-buttons form-inline" editable-form name="cameraForm"
+                                        ng-show="cameraForm.$visible" shown="inserted == camera">
+                                        <button class="btn btn-primary" type="submit" ng-disabled="camera.isBusy" >
                                             Save
                                         </button>
-                                        <button type="button" class="btn btn-default"
-                                                ng-disabled="cameraForm.$waiting" ng-click="cancelEditing(cameraForm, $index)">
+                                        <button class="btn btn-default" type="button" ng-disabled="camera.isBusy"
+                                            ng-click="cancelEditing(cameraForm, camera)">
                                             Cancel
                                         </button>
                                     </form>

@@ -11,7 +11,11 @@ angular.module('raspiSurveillance.services').factory('Settings', ['$resource',
 
 angular.module('raspiSurveillance.services').factory('Camera', ['$resource',
     function ($resource) {
-      return $resource('api/cameras/:id');
+      return $resource('api/cameras/:id', { id: '@id' }, {
+        update: {
+          method: 'PUT'
+        }
+      });
     }
 ]);
 

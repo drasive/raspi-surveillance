@@ -44,42 +44,81 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
       };
 
       console.log('Adding camera');
-      console.log(JSON.stringify($scope.inserted));
+      console.debug(JSON.stringify($scope.inserted));
 
       // Add item to scope
       $scope.cameras.push($scope.inserted);
     };
 
     $scope.saveCamera = function (camera) {
-      // TODO:
-      //$scope.user not updated yet
-      //angular.extend(data, {id: id});
+      // TODO: Keep form.$visible = true until done
 
-      console.info('Saving camera #' + camera.id);
-      console.debug(JSON.stringify(camera));
+      if (camera.id) {
+        // Camera already exists and gets update
+        console.info('Updating camera #' + camera.id);
+        console.debug(JSON.stringify(camera));
 
-      Camera.save(data,
-        function (data) {
-          // do nothing
-        },
-        function (error) {
-          console.error(error);
+        camera.isBusy = true;
+        // TODO: Update stream source
 
-          BootstrapDialog.show({
-            title: 'Failed to save network camera',
-            message: 'Sorry, an error occured while saving the network camera.<br />' +
-                     'Please try again in a few moments.',
-            type: BootstrapDialog.TYPE_DANGER,
-            buttons: [{
-              label: 'Close',
-              cssClass: 'btn-primary',
-              action: function (dialogItself) {
-                dialogItself.close();
-              }
-            }]
-          });
-        }
-      );
+        Camera.update(camera,
+          function(data) {
+            camera.isBusy = false;
+          },
+          function(error) {
+            console.error(error);
+
+            BootstrapDialog.show({
+              title: 'Failed to update network camera',
+              message: 'Sorry, an error occured while update the network camera.<br />' +
+                       'Please try again in a few moments.',
+              type: BootstrapDialog.TYPE_DANGER,
+              buttons: [
+                {
+                  label: 'Close',
+                  cssClass: 'btn-primary',
+                  action: function(dialogItself) {
+                    dialogItself.close();
+                  }
+                }
+              ]
+            });
+            camera.isBusy = false;
+          }
+        );
+      } else {
+        // Camera doesn't exists and gets created
+        console.info('Saving camera');
+        console.debug(JSON.stringify(camera));
+
+        camera.isBusy = true;
+
+        Camera.save(camera,
+          function(data) {
+            camera.isBusy = false;
+          },
+          function(error) {
+            console.error(error);
+
+            BootstrapDialog.show({
+              title: 'Failed to save network camera',
+              message: 'Sorry, an error occured while saving the network camera.<br />' +
+                       'Please try again in a few moments.',
+              type: BootstrapDialog.TYPE_DANGER,
+              buttons: [
+                {
+                  label: 'Close',
+                  cssClass: 'btn-primary',
+                  action: function(dialogItself) {
+                    dialogItself.close();
+                  }
+                }
+              ]
+            });
+            camera.isBusy = false;
+          }
+        );
+      }
     };
 
     $scope.deleteCamera = function (camera) {
@@ -135,13 +174,6 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
       $scope.orderField = field;
     };
 
-    $scope.cancelEditing = function (rowform, index) {
-      // TODO: https://stackoverflow.com/questions/21336943/customize-the-cancel-code-button-of-the-x-editable-angularjs
-      console.log(rowform, index);
-      $scope.cameras.splice(index, 1);
-      rowform.$cancel();
-    }
-
 
     $scope.getCameraStreamUrl = function (camera) {
       return camera.protocol.toLowerCase() + '://' + camera.ipAddress + ':' + camera.port;
@@ -176,7 +208,21 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
       }
     });
 
+
+    $scope.cancelEditing = function (form, camera) {
+      if (camera.id) {
+        // Camera already exists and would have been updated
+      } else {
+        // Camera was new and would have been added
+        var index = $scope.cameras.indexOf(camera);
+        $scope.cameras.splice(index, 1);
+      }
+
+      form.$cancel();
+    }
+
     // Input validation
+    // TODO: Validate duplicates
     $scope.validateName = function (data) {
       if (!data) {
         // Make sure data has value
