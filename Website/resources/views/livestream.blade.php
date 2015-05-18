@@ -42,11 +42,12 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
+                    <tr ng-class="{ highlight: isStreamPlaying }">
                         <td>Stream:</td>
                         <td>
                             <span ng-show="settings.camera.mode !== 1">Not available (not in streaming mode).</span>
-                            <button class="btn btn-success" ng-show="settings.camera.mode === 1" ng-click="playStream()">Watch</button>
+                            <button class="btn btn-success" ng-click="playStream()"
+                                ng-show="settings.camera.mode === 1" ng-class="{ active: isStreamPlaying }">Watch</button>
                         </td>
                     </tr>
                 </table>
@@ -187,7 +188,7 @@
                                     <!-- Actions -->
                                     <div class="buttons" ng-show="!cameraForm.$visible">
                                         <button class="btn btn-success" ng-click="playStream(camera)"
-                                                ng-disabled="camera.isBusy">
+                                                ng-class="{ active: camera == activeCamera }" ng-disabled="camera.isBusy">
                                             Watch
                                         </button>
                                         <button class="btn btn-primary" ng-click="cameraForm.$show()"

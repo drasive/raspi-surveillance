@@ -74,10 +74,12 @@ angular.module('raspiSurveillance.controllers').controller('SettingsController',
     $scope.isLoading = false;
     $scope.settings = $scope.getSettings(true);
 
+    $scope.playingStreamUrl = null;
+    $scope.isStreamPlaying = false;
     $scope.isBusy = false;
 
     // Methods
-    $scope.getCameraStreamURL = function () {
+    $scope.getCameraStreamUrl = function () {
       return 'http://localhost:8554';
     }
 
@@ -85,17 +87,40 @@ angular.module('raspiSurveillance.controllers').controller('SettingsController',
       var modes = ['Off', 'Streaming', 'Motion Detection'];
       console.info('Changing to mode "' + modes[mode] + '"');
 
-      if (mode !== 1) {
-        $rootScope.$broadcast('removingStreamSource', $scope.getCameraStreamURL());
+      if (mode === 1 && $scope.playingStreamUrl && $scope.playingStreamUrl.toLowerCase() === $scope.getCameraStreamUrl().toLowerCase()) {
+        // Current stream is local camera already
+        $scope.isStreamPlaying = true;
+      }
+      else if (mode !== 1) {
+        $scope.isStreamPlaying = false;
+        $scope.playingStreamUrl = null;
+        $rootScope.$broadcast('removingStreamSource', $scope.getCameraStreamUrl());
       }
 
       $scope.settings.camera.mode = mode;
       $scope.saveSettings();
     }
 
-    $scope.playStream = function() {
-      $rootScope.$broadcast('playStream', $scope.getCameraStreamURL(), 'video/mp4');
+    $scope.playStream = function () {
+      $scope.isStreamPlaying = true;
+      $rootScope.$broadcast('playStream', $scope.getCameraStreamUrl(), 'video/mp4');
     }
+
+    $scope.$on('playingStream', function (event, url, type) {
+      $scope.playingStreamUrl = url;
+
+      if ($scope.isStreamPlaying && url.toLowerCase() !== $scope.getCameraStreamUrl().toLowerCase()) {
+        // New stream is not the local camera anymore
+        console.info("Removing local camera highlight (stream from other source was opened)");
+        $scope.isStreamPlaying = false;
+      }
+      else if ($scope.settings.camera.mode === 1 &&
+        !$scope.isStreamPlaying && url.toLowerCase() === $scope.getCameraStreamUrl().toLowerCase()) {
+        // New stream is freshly the local camera
+        console.info("Highlighting local camera (stream from local camera was opened)");
+        $scope.isStreamPlaying = true;
+      }
+    });
 
   }
 ]);
