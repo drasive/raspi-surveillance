@@ -50,20 +50,35 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
       $scope.cameras.push($scope.inserted);
     };
 
-    $scope.saveCamera = function (camera) {
-      // TODO: Keep form.$visible = true until done
+    $scope.saveCamera = function (camera, data) {
+      // Update model that was passed in
+      var cameraOld = angular.copy(camera);
+
+      angular.extend(camera, {
+        name: data.name,
+        ipAddress: data.ipAddress,
+        port: data.port,
+        protocol: data.protocol
+      });
 
       if (camera.id) {
-        // Camera already exists and gets update
+        // Camera already exists and gets updated
         console.info('Updating camera #' + camera.id);
         console.debug(JSON.stringify(camera));
 
         camera.isBusy = true;
-        // TODO: Update stream source
 
-        Camera.update(camera,
-          function(data) {
+        return Camera.update(camera).$promise.then(
+          function (data) {
             camera.isBusy = false;
+
+            // Update stream source
+            console.warn(cameraOld);
+            console.warn(camera);
+            if ($scope.getCameraStreamUrl(camera) !== $scope.getCameraStreamUrl(cameraOld)) {
+              $rootScope.$broadcast('removingStreamSource', $scope.getCameraStreamUrl(cameraOld));
+              $rootScope.$broadcast('playStream', $scope.getCameraStreamUrl(camera), 'video/mp4');
+            }
           },
           function(error) {
             console.error(error);
@@ -93,8 +108,12 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
 
         camera.isBusy = true;
 
-        Camera.save(camera,
-          function(data) {
+        return Camera.save(camera).$promise.then(
+          function (data) {
+            // TODO: Set local id
+            //console.warn(data);
+            //camera.id = data.id;
+
             camera.isBusy = false;
           },
           function(error) {
@@ -209,7 +228,7 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
     });
 
 
-    $scope.cancelEditing = function (form, camera) {
+    $scope.cancelEditing = function (camera, form) {
       if (camera.id) {
         // Camera already exists and would have been updated
       } else {

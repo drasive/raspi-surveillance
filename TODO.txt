@@ -60,8 +60,8 @@ Video
 	Add pagination 
 
 Camera
-	Add pagination
 	Show and refresh availability
+	Add pagination
 
 Bugs
 	xeditable add/edit/save not working
@@ -70,3 +70,5 @@ Bugs
 ### Documentation ###
 Advise to do  mysql_secure_installation somewhere, if not setup already. Conf of .env required
 Advise to not run apt-autoremove because of "motion" dependencies
+Video filenames need to be URL save
+Advise to use modern browser

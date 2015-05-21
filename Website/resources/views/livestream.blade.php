@@ -42,7 +42,7 @@
                             </div>
                         </td>
                     </tr>
-                    <tr ng-class="{ highlight: isStreamPlaying }">
+                    <tr>
                         <td>Stream:</td>
                         <td>
                             <span ng-show="settings.camera.mode !== 1">Not available (not in streaming mode).</span>
@@ -54,8 +54,8 @@
             </div>
 
             <div ng-controller="LivestreamController" ng-cloak>
-                <!-- TODO: Show current stream URL somewhere -->
-                <h3>Livestream</h3>
+                <h3 class="inline-block">Livestream</h3>
+                <span class="title-addition" ng-show="stream.sources.length > 0">(@{{ getStreamUrl() }})</span>
 
                 <p ng-show="stream.sources.length === 0">
                     Select "Watch" on one of the listed cameras or enter a custom URL to see a livestream.
@@ -166,7 +166,7 @@
                                 <td>
                                     <!-- IP address -->
                                     <span editable-text="camera.ipAddress" e-name="ipAddress" e-form="cameraForm" e-placeholder="192.168.0.12"
-                                        e-required onbeforesave="validateIpAddress($data)" onaftersave="saveCamera(camera)">
+                                        e-required onbeforesave="validateIpAddress($data)">
                                         @{{ camera.ipAddress }}
                                     </span>
                                 </td>
@@ -201,14 +201,14 @@
                                         </button>
                                     </div>
 
-                                    <!-- TODO: Get these to work, add validation and maxlength, disable during activity -->
+                                    <!-- TODO: Add validation and maxlength -->
                                     <form class="form-buttons form-inline" editable-form name="cameraForm"
-                                        ng-show="cameraForm.$visible" shown="inserted == camera">
-                                        <button class="btn btn-primary" type="submit" ng-disabled="camera.isBusy" >
+                                          ng-show="cameraForm.$visible" shown="inserted == camera" onbeforesave="saveCamera(camera, $data)">
+                                        <button class="btn btn-primary" type="submit" ng-disabled="camera.isBusy">
                                             Save
                                         </button>
                                         <button class="btn btn-default" type="button" ng-disabled="camera.isBusy"
-                                            ng-click="cancelEditing(cameraForm, camera)">
+                                                ng-click="cancelEditing(camera, cameraForm)">
                                             Cancel
                                         </button>
                                     </form>

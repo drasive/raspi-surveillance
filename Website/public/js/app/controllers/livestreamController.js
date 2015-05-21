@@ -15,8 +15,17 @@ angular.module('raspiSurveillance.controllers').controller('LivestreamController
     };
 
     // Actions
+    $scope.getStreamUrl = function () {
+      if ($scope.stream.sources.length === 0) {
+        return null;
+      }
+
+      return $sce.getTrustedResourceUrl($scope.stream.sources[0].src);
+    };
+
+
     $scope.playStream = function (url, type) {
-      if ($scope.stream.sources.length > 0 && url.toLowerCase() === $sce.getTrustedResourceUrl($scope.stream.sources[0].src)) {
+      if ($scope.stream.sources.length > 0 && url.toLowerCase() === $scope.getStreamUrl().toLowerCase()) {
         console.log('Already playing livestream "' + url + '" (' + type + ')');
         return;
       }
@@ -42,7 +51,7 @@ angular.module('raspiSurveillance.controllers').controller('LivestreamController
         return;
       }
 
-      if (url.toLowerCase() === $sce.getTrustedResourceUrl($scope.stream.sources[0].src).toLowerCase()) {
+      if (url.toLowerCase() === $scope.getStreamUrl().toLowerCase()) {
         console.info('Stopping livestream (stream source "' + url + '" is being removed)');
 
         $scope.videoPlayer.stop();
