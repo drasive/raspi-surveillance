@@ -52,6 +52,7 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
 
     $scope.saveCamera = function (camera, data) {
       // Update model that was passed in
+      // TODO: Reset to old model when operation failed because of duplicate (Or else new values stay when cancelling)
       var cameraOld = angular.copy(camera);
 
       angular.extend(camera, {
@@ -73,19 +74,43 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
             camera.isBusy = false;
 
             // Update stream source
-            console.warn(cameraOld);
-            console.warn(camera);
             if ($scope.getCameraStreamUrl(camera) !== $scope.getCameraStreamUrl(cameraOld)) {
               $rootScope.$broadcast('removingStreamSource', $scope.getCameraStreamUrl(cameraOld));
               $rootScope.$broadcast('playStream', $scope.getCameraStreamUrl(camera), 'video/mp4');
             }
           },
-          function(error) {
+          function (error) {
+            // Camera already exists
+            if (error.status === 400 && error.data.toLowerCase().indexOf('already exists') > -1) {
+              console.warn('Camera already exists');
+
+              BootstrapDialog.show({
+                title: 'Camera already exists',
+                message: 'A camera with the same IP address and port already exists.<br />' +
+                         'Please change the IP address or port and save again.',
+                type: BootstrapDialog.TYPE_WARNING,
+                buttons: [
+                  {
+                    label: 'OK',
+                    cssClass: 'btn-primary',
+                    action: function (dialogItself) {
+                      dialogItself.close();
+                    }
+                  }
+                ]
+              });
+
+
+              camera.isBusy = false;
+              return "Camera already exists";
+            }
+
+            // General error
             console.error(error);
 
             BootstrapDialog.show({
               title: 'Failed to update network camera',
-              message: 'Sorry, an error occured while update the network camera.<br />' +
+              message: 'Sorry, an error occured while updating the network camera.<br />' +
                        'Please try again in a few moments.',
               type: BootstrapDialog.TYPE_DANGER,
               buttons: [
@@ -98,7 +123,9 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
                 }
               ]
             });
+
             camera.isBusy = false;
+            return true;
           }
         );
       } else {
@@ -110,13 +137,37 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
 
         return Camera.save(camera).$promise.then(
           function (data) {
-            // TODO: Set local id
-            //console.warn(data);
-            //camera.id = data.id;
+            // Update local id
+            camera.id = data.id;
 
             camera.isBusy = false;
           },
-          function(error) {
+          function (error) {
+            // Camera already exists
+            if (error.status === 400 && error.data.toLowerCase().indexOf('already exists') > -1) {
+              console.warn('Camera already exists');
+
+              BootstrapDialog.show({
+                title: 'Camera already exists',
+                message: 'A camera with the same IP address and port already exists.<br />' +
+                         'Please change the IP address or port and save again.',
+                type: BootstrapDialog.TYPE_WARNING,
+                buttons: [
+                  {
+                    label: 'Ok',
+                    cssClass: 'btn-primary',
+                    action: function (dialogItself) {
+                      dialogItself.close();
+                    }
+                  }
+                ]
+              });
+
+              camera.isBusy = false;
+              return "Camera already exists";
+            }
+
+            // General error
             console.error(error);
 
             BootstrapDialog.show({
@@ -134,7 +185,9 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
                 }
               ]
             });
+
             camera.isBusy = false;
+            return true;
           }
         );
       }
@@ -231,6 +284,7 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
     $scope.cancelEditing = function (camera, form) {
       if (camera.id) {
         // Camera already exists and would have been updated
+        // do nothing
       } else {
         // Camera was new and would have been added
         var index = $scope.cameras.indexOf(camera);
@@ -241,7 +295,6 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
     }
 
     // Input validation
-    // TODO: Validate duplicates
     $scope.validateName = function (data) {
       if (!data) {
         // Make sure data has value
@@ -249,8 +302,8 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
       }
 
       // Validate name
-      if (data.length > 32) {
-        return "Name can't be longer than 32 characters";
+      if (data.length > 64) {
+        return "Maximum 64 characters";
       }
 
       return true;
@@ -266,8 +319,11 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
       }
 
       // Validate IPv4 address
-      if (!/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$|^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$|^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/.test(data)) {
-        return "Please enter a valid IPv4 address";
+      if (data.length === 0) {
+        return "IP address is required";
+      }
+      else if (!/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$|^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$|^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/.test(data)) {
+        return "Invalid IPv4 address";
       }
 
       return true;
@@ -283,14 +339,17 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
       }
 
       // Validate port
-      if (data.length === 0 || data < 0 || data > 65535) {
-        return "Please enter a valid port";
+      if (data.length === 0) {
+        return "Port is required";
+      }
+      else if (data < 0 || data > 65535) {
+        return "Invalid port (0 to 65535)";
       }
 
       return true;
     };
 
-    $scope.validateProcotol = function (data) {
+    $scope.validateProtocol = function (data) {
       if (!data) {
         // Make sure data has value
         data = '';
@@ -300,8 +359,11 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
       }
 
       // Validate port
-      if (data.length === 0 || data.length > 5) {
-        return "Please enter a valid protocol";
+      if (data.length === 0) {
+        return "Protocol is required";
+      }
+      else if (data.length > 5) {
+        return "Maximum 5 characters";
       }
 
       return true;

@@ -76,7 +76,7 @@ class ApiCameraController extends ApiControllerBase {
 			return Response($exception, 500);
 		}
 		
-		return Response("", 200);
+		return self::JsonEncode($camera);
 	}
 
 	/**
@@ -145,7 +145,7 @@ class ApiCameraController extends ApiControllerBase {
 			return Response($exception, 500);
 		}
 		
-		return Response("", 200);
+		return self::JsonEncode($camera);
 	}
 
 	/**

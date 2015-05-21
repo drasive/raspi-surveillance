@@ -123,7 +123,7 @@
                                 </th>
                                 <th style="min-width: 130px">
                                     <a href="#" ng-click="orderBy('ipAddress')">
-                                        IP-Address
+                                        IP address
                                         <span ng-show="orderField === 'ipAddress'">
                                             <i class="fa fa-sort-numeric-asc" ng-show="!orderReverse"></i>
                                             <i class="fa fa-sort-numeric-desc" ng-show="orderReverse"></i>

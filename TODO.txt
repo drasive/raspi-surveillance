@@ -1,40 +1,13 @@
 ### Raspberry Pi ###
 
 Create installation script: test using docker image
-Create website installer script (database setup)
+Create website installer script (database setup, nopassword for scripts)
 
-Test
+Test Raspberry
 	Videostream scripts
 	Hosting website
 	Motion detection
 	Script execution
-
-### Website ###
-Create web interface
-	Operation mode management, video stream & stream management (home)
-	Video archive
-		List of recorded videos with video length, ordered by recording date (newest first)
-		Can be watched in browser
-		Can be downloaded
-	Settings
-		Video settings (quality, motion detection threshold)
-		Log files (start/ stop, mode changes, events like motion detection triggered)
-	About
-
-General
-	Error handling in HTML
-	Display time in local timezone
-	Login?: Auth:basic?
-	Show loading indicators during AJAX requests
-
-API
-	authentication?: Auth:basic?
-	stateless: driver=array
-
-Editing
-	Get working
-	HTML validation
-	Maxlength
 
 Test
 	General
@@ -49,13 +22,37 @@ Test
 			edit/delete current stream    
 		watch/ download/ delete
 			watch > download/ delete
-
 	Video archive
-		
+	
+### Website ###
+Create web interface
+	Operation mode management, video stream & stream management (home)
+	Video archive
+		List of recorded videos with video length, ordered by recording date (newest first)
+		Can be watched in browser
+		Can be downloaded
+	Settings (Optional)
+		Video settings (quality, motion detection threshold)
+		Log files (start/ stop, mode changes, events like motion detection triggered)
+	About
+
+General
+	Error handling in HTML
+	Display time in local timezone
+	Login?: Auth:basic?
+
+API
+	authentication?: Auth:basic?
+	stateless: driver=array
+
+Editing
+	Get working
+	HTML validation
+	Maxlength
 
 Local Camera
 	Implement server side
-		
+
 Video
 	Add pagination 
 
@@ -63,12 +60,9 @@ Camera
 	Show and refresh availability
 	Add pagination
 
-Bugs
-	xeditable add/edit/save not working
-	timezone wrong
-
 ### Documentation ###
 Advise to do  mysql_secure_installation somewhere, if not setup already. Conf of .env required
 Advise to not run apt-autoremove because of "motion" dependencies
 Video filenames need to be URL save
 Advise to use modern browser
+Describe how to configure timezone

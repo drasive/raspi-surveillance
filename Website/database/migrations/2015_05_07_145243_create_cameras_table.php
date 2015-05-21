@@ -19,7 +19,7 @@ class CreateCamerasTable extends Migration {
 			$table->smallInteger('port')->default('8554');
 			$table->unique(array('ip_address', 'port'));
 			$table->string('protocol', 5)->default('HTTP');
-			$table->string('name', 32)->nullable();
+			$table->string('name', 64)->nullable();
 			
 			$table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
 			$table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
