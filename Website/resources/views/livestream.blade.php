@@ -18,7 +18,13 @@
 
                 <loader class="loader center-block" ng-show="isLoading"></loader>
 
-                <table class="table table-condensed borderless" ng-show="!isLoading">
+                <div class="alert alert-danger" ng-show="!isLoading && hasError">
+                    Sorry, an error occured while loading the local camera settings.<br />
+                    <br />
+                    <button class="btn btn-default" ng-click="settings = getSettings(false, false)">Try again</button>
+                </div>
+
+                <table class="table table-condensed borderless" ng-show="!isLoading && !hasError">
                     <tr>
                         <td style="width: 100px;">IP Address:</td>
                         <td>{{{ $g_hostIpAddress }}} ({{{ $g_hostName }}})</td>
@@ -90,14 +96,20 @@
 
         <div class="col-lg-7" ng-controller="CameraManagementController" ng-cloak>
             <h3 class="inline-block">Network Cameras</h3>
-            <span ng-show="!isLoading">
+            <span ng-show="!isLoading && !hasError">
                 <span class="title-addition" ng-show="!searchQuery">(@{{ cameras.length }})</span>
                 <span class="title-addition" ng-show="searchQuery">(@{{ camerasFiltered.length }}/@{{ cameras.length }})</span>
             </span>
 
             <loader class="loader center-block" ng-show="isLoading"></loader>
 
-            <div ng-show="!isLoading">
+            <div class="alert alert-danger" ng-show="!isLoading && hasError">
+                Sorry, an error occured while loading the network cameras.<br />
+                <br />
+                <button class="btn btn-default" ng-click="cameras = getCameras(false)">Try again</button>
+            </div>
+
+            <div ng-show="!isLoading && !hasError">
                 <p ng-show="cameras.length === 0">
                     You currently do not have any network cameras.<br />
                     Click on "Add network camera" to add your first one.
@@ -153,9 +165,8 @@
                                 </th>
                             </tr>
 
-                            <!-- TODO: Optional: Handler error, add paging -->
                             <tr ng-repeat="camera in camerasFiltered = (cameras | filter:searchQuery | orderBy:orderField:orderReverse)"
-                                ng-class="{highlight: camera == activeCamera}">
+                                ng-class="{highlight: camera === activeCamera}">
                                 <td>
                                     <!-- Name -->
                                     <span editable-text="camera.name" e-form="cameraForm" e-name="name" e-placeholder="Front Door"
@@ -188,7 +199,7 @@
                                     <!-- Actions -->
                                     <div class="buttons" ng-show="!cameraForm.$visible">
                                         <button class="btn btn-success" ng-click="playStream(camera)"
-                                            ng-class="{ active: camera == activeCamera }" ng-disabled="camera.isBusy">
+                                            ng-class="{ active: camera === activeCamera }" ng-disabled="camera.isBusy">
                                             Watch
                                         </button>
                                         <button class="btn btn-primary" ng-click="cameraForm.$show()"
@@ -201,9 +212,9 @@
                                         </button>
                                     </div>
 
-                                    <!-- TODO: Add validation and maxlength -->
+                                    <!-- TODO: Add maxlength -->
                                     <form class="form-buttons form-inline" editable-form name="cameraForm"
-                                          ng-show="cameraForm.$visible" shown="inserted == camera" onbeforesave="saveCamera(camera, $data)">
+                                          ng-show="cameraForm.$visible" shown="inserted === camera" onbeforesave="saveCamera(camera, $data)">
                                         <button class="btn btn-primary" type="submit" ng-disabled="camera.isBusy">
                                             Save
                                         </button>

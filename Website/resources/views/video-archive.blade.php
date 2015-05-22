@@ -30,14 +30,20 @@
 
     <div class="col-lg-7" ng-controller="VideoManagementController" ng-cloak>
         <h3 class="inline-block">Recorded Videos</h3>
-        <span ng-show="!isLoading">
+        <span ng-show="!isLoading && !hasError">
             <span class="title-addition" ng-show="!searchQuery">(@{{ videos.length }})</span>
             <span class="title-addition" ng-show="searchQuery">(@{{ videosFiltered.length }}/@{{ videos.length }})</span>
         </span>
 
         <loader class="loader center-block" ng-show="isLoading"></loader>
+        
+        <div class="alert alert-danger" ng-show="!isLoading && hasError">
+            Sorry, an error occured while loading the surveillance videos.<br />
+            <br />
+            <button class="btn btn-default" ng-click="videos = getVideos(false)">Try again</button>
+        </div>
 
-        <div ng-show="!isLoading">
+        <div ng-show="!isLoading && !hasError">
             <p ng-show="videos.length === 0">
                 There currently are no recorded surveillance videos.<br />
                 Put the local camera into motion detection mode to automatically record surveillance videos when motion is detected.
@@ -83,10 +89,9 @@
                             </th>
                         </tr>
 
-                        <!-- TODO: Optional: Handler error, add paging -->
                         <tr ng-repeat="video in videosFiltered = (videos
                         | orFilter:['createdAtFormatted', 'durationFormatted', 'sizeFormatted']:searchQuery
-                        | orderBy:orderField:orderReverse)" ng-class="{highlight: video == activeVideo}">
+                        | orderBy:orderField:orderReverse)" ng-class="{highlight: video === activeVideo}">
                             <td>
                                 <!-- Recording date -->
                                 <span>
@@ -110,7 +115,7 @@
                                 <div class="buttons pull-right">
                                     <button class="btn btn-success" ng-click="playVideo(video)" ng-disabled="video.isBusy">Watch</button>
                                     <a class="btn btn-primary" href="/videos/@{{ video.filename }}" download="@{{ video.filename }}"
-                                        ng-class="{ active: camera == activeVideo }" ng-disabled="video.isBusy">Download</a>
+                                       ng-class="{ active: camera === activeVideo }" ng-disabled="video.isBusy">Download</a>
                                     <button class="btn btn-danger" ng-click="deleteVideo(video)" ng-disabled="video.isBusy">Delete</button>
                                 </div>
                             </td>

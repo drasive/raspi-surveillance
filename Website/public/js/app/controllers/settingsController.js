@@ -4,36 +4,43 @@ angular.module('raspiSurveillance.controllers').controller('SettingsController',
   '$scope', '$rootScope', 'Settings', function ($scope, $rootScope, Settings) {
 
     // API
-    $scope.getSettings = function(playStreamIfAvailable) {
+    $scope.getSettings = function (showModalOnError, playStreamIfAvailable) {
       $scope.isLoading = true;
 
       return Settings.get(
-        function (data) {
+        function (response) {
           console.log('Loaded settings');
-          console.debug(data);
+          console.debug(response);
 
+          $scope.hasError = false;
           $scope.isLoading = false;
 
-          if (playStreamIfAvailable && data.camera.mode === 1) {
+          if (playStreamIfAvailable && response.camera.mode === 1) {
             $scope.playStream();
           }
         },
-        function (error) {
-          console.error(error);
+        function (response) {
+          console.error(response);
 
-          BootstrapDialog.show({
-            title: 'Failed to load settings',
-            message: 'Sorry, an error occured while loading the setings.<br />' +
-                     'Please try again in a few moments.',
-            type: BootstrapDialog.TYPE_DANGER,
-            buttons: [{
-              label: 'Close',
-              cssClass: 'btn-primary',
-              action: function (dialogItself) {
-                dialogItself.close();
-              }
-            }]
-          });
+          if (showModalOnError) {
+            BootstrapDialog.show({
+              title: 'Failed to load settings',
+              message: 'Sorry, an error occured while loading the setings.<br />' +
+                'Please try again in a few moments.',
+              type: BootstrapDialog.TYPE_DANGER,
+              buttons: [
+                {
+                  label: 'Close',
+                  cssClass: 'btn-primary',
+                  action: function(dialogItself) {
+                    dialogItself.close();
+                  }
+                }
+              ]
+            });
+          }
+
+          $scope.hasError = true;
           $scope.isLoading = false;
         }
       );
@@ -46,11 +53,11 @@ angular.module('raspiSurveillance.controllers').controller('SettingsController',
       $scope.isBusy = true;
 
       Settings.save($scope.settings,
-        function (data) {
+        function (response) {
           $scope.isBusy = false;
         },
-        function (error) {
-          console.error(error);
+        function (response) {
+          console.error(response);
 
           BootstrapDialog.show({
             title: 'Failed to save settings',
@@ -65,6 +72,7 @@ angular.module('raspiSurveillance.controllers').controller('SettingsController',
               }
             }]
           });
+
           $scope.isBusy = false;
         }
       );
@@ -72,7 +80,8 @@ angular.module('raspiSurveillance.controllers').controller('SettingsController',
 
     // Attributes
     $scope.isLoading = false;
-    $scope.settings = $scope.getSettings(true);
+    $scope.hasError = false;
+    $scope.settings = $scope.getSettings(true, true);
 
     $scope.playingStreamUrl = null;
     $scope.isStreamPlaying = false;

@@ -4,32 +4,39 @@ angular.module('raspiSurveillance.controllers').controller('VideoManagementContr
   '$scope', '$rootScope', 'Video', function($scope, $rootScope, Video) {
 
     // API
-    $scope.getVideos = function () {
+    $scope.getVideos = function (showModalOnError) {
       $scope.isLoading = true;
 
       return Video.query(
-       function (data) {
-         console.log('Loaded ' + data.length + ' videos');
-         console.debug(data);
+       function (response) {
+         console.log('Loaded ' + response.length + ' videos');
+         console.debug(response);
 
+         $scope.hasError = false;
          $scope.isLoading = false;
        },
-       function (error) {
-         console.error(error);
+       function (response) {
+         console.error(response);
 
-         BootstrapDialog.show({
-           title: 'Failed to load surveillance videos',
-           message: 'Sorry, an error occured while loading the surveillance videos.<br />' +
-                    'Please try again in a few moments.',
-           type: BootstrapDialog.TYPE_DANGER,
-           buttons: [{
-             label: 'Close',
-             cssClass: 'btn-primary',
-             action: function (dialogItself) {
-               dialogItself.close();
-             }
-           }]
-         });
+         if (showModalOnError) {
+           BootstrapDialog.show({
+             title: 'Failed to load surveillance videos',
+             message: 'Sorry, an error occured while loading the surveillance videos.<br />' +
+               'Please try again in a few moments.',
+             type: BootstrapDialog.TYPE_DANGER,
+             buttons: [
+               {
+                 label: 'Close',
+                 cssClass: 'btn-primary',
+                 action: function(dialogItself) {
+                   dialogItself.close();
+                 }
+               }
+             ]
+           });
+         }
+
+         $scope.hasError = true;
          $scope.isLoading = false;
        }
      );
@@ -43,13 +50,13 @@ angular.module('raspiSurveillance.controllers').controller('VideoManagementContr
       $rootScope.$broadcast('removingVideo', $scope.getVideoUrl(video));
 
       return Video.delete({ filename: video.filename },
-        function (data) {
+        function (response) {
           // Remove item from scope
           var index = $scope.videos.indexOf(video);
           $scope.videos.splice(index, 1);
         },
-        function (error) {
-          console.error(error);
+        function (response) {
+          console.error(response);
 
           BootstrapDialog.show({
             title: 'Failed to delete surveillance video',
@@ -66,13 +73,15 @@ angular.module('raspiSurveillance.controllers').controller('VideoManagementContr
               }
             ]
           });
+
           video.isBusy = false;
         });
     };
 
     // Attributes
     $scope.isLoading = true;
-    $scope.videos = $scope.getVideos();
+    $scope.hasError = false;
+    $scope.videos = $scope.getVideos(true);
 
     $scope.orderField = 'createdAt';
     $scope.orderReverse = false;

@@ -5,9 +5,9 @@ Create website installer script (database setup, nopassword for scripts)
 
 Test Raspberry
 	Videostream scripts
+	Videoplayer
 	Hosting website
 	Motion detection
-	Script execution
 
 Test
 	General
@@ -20,45 +20,31 @@ Test
 		watch/ edit/ delete
 			edit > play/ delete
 			edit/delete current stream    
+	Video archive
 		watch/ download/ delete
 			watch > download/ delete
-	Video archive
-	
-### Website ###
-Create web interface
-	Operation mode management, video stream & stream management (home)
-	Video archive
-		List of recorded videos with video length, ordered by recording date (newest first)
-		Can be watched in browser
-		Can be downloaded
-	Settings (Optional)
-		Video settings (quality, motion detection threshold)
-		Log files (start/ stop, mode changes, events like motion detection triggered)
-	About
 
+### Website ###
 General
-	Error handling in HTML
 	Display time in local timezone
 	Login?: Auth:basic?
+	/Settings
+		Video settings (quality, motion detection threshold)
+		Log files (start/ stop, mode changes, events like motion detection triggered)
 
 API
 	authentication?: Auth:basic?
 	stateless: driver=array
 
-Editing
-	Get working
-	HTML validation
-	Maxlength
-
 Local Camera
 	Implement server side
 
 Video
-	Add pagination 
+	/Add pagination 
 
 Camera
-	Show and refresh availability
-	Add pagination
+	/Show and refresh availability
+	/Add pagination
 
 ### Documentation ###
 Advise to do  mysql_secure_installation somewhere, if not setup already. Conf of .env required
