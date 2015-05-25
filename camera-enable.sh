@@ -21,7 +21,7 @@ fi
 
 # Enable camera
 if grep "start_x=1" $configurationFile; then
-	echo "Camera module is already enabled"
+    echo "Camera module is already enabled"
 else
     sed -i "s/start_x=0/start_x=1/g" $configurationFile
     echo "Camera module is now enabled, a reboot is required for the change to take effect"

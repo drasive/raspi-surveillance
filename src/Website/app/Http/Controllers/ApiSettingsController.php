@@ -67,8 +67,18 @@ class ApiSettingsController extends ApiControllerBase {
 
 
 	// Methods
-	// TODO:
+	// TODO: Test
 	protected static function getCameraMode() {
+		if (strpos(strtolower(self::getVideostreamStatus()), 'is running') !== FALSE) {
+			// Videostream is running
+			return 1;
+		}
+		else if (strpos(strtolower(self::getMotionDetectionStatus()), 'is running') !== FALSE) {
+			// Motion detection is running
+			return 2;
+		}
+		
+		// Neither videostream nor motion detection is running
 		return 0;
 	}
 
@@ -96,19 +106,27 @@ class ApiSettingsController extends ApiControllerBase {
 
 
 	protected static function startVideostream() {
-		//shell_exec('sudo ');
+		shell_exec('sudo ../../scripts/videostream-start-http.sh');
 	}
 
 	protected static function stopVideostream() {
-		//shell_exec('sudo ');
+		shell_exec('sudo ../../scripts/videostream-stop.sh');
+	}
+	
+	protected static function getVideostreamStatus() {
+		return shell_exec('sudo ../../scripts/videostream-status.sh');
 	}
 
 	protected static function startMotionDetection() {
-		//shell_exec('sudo ');
+		shell_exec('sudo ../../scripts/motion-detection-start.sh');
 	}
 
 	protected static function stopMotionDetection() {
-		//shell_exec('sudo ');
+		shell_exec('sudo ../../scripts/motion-detection-stop.sh');
+	}
+	
+	protected static function getMotionDetectionStatus() {
+		return shell_exec('sudo ../../scripts/motion-detection-status.sh');
 	}
 
 

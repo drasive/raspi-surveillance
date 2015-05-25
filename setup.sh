@@ -39,3 +39,6 @@ mv /tmp/motion /usr/bin
 # TODO: http://sjj.azurewebsites.net/?p=701
 # TODO: http://www.lavrsen.dk/foswiki/bin/view/Motion/ConfigFileOptions
 #sed -i "s/start_x=0/start_x=1/g" /etc/motion.conf
+
+# Setup control scripts
+
