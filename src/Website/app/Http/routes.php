@@ -1,9 +1,11 @@
 <?php
 
+// TODO: Fix when put in apache subfolder
+
 // Pages
-Route::get('/', 'LivestreamController@index');
-Route::get('/video-archive', 'VideoArchiveController@index');
-Route::get('/about', 'AboutController@index');
+Route::get('', 'LivestreamController@index');
+Route::get('video-archive', 'VideoArchiveController@index');
+Route::get('about', 'AboutController@index');
 
 // API
 Route::resource('api/settings', 'ApiSettingsController',

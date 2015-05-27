@@ -17,9 +17,8 @@ if [ $(id -u) = 0 ]; then
 fi
 
 # Prepare videostream
-# TODO: Test without
-#export DISPLAY=:0
-#$startx&
+export DISPLAY=:0
+$startx&
 
 # Start videostream
 if screen -list | grep -q $screenName; then
@@ -29,5 +28,5 @@ else
 
     screen -dmS $screenName \
       raspivid -o - -t 0 -n -w $videoWidth -h $videoHeight -fps $videoFPS \
-      | cvlc stream:///dev/stdin --sout '#rtp{sdp=rtsp://:'$streamPort'/}' :demux=h264
+      | cvlc --x11-display :0 stream:///dev/stdin --sout '#rtp{sdp=rtsp://:'$streamPort'/}' :demux=h264
 fi

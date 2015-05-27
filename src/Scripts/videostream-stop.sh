@@ -11,6 +11,7 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 # Stop videostream
+# TODO: Always is false, test if status and other stop scripts work
 if screen -list | grep -q $screenName; then
     screen -S $screenName -X quit
     echo "Stopped videostream in screen \"$screenName\""

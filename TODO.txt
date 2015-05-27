@@ -52,3 +52,11 @@ Advise to not run apt-autoremove because of "motion" dependencies
 Video filenames need to be URL save
 Advise to use modern browser
 Describe how to configure timezone
+
+### Notes ###
+only one default timestamp in mysql
+chmod on htdocs
+routing when in apache subfolder
+video tag can't play HTTP stream
+stop-scripts not working
+sudo apt-get install php5-mcrypt
