@@ -1,17 +1,24 @@
 ### Raspberry Pi ###
 
-Create installation script: test using docker image
-Create website installer script (database setup, nopassword for scripts)
+Prepare
+	Hosting in subfolder on pi
+	Script functionality and execution 
+	Use of screen
+	livestream video player: Use ogg?
+	mysql < 5.6
+	Website
 
-Test Raspberry
+Test on Raspberry
 	Videostream scripts
 	Videoplayer
 	Hosting website
 	Motion detection
 
-Test
+Test Website
 	General
+		Folder structure
 		Camera control
+		TODOs
 	Livestream
 		local/ remote
 		port
@@ -25,38 +32,39 @@ Test
 			watch > download/ delete
 
 ### Website ###
-General
-	Display time in local timezone
-	Login?: Auth:basic?
-	/Settings
-		Video settings (quality, motion detection threshold)
-		Log files (start/ stop, mode changes, events like motion detection triggered)
+General	
+	Create release instructions
+	Create README
 
 API
-	authentication?: Auth:basic?
 	stateless: driver=array
 
 Local Camera
 	Implement server side
 
-Video
-	/Add pagination 
-
-Camera
-	/Show and refresh availability
-	/Add pagination
+No time
+	User/ AJAX request authentication
+	Logging (start/ stop, mode changes, events like motion detection triggered)
+	Settings page
+		Video settings (quality, motion detection threshold)
+		Log entry viewer
+	Table pagination
+	Automatic client timezone
+	Network camera stream availability indicator
+	Show error when livestream/ video doesn't play
 
 ### Documentation ###
-Advise to do  mysql_secure_installation somewhere, if not setup already. Conf of .env required
-Advise to not run apt-autoremove because of "motion" dependencies
-Video filenames need to be URL save
-Advise to use modern browser
-Describe how to configure timezone
+Setup
+	Advise to not run apt-autoremove because of "motion" dependencies
+	Attention: scripts can be executed as root without password from user www-data
+	Advise to do  mysql_secure_installation somewhere, if not setup already. Conf of .env required
+	Manual database creation required (script exists)
+	Advise to check htdocs access rights
 
-### Notes ###
-only one default timestamp in mysql
-chmod on htdocs
-routing when in apache subfolder
-video tag can't play HTTP stream
-stop-scripts not working
-sudo apt-get install php5-mcrypt
+Configuration
+	Describe how to configure timezone
+	Video filenames need to be URL save
+
+Usage
+	Advise to use modern browser if problem with video player
+	Attention: No authentication

@@ -3,6 +3,8 @@
 angular.module('raspiSurveillance.controllers').controller('VideoManagementController', [
   '$scope', '$rootScope', 'Video', function($scope, $rootScope, Video) {
 
+    // TODO: Add delete confirmation
+
     // API
     $scope.getVideos = function (showModalOnError) {
       $scope.isLoading = true;
@@ -28,8 +30,8 @@ angular.module('raspiSurveillance.controllers').controller('VideoManagementContr
                {
                  label: 'Close',
                  cssClass: 'btn-primary',
-                 action: function(dialogItself) {
-                   dialogItself.close();
+                 action: function(dialog) {
+                   dialog.close();
                  }
                }
              ]
@@ -67,8 +69,8 @@ angular.module('raspiSurveillance.controllers').controller('VideoManagementContr
               {
                 label: 'Close',
                 cssClass: 'btn-primary',
-                action: function (dialogItself) {
-                  dialogItself.close();
+                action: function (dialog) {
+                  dialog.close();
                 }
               }
             ]

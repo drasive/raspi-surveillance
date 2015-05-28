@@ -28,8 +28,8 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
                 {
                   label: 'Close',
                   cssClass: 'btn-primary',
-                  action: function (dialogItself) {
-                    dialogItself.close();
+                  action: function (dialog) {
+                    dialog.close();
                   }
                 }
               ]
@@ -58,10 +58,11 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
     };
 
     $scope.saveCamera = function (camera, updatedProperties) {
-      // Update model that was passed in
-      // TODO: Reset to old model when operation failed because of existing duplicate (Or else new values stay when cancelling)
-      var cameraOld = angular.copy(camera);
+      // Save original models
+      var cameraActiveOriginal = angular.copy($scope.activeCamera);
+      var cameraOriginal = angular.copy(camera);
 
+      // Update local model
       angular.extend(camera, {
         name: updatedProperties.name,
         ipAddress: updatedProperties.ipAddress,
@@ -80,14 +81,20 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
           function (response) {
             camera.isBusy = false;
 
-            // Update stream source
-            // TODO: Only update stream if updated camera is currently active
-            if ($scope.getCameraStreamUrl(camera) !== $scope.getCameraStreamUrl(cameraOld)) {
-              $rootScope.$broadcast('removingStreamSource', $scope.getCameraStreamUrl(cameraOld));
+            // Update stream source, if the currently active camera gets updated and the stream URL is changing
+            if (cameraActiveOriginal
+                && $scope.getCameraStreamUrl(cameraActiveOriginal) === $scope.getCameraStreamUrl(cameraOriginal)
+                && $scope.getCameraStreamUrl(cameraOriginal) !== $scope.getCameraStreamUrl(camera)) {
+              $rootScope.$broadcast('removingStreamSource', $scope.getCameraStreamUrl(cameraOriginal));
               $rootScope.$broadcast('playStream', $scope.getCameraStreamUrl(camera), 'video/mp4');
             }
           },
           function (response) {
+            // TODO: Check if necessary, fix isBusy=false not being returned
+            // Reset local model
+            camera = angular.copy(cameraOriginal);
+            camera.isBusy = false;
+
             // Camera already exists
             if (response.status === 400 && response.data.toLowerCase().indexOf('already exists') > -1) {
               console.warn('Camera already exists');
@@ -101,14 +108,13 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
                   {
                     label: 'OK',
                     cssClass: 'btn-primary',
-                    action: function (dialogItself) {
-                      dialogItself.close();
+                    action: function (dialog) {
+                      dialog.close();
                     }
                   }
                 ]
               });
 
-              camera.isBusy = false;
               return "Camera already exists";
             }
 
@@ -124,15 +130,14 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
                 {
                   label: 'Close',
                   cssClass: 'btn-primary',
-                  action: function (dialogItself) {
-                    dialogItself.close();
+                  action: function (dialog) {
+                    dialog.close();
                   }
                 }
               ]
             });
 
-            camera.isBusy = false;
-            return true;
+            return "Failed to update network camera";
           }
         );
       } else {
@@ -150,6 +155,11 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
             camera.isBusy = false;
           },
           function (response) {
+            // TODO: Check if necessary, fix isBusy=false not being returned
+            // Reset local model
+            camera = angular.copy(cameraOriginal);
+            camera.isBusy = false;
+
             // Camera already exists
             if (response.status === 400 && response.data.toLowerCase().indexOf('already exists') > -1) {
               console.warn('Camera already exists');
@@ -163,14 +173,13 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
                   {
                     label: 'Ok',
                     cssClass: 'btn-primary',
-                    action: function (dialogItself) {
-                      dialogItself.close();
+                    action: function (dialog) {
+                      dialog.close();
                     }
                   }
                 ]
               });
 
-              camera.isBusy = false;
               return "Camera already exists";
             }
 
@@ -186,53 +195,76 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
                 {
                   label: 'Close',
                   cssClass: 'btn-primary',
-                  action: function (dialogItself) {
-                    dialogItself.close();
+                  action: function (dialog) {
+                    dialog.close();
                   }
                 }
               ]
             });
 
-            camera.isBusy = false;
-            return true;
+            return "Failed to save network camera";
           }
         );
       }
     };
 
     $scope.deleteCamera = function (camera) {
-      console.info('Deleting camera #' + camera.id);
-      console.debug(JSON.stringify(camera));
+      var cameraDisplayName = (camera.name)
+        ? '"' + camera.name + '" (' + $scope.getCameraStreamUrl(camera) + ')'
+        : '"' + $scope.getCameraStreamUrl(camera) + '"';
 
-      camera.isBusy = true;
-      $rootScope.$broadcast('removingStreamSource', $scope.getCameraStreamUrl(camera));
+      BootstrapDialog.show({
+        title: 'Really delete network camera ' + cameraDisplayName + '?',
+        message: 'Do you really want to delete the network camera ' + cameraDisplayName + '?'
+               + '<br />A deleted network camera cannot be restored.',
+        type: BootstrapDialog.TYPE_WARNING,
+        buttons: [{
+          label: 'Yes',
+          cssClass: 'btn-danger',
+          action: function (dialog) {
+            console.info('Deleting camera #' + camera.id);
+            console.debug(JSON.stringify(camera));
 
-      return Camera.delete({ id: camera.id },
-        function (response) {
-          // Remove item from scope
-          var index = $scope.cameras.indexOf(camera);
-          $scope.cameras.splice(index, 1);
-        },
-        function (response) {
-          console.error(response);
+            camera.isBusy = true;
+            $rootScope.$broadcast('removingStreamSource', $scope.getCameraStreamUrl(camera));
 
-          BootstrapDialog.show({
-            title: 'Failed to delete network camera',
-            message: 'Sorry, an error occured while deleting the camera.<br />' +
-                     'Please try again in a few moments.',
-            type: BootstrapDialog.TYPE_DANGER,
-            buttons: [{
-              label: 'Close',
-              cssClass: 'btn-primary',
-              action: function (dialogItself) {
-                dialogItself.close();
+            dialog.close();
+
+            return Camera.delete({ id: camera.id },
+              function (response) {
+                // Remove item from scope
+                var index = $scope.cameras.indexOf(camera);
+                $scope.cameras.splice(index, 1);
+              },
+              function (response) {
+                console.error(response);
+
+                BootstrapDialog.show({
+                  title: 'Failed to delete network camera',
+                  message: 'Sorry, an error occured while deleting the camera.<br />' +
+                           'Please try again in a few moments.',
+                  type: BootstrapDialog.TYPE_DANGER,
+                  buttons: [{
+                    label: 'Close',
+                    cssClass: 'btn-primary',
+                    action: function (dialog) {
+                      dialog.close();
+                    }
+                  }]
+                });
+
+                camera.isBusy = false;
               }
-            }]
-          });
-
-          camera.isBusy = false;
-        }
-      );
+            );
+          }
+        }, {
+          label: 'No',
+          cssClass: 'btn-primary',
+          action: function (dialog) {
+            dialog.close();
+          }
+        }]
+      });
     };
 
     // Attributes

@@ -68,7 +68,7 @@
                 </p>
 
                 <p ng-show="stream.sources.length > 0">
-                    <!-- TODO: Optional: Handle when video doesn't play -->
+                    <!-- TODO: Fix livestream -->
                     <videogular vg-player-ready="onPlayerReady($API)" vg-theme="stream.theme">
                         <vg-media vg-src="stream.sources"
                                   vg-tracks="stream.tracks"
@@ -169,29 +169,29 @@
                                 ng-class="{highlight: camera === activeCamera}">
                                 <td>
                                     <!-- Name -->
-                                    <span editable-text="camera.name" e-form="cameraForm" e-name="name" e-placeholder="Front Door"
-                                        onbeforesave="validateName($data)">
+                                    <span editable-text="camera.name" e-form="cameraForm" e-name="name" e-required e-type="text" e-maxlength="64"
+                                          e-placeholder="Front Door" onbeforesave="validateName($data)">
                                         @{{ camera.name }}
                                     </span>
                                 </td>
                                 <td>
                                     <!-- IP address -->
-                                    <span editable-text="camera.ipAddress" e-name="ipAddress" e-form="cameraForm" e-placeholder="192.168.0.12"
-                                        e-required onbeforesave="validateIpAddress($data)">
+                                    <span editable-text="camera.ipAddress" e-form="cameraForm" e-name="ipAddress" e-required e-type="text" e-maxlength="15"
+                                          e-placeholder="192.168.0.12" onbeforesave="validateIpAddress($data)">
                                         @{{ camera.ipAddress }}
                                     </span>
                                 </td>
                                 <td>
                                     <!-- Port -->
-                                    <span editable-text="camera.port" e-form="cameraForm" e-name="port" e-placeholder="8554"
-                                        e-required onbeforesave="validatePort($data)">
+                                    <span editable-text="camera.port" e-form="cameraForm" e-name="port" e-required e-type="number" e-min="0" e-max="65535"
+                                          e-placeholder="8554" onbeforesave="validatePort($data)">
                                         @{{ camera.port }}
                                     </span>
                                 </td>
                                 <td>
                                     <!-- Protocol -->
-                                    <span editable-text="camera.protocol" e-form="cameraForm" e-name="protocol" e-placeholder="HTTP"
-                                        e-required onbeforesave="validateProtocol($data)">
+                                    <span editable-text="camera.protocol" e-form="cameraForm" e-name="protocol" e-required e-type="text" e-maxlength="5"
+                                          e-placeholder="HTTP" onbeforesave="validateProtocol($data)">
                                         @{{ camera.protocol | uppercase }}
                                     </span>
                                 </td>
@@ -212,7 +212,6 @@
                                         </button>
                                     </div>
 
-                                    <!-- TODO: Add maxlength -->
                                     <form class="form-buttons form-inline" editable-form name="cameraForm"
                                           ng-show="cameraForm.$visible" shown="inserted === camera" onbeforesave="saveCamera(camera, $data)">
                                         <button class="btn btn-primary" type="submit" ng-disabled="camera.isBusy">

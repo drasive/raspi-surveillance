@@ -32,8 +32,8 @@ angular.module('raspiSurveillance.controllers').controller('SettingsController',
                 {
                   label: 'Close',
                   cssClass: 'btn-primary',
-                  action: function(dialogItself) {
-                    dialogItself.close();
+                  action: function(dialog) {
+                    dialog.close();
                   }
                 }
               ]
@@ -67,8 +67,8 @@ angular.module('raspiSurveillance.controllers').controller('SettingsController',
             buttons: [{
               label: 'Close',
               cssClass: 'btn-primary',
-              action: function (dialogItself) {
-                dialogItself.close();
+              action: function (dialog) {
+                dialog.close();
               }
             }]
           });

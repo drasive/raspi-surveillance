@@ -67,6 +67,14 @@ class ApiSettingsController extends ApiControllerBase {
 
 
 	// Methods
+	protected static function JsonEncode($settings) {
+		return array(
+			'camera' => array(
+				'mode' => $settings->camera_mode)
+		);
+	}
+
+
 	// TODO: Test
 	protected static function getCameraMode() {
 		if (strpos(strtolower(self::getVideostreamStatus()), 'is running') !== FALSE) {
@@ -105,36 +113,46 @@ class ApiSettingsController extends ApiControllerBase {
 	}
 
 
+	protected static function executeScript($path) {
+		$file = realpath($path);
+
+		if (!file_exists($file)) {
+			throw new Exception('Script does not exist: ' . $file);
+		}
+
+		$output = array();
+		$status = -1;
+		exec($file, $output, $status);
+
+		if ($status !== 0) {
+			throw new Exception('Error executing script "' . $file . '" (' . $status . '): ' . implode($output));
+		}
+
+		return end($output);
+	}
+
 	protected static function startVideostream() {
-		shell_exec('sudo ../../scripts/videostream-start-http.sh');
+		self::executeScript('../../scripts/videostream-start-http.sh');
 	}
 
 	protected static function stopVideostream() {
-		shell_exec('sudo ../../scripts/videostream-stop.sh');
+		self::executeScript('../../scripts/videostream-stop.sh');
 	}
 	
 	protected static function getVideostreamStatus() {
-		return shell_exec('sudo ../../scripts/videostream-status.sh');
+		return self::executeScript('../../scripts/videostream-status.sh');
 	}
 
 	protected static function startMotionDetection() {
-		shell_exec('sudo ../../scripts/motion-detection-start.sh');
+		self::executeScript('../../scripts/motion-detection-start.sh');
 	}
 
 	protected static function stopMotionDetection() {
-		shell_exec('sudo ../../scripts/motion-detection-stop.sh');
+		self::executeScript('../../scripts/motion-detection-stop.sh');
 	}
 	
 	protected static function getMotionDetectionStatus() {
-		return shell_exec('sudo ../../scripts/motion-detection-status.sh');
-	}
-
-
-	protected static function JsonEncode($settings) {
-		return array(
-			'camera' => array(
-				'mode' => $settings->camera_mode)
-		);
+		return self::executeScript('../../scripts/motion-detection-status.sh');
 	}
 
 }
