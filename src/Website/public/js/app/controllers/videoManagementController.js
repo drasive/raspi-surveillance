@@ -3,8 +3,6 @@
 angular.module('raspiSurveillance.controllers').controller('VideoManagementController', [
   '$scope', '$rootScope', 'Video', function($scope, $rootScope, Video) {
 
-    // TODO: Add delete confirmation
-
     // API
     $scope.getVideos = function (showModalOnError) {
       $scope.isLoading = true;
@@ -45,39 +43,61 @@ angular.module('raspiSurveillance.controllers').controller('VideoManagementContr
     };
 
     $scope.deleteVideo = function (video) {
-      console.info('Deleting video "' + video.filename + '"');
-      console.debug(JSON.stringify(video));
+      var videoDisplayName = video.createdAtFormatted + ' (' + video.durationFormatted + ', ' + video.sizeFormatted + ')';
 
-      video.isBusy = true;
-      $rootScope.$broadcast('removingVideo', $scope.getVideoUrl(video));
+      BootstrapDialog.show({
+        title: 'Really delete surveillance video from ' + video.createdAtFormatted + '?',
+        message: 'Do you really want to delete the surveillance video recorded at ' + videoDisplayName + '?'
+               + '<br />A deleted surveillance video cannot be restored.',
+        type: BootstrapDialog.TYPE_WARNING,
+        buttons: [{
+          label: 'Yes',
+          cssClass: 'btn-danger',
+          action: function (dialog) {
+            console.info('Deleting video "' + video.filename + '"');
+            console.debug(JSON.stringify(video));
 
-      return Video.delete({ filename: video.filename },
-        function (response) {
-          // Remove item from scope
-          var index = $scope.videos.indexOf(video);
-          $scope.videos.splice(index, 1);
-        },
-        function (response) {
-          console.error(response);
+            video.isBusy = true;
+            $rootScope.$broadcast('removingVideo', $scope.getVideoUrl(video));
 
-          BootstrapDialog.show({
-            title: 'Failed to delete surveillance video',
-            message: 'Sorry, an error occured while deleting the surveillance video.<br />' +
-                     'Please try again in a few moments.',
-            type: BootstrapDialog.TYPE_DANGER,
-            buttons: [
-              {
-                label: 'Close',
-                cssClass: 'btn-primary',
-                action: function (dialog) {
-                  dialog.close();
-                }
-              }
-            ]
-          });
+            dialog.close();
 
-          video.isBusy = false;
-        });
+            return Video.delete({ filename: video.filename },
+              function (response) {
+                // Remove item from scope
+                var index = $scope.videos.indexOf(video);
+                $scope.videos.splice(index, 1);
+              },
+              function (response) {
+                console.error(response);
+
+                BootstrapDialog.show({
+                  title: 'Failed to delete surveillance video',
+                  message: 'Sorry, an error occured while deleting the surveillance video.<br />' +
+                           'Please try again in a few moments.',
+                  type: BootstrapDialog.TYPE_DANGER,
+                  buttons: [
+                    {
+                      label: 'Close',
+                      cssClass: 'btn-primary',
+                      action: function (dialog) {
+                        dialog.close();
+                      }
+                    }
+                  ]
+                });
+
+                video.isBusy = false;
+              });
+          }
+        }, {
+          label: 'No',
+          cssClass: 'btn-primary',
+          action: function (dialog) {
+            dialog.close();
+          }
+        }]
+      });
     };
 
     // Attributes

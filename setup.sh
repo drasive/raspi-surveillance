@@ -18,7 +18,7 @@ $apt_install screen
 # Setup LAMP server
 $apt_install apache2
 $apt_install mysql-server
-$apt_install php5 php-pear php5-mysql php5-mcrypt
+$apt_install php5 php-pear php5-mysql php5-mcrypt libapache2-mod-php5 php5-json
 
 service apache2 restart
 service mysql restart

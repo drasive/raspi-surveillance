@@ -9,7 +9,7 @@
         <a class="navbar-brand" href="/">Raspi Surveillance</a>
     </div>
 
-    <span class="nav navbar-top-links navbar-right" style="padding: 15px; float: right;">
+    <span class="nav navbar-top-links navbar-right hidden-xs" style="padding: 15px; float: right;">
         {{{ $g_hostIpAddress }}}, {{{ $g_hostTime }}}
     </span>
 
@@ -22,20 +22,6 @@
                 <li>
                     <a href="video-archive"><i class="fa fa-archive fa-fw"></i> Video Archive</a>
                 </li>
-                <!--<li>
-                    <a href="#"><i class="fa fa-gear fa-fw"></i> Management<span class="fa arrow" style="margin-top: 3px;"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a href="events">Events</a>
-                        </li>
-                        <li>
-                            <a href="price-groups">Price Groups</a>
-                        </li>
-                        <li>
-                            <a href="genres">Genres</a>
-                        </li>
-                    </ul>
-                </li>-->
                 <li>
                     <a href="about"><i class="fa fa-info-circle fa-fw"></i> About</a>
                 </li>

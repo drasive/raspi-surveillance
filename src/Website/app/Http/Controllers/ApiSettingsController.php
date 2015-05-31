@@ -113,7 +113,7 @@ class ApiSettingsController extends ApiControllerBase {
 	}
 
 
-	protected static function executeScript($path) {
+	protected static function executeBashScript($path, $sudo) {
 		$file = realpath($path);
 
 		if (!file_exists($file)) {
@@ -122,7 +122,13 @@ class ApiSettingsController extends ApiControllerBase {
 
 		$output = array();
 		$status = -1;
-		exec($file, $output, $status);
+		if ($sudo) {
+			exec('sudo bash ' . $file, $output, $status);
+		}
+		else {
+			exec('bash ' . $file, $output, $status);
+		}
+		
 
 		if ($status !== 0) {
 			throw new Exception('Error executing script "' . $file . '" (' . $status . '): ' . implode($output));
@@ -132,27 +138,27 @@ class ApiSettingsController extends ApiControllerBase {
 	}
 
 	protected static function startVideostream() {
-		self::executeScript('../../scripts/videostream-start-http.sh');
+		self::executeBashScript('../../scripts/videostream-start-http.sh', false);
 	}
 
 	protected static function stopVideostream() {
-		self::executeScript('../../scripts/videostream-stop.sh');
+		self::executeBashScript('../../scripts/videostream-stop.sh', true);
 	}
 	
 	protected static function getVideostreamStatus() {
-		return self::executeScript('../../scripts/videostream-status.sh');
+		return self::executeBashScript('../../scripts/videostream-status.sh', true);
 	}
 
 	protected static function startMotionDetection() {
-		self::executeScript('../../scripts/motion-detection-start.sh');
+		self::executeBashScript('../../scripts/motion-detection-start.sh', true);
 	}
 
 	protected static function stopMotionDetection() {
-		self::executeScript('../../scripts/motion-detection-stop.sh');
+		self::executeBashScript('../../scripts/motion-detection-stop.sh', true);
 	}
 	
 	protected static function getMotionDetectionStatus() {
-		return self::executeScript('../../scripts/motion-detection-status.sh');
+		return self::executeBashScript('../../scripts/motion-detection-status.sh', true);
 	}
 
 }

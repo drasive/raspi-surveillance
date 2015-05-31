@@ -52,6 +52,7 @@ No time
 	Automatic client timezone
 	Network camera stream availability indicator
 	Show error when livestream/ video doesn't play
+	Update clock in page header
 
 ### Documentation ###
 Setup
@@ -68,3 +69,30 @@ Configuration
 Usage
 	Advise to use modern browser if problem with video player
 	Attention: No authentication
+
+### Notes ###
+cd /var/www
+cp <SOURCE> raspi-surveillance
+cd raspi-surveillance
+sudo chmod -R 777 .
+
+cd /etc/apache2/
+sudo nano apache2.conf
+# Set /var/www/ "AllowOverride" to "All"
+
+cd /etc/apache2/sites-available/
+cp 000-default.conf raspi-surveillance.conf
+sudo nano raspi-surveillance.conf
+# Set "DocumentRoot" to "../<PROJECT>/public"
+sudo a2dissite 000-default.conf
+sudo a2ensite raspi-surveillance.conf 
+sudo service apache2 reload
+
+cd /etc/php5/apache2/
+sudo nano php.ini
+# Add line extension=json.so
+# Add lines extension=pdo.so, extension=pdo_sqlite.so, extension=pdo_mysql.so, extension=sqlite.so
+# Add line extension=mcrypt.so
+
+-------------------------
+Fix mysql columns
