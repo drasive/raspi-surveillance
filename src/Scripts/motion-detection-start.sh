@@ -5,8 +5,8 @@ set -e
 screenName="motion-detection"
 
 # Check execution privilege
-if ! [ $(id -u) = 0 ]; then
-    echo "Please run as root"
+if [ $(id -u) = 0 ]; then
+    echo "Please do NOT run as root"
     exit 1
 fi
 
@@ -17,5 +17,5 @@ else
     echo "Starting motion-detection in screen \"$screenName\""
 
     screen -dmS $screenName \
-      motion -c /etc/motion.conf
+      motion -n -c /etc/motion.conf
 fi
