@@ -38,13 +38,10 @@ mv /tmp/motion /usr/bin
 
 # TODO: http://sjj.azurewebsites.net/?p=701
 # TODO: http://www.lavrsen.dk/foswiki/bin/view/Motion/ConfigFileOptions
-#sed -i "s/start_x=0/start_x=1/g" /etc/motion.conf
+sed -i "s#target_dir /home/pi#/var/www/raspi-surveillance/public/videos#g" /etc/motion.conf
+sed -i "s#output_pictures on#output_pictures off#g" /etc/motion.conf
+sed -i "s#framerate 2/framerate 3#g" /etc/motion.conf
 
 # Setup database
-
-
-# Setup scripts
-# TODO: Test
-if ! grep -Fxq "www-data ALL=NOPASSWD: Scripts/*.sh" /etc/sudoers; then
-    "www-data ALL=NOPASSWD: Scripts/*.sh" >> /etc/sudoers # Allow sudo execution from PHP without password
-fi
+# TODO: Create database ()/database/)
+# TODO: Create user (@w)

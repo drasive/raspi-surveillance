@@ -22,8 +22,7 @@ class CreateCamerasTable extends Migration {
 			$table->string('name', 64)->nullable();
 			
 			$table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
-			// TODO: Multiple CURRENT_TIMESTAMP columns not supported in < MySql 5.6
-			//$table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
+			$table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
 		});
 	}
 

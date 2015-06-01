@@ -1,24 +1,24 @@
 ### Raspberry Pi ###
 
 Prepare
-	Hosting in subfolder on pi
-	Script functionality and execution 
-	Use of screen
-	livestream video player: Use ogg?
-	mysql < 5.6
-	Website
+	l/Hosting in subfolder on pi: ok
+	l/Use of screen: ok
+	l/Script functionality and execution: start motion without screen or with nohup?
+	s/livestream video player: Use ogg?
+	a/Website
 
 Test on Raspberry
-	Videostream scripts
-	Videoplayer
 	Hosting website
+	Videostream script with VLC
 	Motion detection
+	
+	Videoplayer
+	General check
+	Keeping state
 
 Test Website
 	General
-		Folder structure
 		Camera control
-		TODOs
 	Livestream
 		local/ remote
 		port
@@ -33,14 +33,12 @@ Test Website
 
 ### Website ###
 General	
+	TODOs
 	Create release instructions
 	Create README
-
-API
-	stateless: driver=array
-
-Local Camera
-	Implement server side
+	Never check if NOT root?
+	Finalize file structure
+	Bring back VideoFileSeeder
 
 No time
 	User/ AJAX request authentication
@@ -53,6 +51,7 @@ No time
 	Network camera stream availability indicator
 	Show error when livestream/ video doesn't play
 	Update clock in page header
+	stateless (no session cookies): driver=array
 
 ### Documentation ###
 Setup
@@ -65,6 +64,7 @@ Setup
 Configuration
 	Describe how to configure timezone
 	Video filenames need to be URL save
+	Change "target_dir" in /etc/motion.conf to ""/public/videos""
 
 Usage
 	Advise to use modern browser if problem with video player
@@ -88,11 +88,16 @@ sudo a2dissite 000-default.conf
 sudo a2ensite raspi-surveillance.conf 
 sudo service apache2 reload
 
+php5enmod mcrypt
 cd /etc/php5/apache2/
 sudo nano php.ini
 # Add line extension=json.so
 # Add lines extension=pdo.so, extension=pdo_sqlite.so, extension=pdo_mysql.so, extension=sqlite.so
 # Add line extension=mcrypt.so
 
--------------------------
-Fix mysql columns
+cd /etc/
+sudo nano motion.conf
+# Replace the following lines:
+# target_dir /home/pi -> /var/www/raspi-surveillance/public/videos
+# output_pictures on -> off
+# framerate 2 -> 3
