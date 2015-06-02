@@ -53,7 +53,8 @@
                         <td>
                             <span ng-show="settings.camera.mode !== 1">Not available (not in streaming mode).</span>
                             <button class="btn btn-success" ng-click="playStream()"
-                                ng-show="settings.camera.mode === 1" ng-class="{ active: isStreamPlaying }">Watch</button>
+                                ng-show="settings.camera.mode === 1" ng-class="{ active: isStreamPlaying }"
+                                ng-disabled="isBusy">Watch</button>
                         </td>
                     </tr>
                 </table>

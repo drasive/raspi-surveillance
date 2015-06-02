@@ -1,20 +1,20 @@
 ### Raspberry Pi ###
 
 Prepare
-	l/Hosting in subfolder on pi: ok
-	l/Use of screen: ok
-	l/Script functionality and execution: start motion without screen or with nohup?
+	l/Scripts: screen output of videostream? start motion without screen or with nohup?
 	s/livestream video player: Use ogg?
+	a/video player: Fix motion video playback
 	a/Website
+	a/Test Website
 
 Test on Raspberry
-	Hosting website
-	Videostream script with VLC
-	Motion detection
+	Hosting website: ok
+	Motion detection: ok but one large .avi file
+	Videostream script with VLC: ?
 	
-	Videoplayer
-	General check
-	Keeping state
+	Videoplayer: mp4 and avi not ok
+	General check: looking good
+	Keeping state: looking good
 
 Test Website
 	General
@@ -36,9 +36,11 @@ General
 	TODOs
 	Create release instructions
 	Create README
+	Create teacher instructions
 	Never check if NOT root?
 	Finalize file structure
-	Bring back VideoFileSeeder
+	Remove Docker stuff, also online
+	Create documentation (in english?)
 
 No time
 	User/ AJAX request authentication
@@ -60,6 +62,7 @@ Setup
 	Advise to do  mysql_secure_installation somewhere, if not setup already. Conf of .env required
 	Manual database creation required (script exists)
 	Advise to check htdocs access rights
+	Say setup is only eperimental, tell what is needed
 
 Configuration
 	Describe how to configure timezone
