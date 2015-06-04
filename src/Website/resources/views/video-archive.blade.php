@@ -113,7 +113,7 @@
                                 <!-- Actions -->
                                 <div class="buttons pull-right">
                                     <button class="btn btn-success" ng-click="playVideo(video)" ng-disabled="video.isBusy">Watch</button>
-                                    <a class="btn btn-primary" href="/videos/@{{ video.filename }}" download="@{{ video.filename }}"
+                                    <a class="btn btn-primary" href="videos/@{{ video.filename }}" download="@{{ video.filename }}"
                                        ng-class="{ active: camera === activeVideo }" ng-disabled="video.isBusy">Download</a>
                                     <button class="btn btn-danger" ng-click="deleteVideo(video)" ng-disabled="video.isBusy">Delete</button>
                                 </div>

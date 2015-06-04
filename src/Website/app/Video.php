@@ -30,11 +30,5 @@ class Video extends FileModelBase {
 	{
 		parent::__construct('videos/' . $filename);
 	}
-	
-	// Methods
-	public static function create($filename, $size = 0, $updatedAt = NULL) {
-		$filepath = 'videos/' . $filename;
-		parent::create($filepath, $size, $updatedAt);
-	}
 
 }

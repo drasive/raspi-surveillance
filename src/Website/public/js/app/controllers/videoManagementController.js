@@ -126,8 +126,9 @@ angular.module('raspiSurveillance.controllers').controller('VideoManagementContr
     }
 
     $scope.playVideo = function (video) {
-      $scope.activeVideo = video;
-      $rootScope.$broadcast('playVideo', $scope.getVideoUrl(video), 'video/mp4');
+        $scope.activeVideo = video;
+        // TODO: HTML5 video player can't play .avi
+      $rootScope.$broadcast('playVideo', $scope.getVideoUrl(video), 'video/avi');
     };
    
   }
