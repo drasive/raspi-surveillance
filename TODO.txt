@@ -55,12 +55,17 @@ No time
 	Update clock in page header
 
 ### Documentation ###
+Readme
+	Tell that no login/ API auth is used is topmost attention section
+	Tell that setup/ config isn't fully automated and complex
+	
 Setup
 	Advise to not run apt-autoremove because of "motion" dependencies
 	Attention: scripts can be executed as root without password from user www-data
 	Advise to do  mysql_secure_installation somewhere, if not setup already. Conf of .env required
 	Manual database creation required (script exists)
 	Advise to check htdocs access rights
+	Make sure at least MySQL 5.6 is installed
 
 Configuration
 	Describe how to configure timezone
@@ -94,5 +99,8 @@ sudo nano php.ini
 # Add lines extension=pdo.so, extension=pdo_sqlite.so, extension=pdo_mysql.so, extension=sqlite.so
 # Add line extension=mcrypt.so
 
--------------------------
-Fix mysql columns
+wget http://repo.mysql.com/mysql-apt-config_0.2.1-1debian7_all.deb -P /tmp/
+dpkg -i /tmp/mysql-apt-config_0.2.1-1debian7_all.deb
+rm /tmp/mysql-apt-config_0.2.1-1debian7_all.deb
+apt-get update
+apt-get install -y mysql-server-5.6
