@@ -2,7 +2,7 @@
 set -e
 
 # Configuration
-screenName="motion-detection"
+processName="motion-mmal"
 
 # Check execution privilege
 if [ $(id -u) = 0 ]; then
@@ -11,8 +11,8 @@ if [ $(id -u) = 0 ]; then
 fi
 
 # Get motion detection status
-if screen -list | grep -q $screenName; then
-    echo "Motion detection is running in screen \"$screenName\""
+if ps -ef | grep -q $processName; then
+    echo "Motion detection is running"
 else
-    echo "Motion detection is not running in screen \"$screenName\""
+    echo "Motion detection is not running"
 fi

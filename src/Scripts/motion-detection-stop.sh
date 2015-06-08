@@ -2,7 +2,7 @@
 set -e
 
 # Configuration
-screenName="motion-detection"
+processName="motion-mmal"
 
 # Check execution privilege
 if [ $(id -u) = 0 ]; then
@@ -11,9 +11,9 @@ if [ $(id -u) = 0 ]; then
 fi
 
 # Stop motion detection
-if screen -list | grep -q $screenName; then
-    screen -S $screenName -X quit
-    echo "Stopped motion-detection in screen \"$screenName\""
+if ps -ef | grep -q $processName; then
+    ps -ef | grep $processName | awk '{print $2}' | xargs kill
+    echo "Stopped motion-detection"
 else
-    echo "Motion detection is not running in screen \"$screenName\""
+    echo "Motion detection is not running"
 fi

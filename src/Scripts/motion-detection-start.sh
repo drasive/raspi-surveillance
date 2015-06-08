@@ -2,7 +2,7 @@
 set -e
 
 # Configuration
-screenName="motion-detection"
+processName="motion-mmal"
 
 # Check execution privilege
 if [ $(id -u) = 0 ]; then
@@ -11,11 +11,9 @@ if [ $(id -u) = 0 ]; then
 fi
 
 # Start motion detection
-if screen -list | grep -q $screenName; then
-    echo "Motion detection is already running in screen \"$screenName\""
+if ps -ef | grep -q $processName; then
+    echo "Motion detection is already running"
 else
-    echo "Starting motion-detection in screen \"$screenName\""
-
-    screen -dmS $screenName \
-      motion -n -c /etc/motion.conf
+    echo "Starting motion-detection"
+    motion -n -c /etc/motion.conf &> /dev/null
 fi
