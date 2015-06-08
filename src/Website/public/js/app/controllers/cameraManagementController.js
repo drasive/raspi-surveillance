@@ -90,9 +90,6 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
             }
           },
           function (response) {
-            // TODO: Check if necessary, fix isBusy=false not being returned
-            // Reset local model
-            camera = angular.copy(cameraOriginal);
             camera.isBusy = false;
 
             // Camera already exists
@@ -141,6 +138,7 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
           }
         );
       } else {
+
         // Camera doesn't exists and gets created
         console.info('Saving camera');
         console.debug(JSON.stringify(camera));
@@ -155,9 +153,6 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
             camera.isBusy = false;
           },
           function (response) {
-            // TODO: Check if necessary, fix isBusy=false not being returned
-            // Reset local model
-            camera = angular.copy(cameraOriginal);
             camera.isBusy = false;
 
             // Camera already exists

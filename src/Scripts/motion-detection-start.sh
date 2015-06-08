@@ -4,6 +4,7 @@ set -e
 # Configuration
 processName="motion-mmal"
 
+# TODO: Remove if not needed (in all motion scripts)
 # Check execution privilege
 if [ $(id -u) = 0 ]; then
     echo "Please do NOT run as root"

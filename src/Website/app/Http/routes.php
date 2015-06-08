@@ -1,7 +1,5 @@
 <?php
 
-// TODO: Fix when put in apache subfolder
-
 // Pages
 Route::get('', 'LivestreamController@index');
 Route::get('video-archive', 'VideoArchiveController@index');

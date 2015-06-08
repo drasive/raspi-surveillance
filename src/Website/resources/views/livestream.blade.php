@@ -69,7 +69,6 @@
                 </p>
 
                 <p ng-show="stream.sources.length > 0">
-                    <!-- TODO: Fix livestream -->
                     <videogular vg-player-ready="onPlayerReady($API)" vg-theme="stream.theme">
                         <vg-media vg-src="stream.sources"
                                   vg-tracks="stream.tracks"
@@ -79,19 +78,14 @@
                     </videogular>
                 </p>
 
-                <form name="custumUrlForm" novalidate>
-                    <div ng-class="{ 'has-error': customUrlForm.customUrl.$invalid }">
-                        <div class="input-group">
-                            <!-- TODO: Add validation -->
-                            <input class="form-control" name="customUrl" type="text" maxlength="2000" required placeholder="Custom URL to open the livestream from"
-                                ng-model="customUrl" ng-required="true" ng-maxlength="2000" ng-class="{}" />
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" ng-click="playStreamFromUrl()">Open</button>
-                            </span>
-                        </div>
-                        <span class="help-block" ng-show="customUrlForm.customUrl.$invalid ">Please enter a valid URL</span>
-                    </div>
-                </form>
+                <div class="input-group">
+                    <input class="form-control" name="customUrl" type="text" required maxlength="2000"
+                        placeholder="Custom URL to open the livestream from" ng-model="customUrl" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" ng-click="playStreamFromUrl()" ng-disabled="!customUrl">Open</button>
+                    </span>
+                </div>
+                <span class="help-block" ng-show="customUrlForm.customUrl.$invalid ">Please enter a valid URL</span>
             </div>
         </div>
 
@@ -143,7 +137,7 @@
                                         </span>
                                     </a>
                                 </th>
-                                <th style="min-width: 75px">
+                                <th style="min-width: 85px">
                                     <a href="#" ng-click="orderBy('port')">
                                         Port
                                         <span ng-show="orderField === 'port'">

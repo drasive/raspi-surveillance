@@ -22,8 +22,7 @@ class ApiVideoController extends ApiControllerBase {
 	{
 		try {
 			// Get model files (sorted so new videos are first)
-            // TODO: HTML5 video player can't play .avi
-			$videoFiles = glob('videos/*.avi');
+			$videoFiles = glob('videos/*.{avi,mp4}', GLOB_BRACE);
 			
 			// Instantiate objects
 			$videos_encoded = array();

@@ -77,11 +77,11 @@ class ApiSettingsController extends ApiControllerBase {
 
 	// TODO: Test
 	protected static function getCameraMode() {
-        if (env('APP_ENV', 'raspi') !== 'raspi') {
-            // It is not possible to get the camera mode when not running on a Raspberri Pi
-            return 0;
-        }
-        
+		if (env('APP_ENV', 'raspi') !== 'raspi') {
+			// It is not possible to get the camera mode when not running on a Raspberri Pi
+			return 0;
+		}
+		
 		if (strpos(strtolower(self::getVideostreamStatus()), 'is running') !== FALSE) {
 			// Videostream is running
 			return 1;
@@ -96,11 +96,11 @@ class ApiSettingsController extends ApiControllerBase {
 	}
 
 	protected static function saveCameraMode($mode) {
-        if (env('APP_ENV', 'raspi') !== 'raspi') {
-            // It is not possible to save the camera mode when not running on a Raspberri Pi
-            return;
-        }
-        
+		if (env('APP_ENV', 'raspi') !== 'raspi') {
+			// It is not possible to save the camera mode when not running on a Raspberri Pi
+			return;
+		}
+		
 		switch ($mode) {
 			case 0:
 				self::stopVideostream();
