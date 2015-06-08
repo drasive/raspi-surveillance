@@ -149,28 +149,28 @@ class ApiSettingsController extends ApiControllerBase {
 	}
 
 	protected static function startVideostream() {
-		self::executeBashScript('../../Scripts/videostream-start.sh', false);
+		self::executeBashScript('../resources/scripts/videostream-start.sh', false);
 	}
 
 	protected static function stopVideostream() {
-		self::executeBashScript('../../Scripts/videostream-stop.sh', false);
+		self::executeBashScript('../resources/videostream-stop.sh', false);
 	}
 	
 	protected static function getVideostreamStatus() {
-		return self::executeBashScript('../../Scripts/videostream-status.sh', false);
+		return self::executeBashScript('../resources/videostream-status.sh', false);
 	}
 
 	// TODO: If scripts work, remove sudo = true
 	protected static function startMotionDetection() {
-		self::executeBashScript('../../Scripts/motion-detection-start.sh', true);
+		self::executeBashScript('../resources/motion-detection-start.sh', true);
 	}
 
 	protected static function stopMotionDetection() {
-		self::executeBashScript('../../Scripts/motion-detection-stop.sh', true);
+		self::executeBashScript('../resources/motion-detection-stop.sh', true);
 	}
 	
 	protected static function getMotionDetectionStatus() {
-		return self::executeBashScript('../../Scripts/motion-detection-status.sh', true);
+		return self::executeBashScript('../resources/motion-detection-status.sh', true);
 	}
 
 }
