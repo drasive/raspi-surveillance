@@ -1,11 +1,9 @@
 ### Raspberry Pi ###
 
 Prepare
-	l/Scripts: screen output of videostream? start motion without screen or with nohup?
-	s/livestream video player: Use ogg?
-	a/video player: Fix motion video playback
+	s/Scripts: screen output of videostream? start motion without screen or with nohup?
+	s/video player: Fix livestream/ motion video playback
 	a/Website
-	a/Test Website
 
 Test on Raspberry
 	Hosting website: ok
@@ -41,6 +39,7 @@ General
 	Finalize file structure
 	Remove Docker stuff, also online
 	Create documentation (in english?)
+	Set timezone to Zurich for teacher release
 
 No time
 	User/ AJAX request authentication
@@ -114,3 +113,4 @@ sudo nano motion.conf
 # target_dir /home/pi -> /var/www/raspi-surveillance/public/videos
 # output_pictures on -> off
 # framerate 2 -> 3
+# ? (add to setup.sh): ffmpeg_video_codec * -> ffmpeg_video_codec msmpeg4
