@@ -75,7 +75,6 @@ class ApiSettingsController extends ApiControllerBase {
 	}
 
 
-	// TODO: Test
 	protected static function getCameraMode() {
 		if (env('APP_ENV', 'raspi') !== 'raspi') {
 			// It is not possible to get the camera mode when not running on a Raspberri Pi
@@ -123,7 +122,7 @@ class ApiSettingsController extends ApiControllerBase {
 	}
 
 
-	protected static function executeBashScript($path, $sudo) {
+	protected static function executeBashScript($path) {
 		$file = realpath($path);
 
 		if (!file_exists($file)) {
@@ -132,15 +131,7 @@ class ApiSettingsController extends ApiControllerBase {
 
 		$output = array();
 		$status = -1;
-		// TODO: If scripts work, remove sudo
-		$sudo = false;
-		if ($sudo) {
-			exec('sudo bash ' . $file, $output, $status);
-		}
-		else {
-			exec('bash ' . $file, $output, $status);
-		}
-
+		exec('bash ' . $file, $output, $status);
 		if ($status !== 0) {
 			throw new Exception('Error executing script "' . $file . '" (' . $status . '): ' . implode($output));
 		}
@@ -149,28 +140,27 @@ class ApiSettingsController extends ApiControllerBase {
 	}
 
 	protected static function startVideostream() {
-		self::executeBashScript('../resources/scripts/videostream-start.sh', false);
+		self::executeBashScript('../resources/scripts/videostream-start.sh');
 	}
 
 	protected static function stopVideostream() {
-		self::executeBashScript('../resources/videostream-stop.sh', false);
+		self::executeBashScript('../resources/videostream-stop.sh');
 	}
 	
 	protected static function getVideostreamStatus() {
-		return self::executeBashScript('../resources/videostream-status.sh', false);
+		return self::executeBashScript('../resources/videostream-status.sh');
 	}
 
-	// TODO: If scripts work, remove sudo = true
 	protected static function startMotionDetection() {
-		self::executeBashScript('../resources/motion-detection-start.sh', true);
+		self::executeBashScript('../resources/motion-detection-start.sh');
 	}
 
 	protected static function stopMotionDetection() {
-		self::executeBashScript('../resources/motion-detection-stop.sh', true);
+		self::executeBashScript('../resources/motion-detection-stop.sh');
 	}
 	
 	protected static function getMotionDetectionStatus() {
-		return self::executeBashScript('../resources/motion-detection-status.sh', true);
+		return self::executeBashScript('../resources/motion-detection-status.sh');
 	}
 
 }

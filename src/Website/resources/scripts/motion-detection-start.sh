@@ -4,13 +4,6 @@ set -e
 # Configuration
 processName="motion-mmal"
 
-# TODO: Remove if not needed (in all motion scripts)
-# Check execution privilege
-if [ $(id -u) = 0 ]; then
-    echo "Please do NOT run as root"
-    exit 1
-fi
-
 # Start motion detection
 if ps -ef | grep -q $processName; then
     echo "Motion detection is already running"
