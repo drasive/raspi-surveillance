@@ -1,11 +1,11 @@
 #!/bin/bash
-set -e
 
 # Configuration
-processName="motion-mmal"
+processName="motion"
 
 # Get motion detection status
-if ps -ef | grep -q $processName; then
+pid=`pidof $processName`
+if [[ -n $pid ]]; then
     echo "Motion detection is running"
 else
     echo "Motion detection is not running"

@@ -1,13 +1,13 @@
 #!/bin/bash
-set -e
 
 # Configuration
-processName="motion-mmal"
+processName="motion"
 
 # Start motion detection
-if ps -ef | grep -q $processName; then
+pid=`pidof $processName`
+if [[ -n $pid ]]; then
     echo "Motion detection is already running"
 else
     echo "Starting motion-detection"
-    motion -n -c /etc/motion.conf &> /dev/null
+    nohup motion -n -c /etc/motion.conf > /dev/null 2>&1  &
 fi

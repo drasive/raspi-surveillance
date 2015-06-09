@@ -1,8 +1,7 @@
 #!/bin/bash
-set -e
 
 # Configuration
-screenName="videostream"
+processName="raspivid"
 
 # Check execution privilege
 if [ $(id -u) = 0 ]; then
@@ -11,8 +10,9 @@ if [ $(id -u) = 0 ]; then
 fi
 
 # Get videostream status
-if screen -list | grep -q $screenName; then
-    echo "Videostream is running in screen \"$screenName\""
+pid=`pidof $processName`
+if [[ -n $pid ]]; then
+    echo "Videostream is running"
 else
-    echo "Videostream is not running in screen \"$screenName\""
+    echo "Videostream is not running"
 fi

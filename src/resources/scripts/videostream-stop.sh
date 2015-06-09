@@ -1,8 +1,7 @@
 #!/bin/bash
-set -e
 
 # Configuration
-screenName="videostream"
+processName="raspivid"
 
 # Check execution privilege
 if [ $(id -u) = 0 ]; then
@@ -11,9 +10,10 @@ if [ $(id -u) = 0 ]; then
 fi
 
 # Stop videostream
-if screen -list | grep -q $screenName; then
-    screen -S $screenName -X quit
-    echo "Stopped videostream in screen \"$screenName\""
+pid=`pidof $processName`
+if [[ -n $pid ]]; then
+    kill $pid
+    echo "Stopped videostream"
 else
-    echo "Videostream is not running in screen \"$screenName\""
+    echo "Videostream is not running"
 fi

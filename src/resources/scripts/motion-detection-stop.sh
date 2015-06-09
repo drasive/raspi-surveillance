@@ -1,12 +1,12 @@
 #!/bin/bash
-set -e
 
 # Configuration
-processName="motion-mmal"
+processName="motion"
 
 # Stop motion detection
-if ps -ef | grep -q $processName; then
-    ps -ef | grep $processName | awk '{print $2}' | xargs kill
+pid=`pidof $processName`
+if [[ -n $pid ]]; then
+    kill $pid
     echo "Stopped motion-detection"
 else
     echo "Motion detection is not running"

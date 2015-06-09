@@ -13,7 +13,6 @@ export DEBIAN_FRONTEND=noninteractive
 apt_install='apt-get install --yes'
 apt_remove='apt-get remove --yes'
 $apt_install apt-utils
-$apt_install screen
 
 # Setup LAMP server
 $apt_install apache2
@@ -42,5 +41,5 @@ sed -i "s#output_pictures on#output_pictures off#g" /etc/motion.conf
 sed -i "s#framerate 2/framerate 3#g" /etc/motion.conf
 
 # Setup database
-# TODO: Create database ()/database/)
+# TODO: Create database (/database/)
 # TODO: Create user (@w)

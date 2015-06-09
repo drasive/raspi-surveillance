@@ -1,8 +1,7 @@
-#!/bin/sh
-set -e
+#!/bin/bash
 
 # Configuration
-screenName="videostream"
+processName="raspivid"
 
 videoWidth=1280
 videoHeight=720
@@ -16,18 +15,14 @@ if [ $(id -u) = 0 ]; then
     exit 1
 fi
 
-# Prepare videostream
-export DISPLAY=:0
-$startx&
-
 # Start videostream
-if screen -list | grep -q $screenName; then
-    echo "Videostream is already running in screen \"$screenName\""
+pid=`pidof $processName`
+if [[ -n $pid ]]; then
+    echo "Videostream is already running"
 else
-    echo "Starting HTTP videostream on port $streamPort (${videoWidth}x${videoHeight}p, ${videoFPS}FPS) in screen \"$screenName\""
+    echo "Starting HTTP videostream on port $streamPort (${videoWidth}x${videoHeight}p, ${videoFPS}FPS)"
     
-    screen -dmS $screenName \
-      raspivid -o - -t 0 -n -w $videoWidth -h $videoHeight -fps $videoFPS \
-      | cvlc --x11-display :0 stream:///dev/stdin --sout '#standard{access=http,mux=ts,dst=:'$streamPort'}' :demux=h264 \
-      &> /dev/null
+    nohup raspivid -o - -t 0 -n -w $videoWidth -h $videoHeight -fps $videoFPS \
+      | cvlc -v stream:///dev/stdin --sout '#standard{access=http,mux=ts,dst=:'$streamPort'}' :demux=h264 \
+      > /dev/null 2>&1  &
 fi

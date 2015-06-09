@@ -1,16 +1,10 @@
 ### Raspberry Pi ###
 
 Prepare
-	s/Scripts: screen output of videostream? start motion without screen or with nohup?
-	s/video player: Fix livestream/ motion video playback
-	a/Website
+	a/Video player: Implement livestream/ motion video playback
 
 Test on Raspberry
-	Hosting website: ok
-	Motion detection: ok but one large .avi file
-	Videostream script with VLC: ?
-
-	Videoplayer: mp4 and avi not ok
+	Videoplayers: 
 	General check: looking good
 	Keeping state: looking good
 
@@ -35,11 +29,8 @@ General
 	Create release instructions
 	Create README
 	Create teacher instructions
-	Never check if NOT root?
-	Finalize file structure
-	Remove Docker stuff, also online
-	Create documentation (in english?)
-	Set timezone to Zurich for teacher release
+		Set timezone to Zurich for teacher release
+		User password 
 
 No time
 	User/ AJAX request authentication
