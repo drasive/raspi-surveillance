@@ -1,0 +1,4 @@
+# Custom gitignore
+
+### MySQL Workbench ###
+*.bak
