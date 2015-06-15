@@ -1,8 +1,5 @@
 ### Raspberry Pi ###
 
-Prepare
-	a/Video player: Implement livestream/ motion video playback
-
 Test on Raspberry
 	Videoplayers: 
 	General check: looking good
@@ -24,9 +21,9 @@ Test Website
 			watch > download/ delete
 
 ### Website ###
-General	
-	TODOs
-	Add motion and prepared motion.conf to /setup
+General
+	Add motion and prepared motion.conf to /setup, check if names in documentation correct
+	Test & Bugfix
 	Create Release
 	
 	Update release instructions	
