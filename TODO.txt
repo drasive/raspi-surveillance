@@ -26,11 +26,11 @@ Test Website
 ### Website ###
 General	
 	TODOs
-	Create release instructions
+	Add motion and prepared motion.conf to /setup
+	Create Release
+	
+	Update release instructions	
 	Create README
-	Create teacher instructions
-		Set timezone to Zurich for teacher release
-		User password 
 
 No time
 	User/ AJAX request authentication
@@ -48,25 +48,6 @@ No time
 ### Documentation ###
 Readme
 	Tell that no login/ API auth is used is topmost attention section
-	Tell that setup/ config isn't fully automated and complex
-	
-Setup
-	Advise to not run apt-autoremove because of "motion" dependencies
-	Attention: scripts can be executed as root without password from user www-data
-	Advise to do  mysql_secure_installation somewhere, if not setup already. Conf of .env required
-	Manual database creation required (script exists)
-	Advise to check htdocs access rights
-	Make sure at least MySQL 5.6 is installed
-	Say setup is only eperimental, tell what is needed
-
-Configuration
-	Describe how to configure timezone
-	Video filenames need to be URL save
-	Change "target_dir" in /etc/motion.conf to ""/public/videos""
-
-Usage
-	Advise to use modern browser if problem with video player
-	Attention: No authentication
 
 ### Notes ###
 cd /var/www
