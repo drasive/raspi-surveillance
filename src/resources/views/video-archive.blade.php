@@ -14,17 +14,13 @@
     <div class="col-lg-5" ng-controller="VideoPlayerController" ng-cloak>
         <h3>Current Video</h3>
 
-        <p ng-show="stream.sources.length === 0">
+        <p ng-show="!videoUrl">
             Select "Watch" on one of the listed surveillance videos to see the recording.
         </p>
 
-        <videogular vg-player-ready="onPlayerReady($API)" vg-theme="stream.theme" ng-show="stream.sources.length > 0">
-            <vg-media vg-src="stream.sources"
-                      vg-tracks="stream.tracks"
-                      vg-native-controls="true"
-                      vg-auto-play="stream.autoPlay">
-            </vg-media>
-        </videogular>
+        <p ng-show="videoUrl" id="video-player-container">
+            <!-- Video Player -->
+        </p>
     </div>
 
     <div class="col-lg-7" ng-controller="VideoManagementController" ng-cloak>

@@ -62,20 +62,14 @@
 
             <div ng-controller="LivestreamController" ng-cloak>
                 <h3 class="inline-block">Livestream</h3>
-                <span class="title-addition" ng-show="stream.sources.length > 0">(@{{ getStreamUrl() }})</span>
+                <span class="title-addition" ng-show="streamUrl">(@{{ streamUrl }})</span>
 
-                <p ng-show="stream.sources.length === 0">
+                <p ng-show="!streamUrl">
                     Select "Watch" on one of the listed cameras or enter a custom URL to see a livestream.
                 </p>
 
-                <p ng-show="stream.sources.length > 0">
-                    <videogular vg-player-ready="onPlayerReady($API)" vg-theme="stream.theme">
-                        <vg-media vg-src="stream.sources"
-                                  vg-tracks="stream.tracks"
-                                  vg-native-controls="true"
-                                  vg-auto-play="stream.autoPlay">
-                        </vg-media>
-                    </videogular>
+                <p ng-show="streamUrl" id="video-player-container">
+                    <!-- Video Player -->
                 </p>
 
                 <div class="input-group">

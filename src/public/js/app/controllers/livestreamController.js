@@ -1,41 +1,50 @@
 'use strict';
 
 angular.module('raspiSurveillance.controllers').controller('LivestreamController', [
-  '$scope', '$rootScope', '$sce', function ($scope, $rootScope, $sce) {
+  '$scope', '$rootScope', function ($scope, $rootScope) {
 
     // Attributes
-    $scope.onPlayerReady = function onPlayerReady(videoPlayer) {
-      $scope.videoPlayer = videoPlayer;
-    };
-
-    $scope.stream = {
-      sources: [],
-      theme: 'bower_components/videogular-themes-default/videogular.css',
-      autoPlay: true
-    };
+    $scope.streamUrl = null;
 
     // Actions
-    $scope.getStreamUrl = function () {
-      if ($scope.stream.sources.length === 0) {
-        return null;
-      }
+    $scope.initialize = function () {
+      $scope.videoPlayerContainer = $('#video-player-container');
 
-      return $sce.getTrustedResourceUrl($scope.stream.sources[0].src);
-    };
+      $scope.resizeVideoPlayer();
+    }
+
+    $scope.resizeVideoPlayer = function () {
+      if ($("#video-player").length > 0) {
+        var width = $("[ng-controller=LivestreamController]").width();
+        var height = width * 9 / 16; // 16:9 relation
+
+        var videoPlayer = $('#video-player embed');
+        videoPlayer.prop("width", width);
+        videoPlayer.prop("height", height);
+      }
+    }
 
 
     $scope.playStream = function (url, type) {
-      if ($scope.stream.sources.length > 0 && url.toLowerCase() === $scope.getStreamUrl().toLowerCase()) {
+      if ($scope.streamUrl && url.toLowerCase() === $scope.streamUrl.toLowerCase()) {
         console.log('Already playing livestream "' + url + '" (' + type + ')');
         return;
       }
 
       console.info('Playing livestream "' + url + '" (' + type + ')');
+      $scope.streamUrl = url;
 
       $rootScope.$broadcast('playingStream', url, type);
 
-      $scope.stream.sources = [{ src: $sce.trustAsResourceUrl(url), type: type }];
-      $scope.videoPlayer.play();
+      // Add /replace video player
+      var videoPlayer = '<object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" codebase="http://download.videolan.org/pub/videolan/vlc/last/win32/axvlc.cab" id="vlc-player">';
+      videoPlayer += '    <param name="Src" value="' + url + '" />';
+      videoPlayer += '    <embed type="application/x-vlc-plugin" pluginspage="http://www.videolan.org" name="vlc"';
+      videoPlayer += '      width="640" height="480" target="' + url + '" />';
+      videoPlayer += '</object>';
+      $scope.videoPlayerContainer.html(videoPlayer);
+
+      $scope.resizeVideoPlayer();
     }
 
     $scope.$on('playStream', function (event, url, type) {
@@ -47,17 +56,16 @@ angular.module('raspiSurveillance.controllers').controller('LivestreamController
     }
 
     $scope.$on('removingStreamSource', function (event, url) {
-      if ($scope.stream.sources.length === 0) {
-        return;
-      }
-
-      if (url.toLowerCase() === $scope.getStreamUrl().toLowerCase()) {
+      if ($scope.streamUrl && url.toLowerCase() === $scope.streamUrl.toLowerCase()) {
+        $scope.streamUrl = null;
         console.info('Stopping livestream (stream source "' + url + '" is being removed)');
 
-        $scope.videoPlayer.stop();
-        $scope.stream.sources = [];
+        // Remove video player
+        $scope.videoPlayerContainer.html('');
       }
     });
+
+    $scope.initialize();
 
   }
 ]);

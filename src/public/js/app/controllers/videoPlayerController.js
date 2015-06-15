@@ -1,39 +1,56 @@
 'use strict';
 
 angular.module('raspiSurveillance.controllers').controller('VideoPlayerController', [
-  '$scope', '$sce', function ($scope, $sce) {
+  '$scope', function ($scope) {
 
     // Attributes
-    $scope.onPlayerReady = function onPlayerReady(videoPlayer) {
-      $scope.videoPlayer = videoPlayer;
-    };
-
-    $scope.stream = {
-      sources: [],
-      theme: 'bower_components/videogular-themes-default/videogular.css',
-      autoPlay: true
-    };
+    $scope.videoUrl = null;
 
     // Actions
+    $scope.initialize = function () {
+      $scope.videoPlayerContainer = $('#video-player-container');
+
+      $scope.resizeVideoPlayer();
+    }
+
+    $scope.resizeVideoPlayer = function () {
+      if ($("#video-player").length > 0) {
+        var width = $("[ng-controller=VideoPlayerController]").width();
+        var height = width * 9 / 16; // 16:9 relation
+
+        var videoPlayer = $('#video-player embed');
+        videoPlayer.prop("width", width);
+        videoPlayer.prop("height", height);
+      }
+    }
+
+
     $scope.$on('playVideo', function (event, url, type) {
       console.info('Playing video "' + url + '" (' + type + ')');
+      $scope.videoUrl = url;
 
-      $scope.stream.sources = [{ src: $sce.trustAsResourceUrl(url), type: type }];
-      $scope.videoPlayer.play();
+      // Add/ replace video player
+      var videoPlayer = '<object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" codebase="http://download.videolan.org/pub/videolan/vlc/last/win32/axvlc.cab" id="vlc-player">';
+      videoPlayer += '    <param name="Src" value="' + url + '" />';
+      videoPlayer += '    <embed type="application/x-vlc-plugin" pluginspage="http://www.videolan.org" name="vlc"';
+      videoPlayer += '      width="640" height="480" target="' + url + '" />';
+      videoPlayer += '</object>';
+      $scope.videoPlayerContainer.html(videoPlayer);
+
+      $scope.resizeVideoPlayer();
     });
 
     $scope.$on('removingVideo', function (event, url) {
-      if ($scope.stream.sources.length === 0) {
-        return;
-      }
-
-      if (url.toLowerCase() === $sce.getTrustedResourceUrl($scope.stream.sources[0].src).toLowerCase()) {
+      if ($scope.videoUrl && url.toLowerCase() === $scope.videoUrl.toLowerCase()) {
+        $scope.videoUrl = null;
         console.info('Stopping video (video is being removed)');
 
-        $scope.videoPlayer.stop();
-        $scope.stream.sources = [];
+        // Remove video player
+        $scope.videoPlayerContainer.html('');
       }
     });
+
+    $scope.initialize();
 
   }
 ]);
