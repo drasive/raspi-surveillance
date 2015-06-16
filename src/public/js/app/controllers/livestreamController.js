@@ -3,6 +3,8 @@
 angular.module('raspiSurveillance.controllers').controller('LivestreamController', [
   '$scope', '$rootScope', function ($scope, $rootScope) {
 
+    // TODO: Revert back to native video player, or refactor and clean up
+
     // Attributes
     $scope.streamUrl = null;
 
@@ -14,13 +16,13 @@ angular.module('raspiSurveillance.controllers').controller('LivestreamController
     }
 
     $scope.resizeVideoPlayer = function () {
-      if ($("#video-player").length > 0) {
+      if ($("#video-player")) {
         var width = $("[ng-controller=LivestreamController]").width();
         var height = width * 9 / 16; // 16:9 relation
 
         var videoPlayer = $('#video-player embed');
-        videoPlayer.prop("width", width);
-        videoPlayer.prop("height", height);
+        videoPlayer.width(width);
+        videoPlayer.height(height);
       }
     }
 
@@ -37,7 +39,7 @@ angular.module('raspiSurveillance.controllers').controller('LivestreamController
       $rootScope.$broadcast('playingStream', url, type);
 
       // Add /replace video player
-      var videoPlayer = '<object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" codebase="http://download.videolan.org/pub/videolan/vlc/last/win32/axvlc.cab" id="vlc-player">';
+      var videoPlayer = '<object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" codebase="http://download.videolan.org/pub/videolan/vlc/last/win32/axvlc.cab" id="video-player">';
       videoPlayer += '    <param name="Src" value="' + url + '" />';
       videoPlayer += '    <embed type="application/x-vlc-plugin" pluginspage="http://www.videolan.org" name="vlc"';
       videoPlayer += '      width="640" height="480" target="' + url + '" />';
