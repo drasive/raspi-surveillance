@@ -106,7 +106,7 @@ angular.module('raspiSurveillance.controllers').controller('VideoManagementContr
     $scope.videos = $scope.getVideos(true);
 
     $scope.orderField = 'createdAt';
-    $scope.orderReverse = false;
+    $scope.orderReverse = true;
     $scope.activeVideo = null;
 
     // Methods
@@ -122,12 +122,11 @@ angular.module('raspiSurveillance.controllers').controller('VideoManagementContr
 
 
     $scope.getVideoUrl = function(video) {
-      return '/videos/' + video.filename;
+      return 'videos/' + video.filename;
     }
 
     $scope.playVideo = function (video) {
-        $scope.activeVideo = video;
-        // TODO: HTML5 video player can't play .avi
+      $scope.activeVideo = video;
       $rootScope.$broadcast('playVideo', $scope.getVideoUrl(video), 'video/avi');
     };
    

@@ -28,11 +28,6 @@ angular.module('raspiSurveillance.controllers').controller('LivestreamController
 
 
     $scope.playStream = function (url, type) {
-      if ($scope.streamUrl && url.toLowerCase() === $scope.streamUrl.toLowerCase()) {
-        console.log('Already playing livestream "' + url + '" (' + type + ')');
-        return;
-      }
-
       console.info('Playing livestream "' + url + '" (' + type + ')');
       $scope.streamUrl = url;
 

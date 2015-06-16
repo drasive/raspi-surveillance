@@ -230,6 +230,13 @@
 <script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
 <script src="bower_components/videogular/videogular.js"></script>
 
+<!-- TODO: Refactor, this is a hack to have the host IP available in JavaScript -->
+<script type="text/javascript">
+    function getHostIpAddress() {
+        return "{{{ $g_hostIpAddress }}}";
+    }
+</script>
+
 <script src="js/app/app.js"></script>
 <script src="js/app/directives.js"></script>
 <script src="js/app/filters.js"></script>

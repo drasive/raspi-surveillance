@@ -35,7 +35,7 @@ angular.module('raspiSurveillance.controllers').controller('VideoPlayerControlle
       var videoPlayer = '<object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" codebase="http://download.videolan.org/pub/videolan/vlc/last/win32/axvlc.cab" id="video-player">';
       videoPlayer += '    <param name="Src" value="' + url + '" />';
       videoPlayer += '    <embed type="application/x-vlc-plugin" pluginspage="http://www.videolan.org" name="vlc"';
-      videoPlayer += '      width="640" height="480" target="' + url + '" />';
+      videoPlayer += '      width="640" height="480" src="' + url + '" />';
       videoPlayer += '</object>';
       $scope.videoPlayerContainer.html(videoPlayer);
 

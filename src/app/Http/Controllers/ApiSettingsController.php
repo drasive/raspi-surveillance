@@ -131,11 +131,7 @@ class ApiSettingsController extends ApiControllerBase {
 
 		$output = array();
 		$status = -1;
-		exec('bash ' . $file, $output, $status);
-        // TODO: Test is status check makes sense. If not, remove it.
-		if ($status !== 0) {
-			throw new Exception('Error executing script "' . $file . '" (' . $status . '): ' . implode($output));
-		}
+        exec('bash ' . $file, $output, $status);
 
 		return end($output);
 	}

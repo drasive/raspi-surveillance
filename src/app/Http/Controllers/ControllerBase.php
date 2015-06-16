@@ -16,7 +16,7 @@ abstract class ControllerBase extends BaseController {
 	public function __construct() 
 	{
 		$hostName = gethostname();        
-		$hostIpAddress = gethostbyname(gethostname());
+		$hostIpAddress = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : gethostbyname(gethostname());
 		$hostTime = date("c", time());
 
 		View::share('g_hostName', $hostName);

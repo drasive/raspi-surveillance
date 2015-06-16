@@ -45,7 +45,7 @@ angular.module('raspiSurveillance.controllers').controller('CameraManagementCont
     $scope.addCamera = function () {
       $scope.inserted = {
         ipAddress: '',
-        port: '8554',
+        port: 8554,
         protocol: 'HTTP',
         name: ''
       };

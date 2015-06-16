@@ -89,7 +89,7 @@ angular.module('raspiSurveillance.controllers').controller('SettingsController',
 
     // Methods
     $scope.getCameraStreamUrl = function () {
-      return 'http://localhost:8554';
+      return 'http://' + getHostIpAddress() + ':8554';
     }
 
     $scope.changeMode = function (mode) {

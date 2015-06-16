@@ -1,7 +1,8 @@
 ### Raspberry Pi ###
 
 Test on Raspberry
-	Videoplayers: 
+	Videoplayers: looking good
+	Motion: broken
 	General check: looking good
 	Keeping state: looking good
 
@@ -22,10 +23,10 @@ Test Website
 
 ### Website ###
 General
-	Add motion and prepared motion.conf to /setup, check if names in documentation correct
+	Fix motion
 	Test & Bugfix
-	Create Release
 	
+	Create Release	
 	Update release instructions	
 	Create README
 
@@ -45,6 +46,9 @@ No time
 ### Documentation ###
 Readme
 	Tell that no login/ API auth is used is topmost attention section
+
+Documentation
+	Add files/ folders
 
 ### Notes ###
 cd /var/www
