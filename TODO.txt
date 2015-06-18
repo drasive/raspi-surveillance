@@ -1,89 +1,29 @@
 ### Raspberry Pi ###
 
-Test on Raspberry
-	Videoplayers: looking good
-	Motion: broken
-	General check: looking good
-	Keeping state: looking good
-
-Test Website
-	General
-		Camera control
-	Livestream
-		local/ remote
-		port
-		HTTP/ RTSP
-		autoplay
-		watch/ edit/ delete
-			edit > play/ delete
-			edit/delete current stream    
-	Video archive
-		watch/ download/ delete
-			watch > download/ delete
+Test
+	Modes
+		*Off: can't stop motion
+		Livestream: looking good
+		*Motion: doesn't record
+	
+	Local camera: looking good
+	
+	Network cameras
+		Management: looking good
+		Videoplayer: looking good
+	
+	Archive
+		List: looking good
+		Videoplayer: looking good
 
 ### Website ###
 General
-	Fix motion
-	Test & Bugfix
+	Add technical section
+	Add important files/ folders to documentation
+	Improve motion.conf
+	
+	Fix motion (check /var/log/motion.log)
+	Update notes to expert according to motion functionality
 	
 	Create Release	
-	Update release instructions	
-	Create README
-
-No time
-	User/ AJAX request authentication
-	Logging (start/ stop, mode changes, events like motion detection triggered)
-	Settings page
-		Video settings (quality, motion detection threshold)
-		Log entry viewer
-	Table pagination
-	Automatic client timezone
-	Network camera stream availability indicator
-	Show error when livestream/ video doesn't play
-	Update clock in page header
-	stateless (no session cookies): driver=array
-
-### Documentation ###
-Readme
-	Tell that no login/ API auth is used is topmost attention section
-
-Documentation
-	Add files/ folders
-
-### Notes ###
-cd /var/www
-cp <SOURCE> raspi-surveillance
-cd raspi-surveillance
-sudo chmod -R 777 .
-
-cd /etc/apache2/
-sudo nano apache2.conf
-# Set /var/www/ "AllowOverride" to "All"
-
-cd /etc/apache2/sites-available/
-cp 000-default.conf raspi-surveillance.conf
-sudo nano raspi-surveillance.conf
-# Set "DocumentRoot" to "../<PROJECT>/public"
-sudo a2dissite 000-default.conf
-sudo a2ensite raspi-surveillance.conf 
-sudo service apache2 reload
-
-php5enmod mcrypt
-cd /etc/php5/apache2/
-sudo nano php.ini
-# Add line extension=json.so
-# Add lines extension=pdo.so, extension=pdo_sqlite.so, extension=pdo_mysql.so, extension=sqlite.so
-# Add line extension=mcrypt.so
-
-wget http://repo.mysql.com/mysql-apt-config_0.2.1-1debian7_all.deb -P /tmp/
-dpkg -i /tmp/mysql-apt-config_0.2.1-1debian7_all.deb
-rm /tmp/mysql-apt-config_0.2.1-1debian7_all.deb
-apt-get update
-apt-get install -y mysql-server-5.6
-cd /etc/
-sudo nano motion.conf
-# Replace the following lines:
-# target_dir /home/pi -> /var/www/raspi-surveillance/public/videos
-# output_pictures on -> off
-# framerate 2 -> 3
-# ? (add to setup.sh): ffmpeg_video_codec * -> ffmpeg_video_codec msmpeg4
+	Update release instructions	if needed

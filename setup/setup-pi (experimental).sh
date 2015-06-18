@@ -36,10 +36,6 @@ sudo tar zxvf /tmp/motion-mmal.tar.gz -C /tmp/ && rm /tmp/motion-mmal.tar.gz
 sudo mv /tmp/motion-mmalcam.conf /etc/motion.conf
 sudo mv /tmp/motion /usr/bin
 
-sed -i "s#target_dir /home/pi#/var/www/raspi-surveillance/public/videos#g" /etc/motion.conf
-sed -i "s#output_pictures on#output_pictures off#g" /etc/motion.conf
-sed -i "s#framerate 2/framerate 3#g" /etc/motion.conf
+# TODO: Replace /etc/motion.conf with preconfigured version
 
-# Setup database
-# TODO: Create database (/database/)
-# TODO: Create user (@w)
+# TODO: Setup database (database, user and tables)
