@@ -18,10 +18,6 @@ Test
 
 ### Website ###
 General
-	Add technical section
-	Add important files/ folders to documentation
-	Improve motion.conf
-	
 	Fix motion (check /var/log/motion.log)
 	Update notes to expert according to motion functionality
 	

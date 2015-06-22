@@ -8,6 +8,7 @@
     - Streaming settings (quality, resolution, etc.)
     - Motion detection settings (most important properties of motion.config)
     - Log entry viewer
+- Store motion-mmal in a local directory, not "/usr/bin"
 - Automatically use client timezone	
 - Make API stateless (no session cookies): driver=array
 
