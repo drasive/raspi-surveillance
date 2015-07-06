@@ -1,3 +1,7 @@
+### Laravel ###
 /vendor
 /node_modules
 .env
+
+### Custom ####
+public/videos
